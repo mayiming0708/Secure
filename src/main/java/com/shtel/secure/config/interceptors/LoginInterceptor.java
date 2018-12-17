@@ -12,6 +12,7 @@ public class LoginInterceptor implements HandlerInterceptor {
                              HttpServletResponse response, Object handler) throws Exception {
           
         Object user = request.getSession().getAttribute("user");
+        //TODO 需要添加用户认证功能
         if (user == null || user.equals(""))  {
             response.sendRedirect("/index");
             return false;
