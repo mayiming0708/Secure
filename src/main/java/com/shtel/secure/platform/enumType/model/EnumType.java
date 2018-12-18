@@ -1,8 +1,5 @@
 package com.shtel.secure.platform.enumType.model;
 
-import lombok.Getter;
-import lombok.Setter;
-
 public enum EnumType {
 
     SUCCESS(0, "操作成功");
