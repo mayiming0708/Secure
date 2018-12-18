@@ -18,7 +18,6 @@ import java.util.List;
 @RequestMapping("/demo")
 public class DemoAction {
 
-
     @Autowired
     public DemoService demoService;
 

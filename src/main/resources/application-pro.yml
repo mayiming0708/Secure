@@ -1,7 +1,7 @@
 spring:
   datasource:
     name: test
-    url: jdbc:mysql://127.0.0.1:3306/dap
+    url: jdbc:mysql://127.0.0.1:3306/secure
     username: root
     password: mysql1995MYM
     # 使用druid数据源
