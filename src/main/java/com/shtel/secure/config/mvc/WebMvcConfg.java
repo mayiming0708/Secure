@@ -10,15 +10,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebMvcConfg implements WebMvcConfigurer {
 
     public final static String SESSION_KEY = "user";
-    
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**")
-                .excludePathPatterns("/index","/login");
+                .excludePathPatterns("/index","/login","/monitor","/static/**");
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+        WebMvcConfigurer.super.addResourceHandlers(registry);
     }
 }

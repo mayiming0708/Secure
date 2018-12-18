@@ -14,7 +14,7 @@ public class MonitorAction {
     @Autowired
     private MonitorService monitorService;
 
-    @RequestMapping("monitor")
+    @RequestMapping("/monitor")
     @ResponseBody
     public String selectMonitorByMonitorID(){
         Monitor monitor = monitorService.selectByMonitorID("0005EC8790A64356A6ABA43BE34AF918");
