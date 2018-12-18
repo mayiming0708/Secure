@@ -1,12 +1,11 @@
 package com.shtel.secure.platform.demo.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.shtel.secure.platform.quartz.MyJob;
+import com.shtel.secure.platform.quartz.demo.MyJob;
 import org.quartz.*;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Date;
 import java.util.List;

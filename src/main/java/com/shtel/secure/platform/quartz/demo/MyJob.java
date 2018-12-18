@@ -1,4 +1,4 @@
-package com.shtel.secure.platform.quartz;
+package com.shtel.secure.platform.quartz.demo;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
