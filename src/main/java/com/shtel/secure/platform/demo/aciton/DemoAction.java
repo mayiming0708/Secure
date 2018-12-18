@@ -3,6 +3,8 @@ package com.shtel.secure.platform.demo.aciton;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.shtel.secure.platform.demo.service.DemoService;
+import com.shtel.secure.platform.enumType.model.EnumType;
+import com.shtel.secure.utils.ResultUtil;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.Trigger;
@@ -15,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping("/demo")
+@RequestMapping("/api/demo")
 public class DemoAction {
 
     @Autowired
@@ -28,8 +30,10 @@ public class DemoAction {
     }
 
     @RequestMapping(value = "/jobs",method = RequestMethod.DELETE)
-    public void stopJobs() throws Exception {
+    @ResponseBody
+    public String stopJobs() throws Exception {
         demoService.stopJobs();
+        return ResultUtil.Result(EnumType.SUCCESS);
     }
 
     @RequestMapping(value = "/jobs",method = RequestMethod.GET)
