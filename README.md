@@ -5,6 +5,8 @@
     ```java
     return ResultUtil.Result(EnumType.SUCCESS);
     ```
+    
+- 添加MapObjectUtil方便Map与实体类的转换，详见`com.shtel.secure.utils.MapObjectUtil`
 
 - 引入tk.mybatis依赖，可通过mapper接口继承Mapper<T>方法实现Mapeer接口
     ```java
