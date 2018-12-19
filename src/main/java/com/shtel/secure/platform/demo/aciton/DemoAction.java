@@ -43,4 +43,11 @@ public class DemoAction {
         JSONObject jobKeyJson = JSON.parseObject(jobKeyString);
         demoService.stopJob(jobKeyJson.getString("jobName"),jobKeyJson.getString("jobGroup"));
     }
+
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    @ResponseBody
+    public String getUserInfoDemo(){
+        return demoService.getUserInfoDemo();
+    }
+
 }

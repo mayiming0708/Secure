@@ -2,6 +2,7 @@ package com.shtel.secure.platform.demo.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.shtel.secure.platform.quartz.demo.MyJob;
+import com.shtel.secure.platform.demo.userModel.mapper.UserInfoMapper;
 import org.quartz.*;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ public class DemoService {
 
     @Autowired
     private Scheduler scheduler;
+    @Autowired
+    private UserInfoMapper userInfoMapper;
 
 
     public JSONObject start() throws Exception {
@@ -85,5 +88,9 @@ public class DemoService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public String getUserInfoDemo(){
+        return userInfoMapper.selectAll().toString();
     }
 }
