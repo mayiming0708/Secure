@@ -7,4 +7,4 @@ mybatis:
   type-aliases-package: com.shtel.security.*.*.model  # 注意：对应实体类的路径
 
 logging:
-  config: classpath:logback.xml
+  config: classpath:log4j2-spring.xml
