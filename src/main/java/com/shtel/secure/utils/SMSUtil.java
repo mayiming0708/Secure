@@ -1,12 +1,19 @@
 package com.shtel.secure.utils;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author: chenwq
@@ -32,34 +39,34 @@ public class SMSUtil {
      * -4：手机号格式不正确
      * -14:短信内容出现非法字符
      * connect:error:连接创建失败
-     * responseFail：响应回执失败
      */
     public static String sendMessage(String Uid, String Key, String smsMob, String smsText) {
-        HttpClient client = new HttpClient();
-        PostMethod post = new PostMethod("http://utf8.api.smschinese.cn");//UTF-编码发送接口地址
-        post.addRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");//在头文件中设置转码
-        NameValuePair[] data = {
-                new NameValuePair("Uid", Uid),
-                new NameValuePair("Key", Key),
-                new NameValuePair("smsMob", smsMob),//发送人手机号xxxxx,xxxxxx批量发送,隔开
-                new NameValuePair("smsText", smsText)};//内容
-        post.setRequestBody(data);
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpPost post = new HttpPost("http://utf8.api.smschinese.cn");//UTF-编码发送接口地址
+        post.addHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");//在头文件中设置转码
+        List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+        formparams.add(new BasicNameValuePair("Uid", Uid));
+        formparams.add(new BasicNameValuePair("Key", Key));
+        formparams.add(new BasicNameValuePair("smsMob", smsMob));
+        formparams.add(new BasicNameValuePair("smsText", smsText));
+        String result = null;
         try {
-            client.executeMethod(post);
+            post.setEntity(new UrlEncodedFormEntity(formparams, "utf-8"));//设置参数编码格式
+            CloseableHttpResponse response = httpClient.execute(post);
+            result = EntityUtils.toString(response.getEntity());
         } catch (IOException e) {
             logger.info("SMS短信传输链接创建失败" + e.getMessage());
             return "connect:error";
+        } finally {
+            try {
+                httpClient.close();
+            } catch (IOException e) {
+                logger.info("SMS短信传输链接关闭失败" + e.getMessage());
+            }
+            post.releaseConnection();
         }
-        String result = null;
-        try {
-            result = new String(post.getResponseBodyAsString().getBytes("utf-8"));
-        } catch (IOException e) {
-            result = "responseFail";
-            logger.info("SMS服务器回执接受失败" + e.getMessage());
-        }
-        post.releaseConnection();
+        System.out.println(result); //打印返回消息状态
         return result;
-
     }
 
 }
