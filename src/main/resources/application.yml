@@ -8,3 +8,8 @@ mybatis:
 
 logging:
   config: classpath:log4j2-spring.xml
+
+basic:
+  websocURL: http://61.151.249.44
+  username: apiadmin
+  password: Api.websoc123
