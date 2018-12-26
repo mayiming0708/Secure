@@ -31,3 +31,5 @@
         //......
     }
     ```
+    
+- 添加ConsumeTemplate 封装的restTemplate http请求方法
