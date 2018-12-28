@@ -1,24 +1,22 @@
 package com.shtel.secure.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.nio.charset.Charset;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
 /**
  * @Author: chenwq
@@ -46,6 +44,7 @@ public class HttpUtils {
     public static JSONObject doGet(String url) throws Exception {
         return doGet(url, null, null);
     }
+
     /**
      * <p>发送get请求；带请求参数</p>
      *
@@ -139,8 +138,10 @@ public class HttpUtils {
      * @throws Exception
      */
     public static JSONObject doPost(String url, Map<String, String> headers, Map<String, String> params) throws Exception {
-        // 创建httpClient对象
-        CloseableHttpClient httpClient = HttpClients.createDefault();
+        // 创建httpClient对象Post，允许post请求重定向
+        CloseableHttpClient httpClient = HttpClients.custom()
+                .setRedirectStrategy(new LaxRedirectStrategy())
+                .build();
 
         // 创建http对象
         HttpPost httpPost = new HttpPost(url);
@@ -162,7 +163,8 @@ public class HttpUtils {
         packageHeader(headers, httpPost);
 
         // 封装请求参数
-        packageParam(params, httpPost);
+        if (params != null)
+            packageParam(params, httpPost);
 
         // 创建httpResponse对象
         CloseableHttpResponse httpResponse = null;
@@ -194,23 +196,15 @@ public class HttpUtils {
     }
 
     /**
-     * <p>封装请求参数</p>
+     * <p>封装请求参数，参数类型Map转JSON</p>
      *
      * @param params
      * @param httpMethod
      * @throws UnsupportedEncodingException
      */
-    public static void packageParam(Map<String, String> params, HttpEntityEnclosingRequestBase httpMethod) throws UnsupportedEncodingException {
-        // 封装请求参数
-        if (params != null) {
-            List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-            Set<Entry<String, String>> entrySet = params.entrySet();
-            for (Entry<String, String> entry : entrySet) {
-                nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
-            }
-            // 设置到请求的http对象中
-            httpMethod.setEntity(new UrlEncodedFormEntity(nvps, ENCODING));
-        }
+    public static void packageParam(Map<String, String> params, HttpEntityEnclosingRequestBase httpMethod) {
+        String paramsString = JSONObject.parseObject(JSON.toJSONString(params)).toString();
+        httpMethod.setEntity(new StringEntity(paramsString, Charset.forName("UTF-8")));
     }
 
     /**
@@ -273,7 +267,15 @@ public class HttpUtils {
         return JsonResult(code, null);
     }
 
-    public static void main(String[] args) throws Exception {
-        System.out.println(doGet("http://172.31.27.48:8085/idealfolder/styleCover/2018121409/1544752290704.jpg",null));
+    public static void main(String[] args) {
+        Map<String, String> map = new HashMap<>();
+        map.put("username", "apiadmin");
+        map.put("password", "Api.websoc123");
+        try {
+            JSONObject jsonObject = HttpUtils.doPost("http://61.151.249.44/api/v2/login_auth/", map);
+            System.out.println(jsonObject.toJSONString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
