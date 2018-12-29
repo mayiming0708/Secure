@@ -160,6 +160,7 @@ public class HttpUtils {
 		httpPost.setHeader("Accept-Language", "zh-CN,zh;q=0.9");
 		httpPost.setHeader("Accept-Encoding", "gzip, deflate, br");
 		httpPost.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");*/
+        httpPost.setHeader("Content-Type", "application/json;charset=UTF-8");
         packageHeader(headers, httpPost);
 
         // 封装请求参数
@@ -269,8 +270,7 @@ public class HttpUtils {
 
     public static void main(String[] args) {
         Map<String, String> map = new HashMap<>();
-        map.put("username", "apiadmin");
-        map.put("password", "Api.websoc123");
+        map.put("parameter", "{\"username\": \"apiadmin\", \"password\": \"Api.websoc123\"}");
         try {
             JSONObject jsonObject = HttpUtils.doPost("http://61.151.249.44/api/v2/login_auth/", map);
             System.out.println(jsonObject.toJSONString());
