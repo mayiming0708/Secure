@@ -1,7 +1,8 @@
 package com.shtel.secure.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -15,8 +16,9 @@ import java.util.Properties;
  * @Date: 2018/12/18
  * @Description: JavaMail工具类
  */
-public class EmailTools {
-    private static Logger logger = LoggerFactory.getLogger(EmailTools.class);
+public class EmailUtil {
+
+    private static Logger logger = LogManager.getLogger(EmailUtil.class.getName());
 
     /**
      * <p>Mail纯文本发送接口:发送者可批量发送地址以，隔开</p>
