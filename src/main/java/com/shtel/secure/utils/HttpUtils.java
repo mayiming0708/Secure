@@ -3,13 +3,17 @@ package com.shtel.secure.utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.LaxRedirectStrategy;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
@@ -87,7 +91,8 @@ public class HttpUtils {
          * 超时时间，单位毫秒。这个属性是新加的属性，因为目前版本是可以共享连接池的。
          * setSocketTimeout：请求获取数据的超时时间(即响应时间)，单位毫秒。 如果访问一个接口，多少时间内无法返回数据，就直接放弃此次调用。
          */
-        RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(CONNECT_TIMEOUT).setSocketTimeout(SOCKET_TIMEOUT).build();
+        RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(CONNECT_TIMEOUT).
+                setSocketTimeout(SOCKET_TIMEOUT).build();
         httpGet.setConfig(requestConfig);
 
         // 设置请求头
@@ -138,11 +143,12 @@ public class HttpUtils {
      * @throws Exception
      */
     public static JSONObject doPost(String url, Map<String, String> headers, Map<String, String> params) throws Exception {
+        //存储cookies值
+        CookieStore cookieStore = new BasicCookieStore();
         // 创建httpClient对象Post，允许post请求重定向
-        CloseableHttpClient httpClient = HttpClients.custom()
+        CloseableHttpClient httpClient = HttpClients.custom().setDefaultCookieStore(cookieStore)
                 .setRedirectStrategy(new LaxRedirectStrategy())
                 .build();
-
         // 创建http对象
         HttpPost httpPost = new HttpPost(url);
         /**
@@ -151,7 +157,8 @@ public class HttpUtils {
          * 超时时间，单位毫秒。这个属性是新加的属性，因为目前版本是可以共享连接池的。
          * setSocketTimeout：请求获取数据的超时时间(即响应时间)，单位毫秒。 如果访问一个接口，多少时间内无法返回数据，就直接放弃此次调用。
          */
-        RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(CONNECT_TIMEOUT).setSocketTimeout(SOCKET_TIMEOUT).build();
+        RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(CONNECT_TIMEOUT).
+                setSocketTimeout(SOCKET_TIMEOUT).build();
         httpPost.setConfig(requestConfig);
         // 设置请求头
 		/*httpPost.setHeader("Cookie", "");
@@ -172,7 +179,49 @@ public class HttpUtils {
 
         try {
             // 执行请求并获得响应结果
-            return getHttpClientResult(httpResponse, httpClient, httpPost);
+            return getHttpClientResult(httpResponse, httpClient, httpPost, cookieStore);
+        } finally {
+            // 释放资源
+            release(httpResponse, httpClient);
+        }
+    }
+
+    /**
+     * <p>获取授权以后的post请求</p>
+     *
+     * @param url
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public static JSONObject doPostWithCookies(String url, Map<String, String> params) throws Exception {
+        String sessionid = doPost(url, params).getString("sessionid");
+        //存储cookies值
+        CookieStore cookieStore = new BasicCookieStore();
+        // 创建httpClient对象Post，允许post请求重定向
+        CloseableHttpClient httpClient = HttpClients.custom().setDefaultCookieStore(cookieStore)
+                .setRedirectStrategy(new LaxRedirectStrategy())
+                .build();
+        // 创建http对象
+        HttpPost httpPost = new HttpPost(url);
+        RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(CONNECT_TIMEOUT).
+                setSocketTimeout(SOCKET_TIMEOUT).build();
+        httpPost.setConfig(requestConfig);
+        httpPost.setHeader("Content-Type", "application/json;charset=UTF-8");
+        //添加cookie
+        if (sessionid != null && !"".equals(sessionid)) {
+            BasicClientCookie cookie = new BasicClientCookie("sessionid", sessionid);
+        }
+        // 封装请求参数
+        if (params != null)
+            packageParam(params, httpPost);
+
+        // 创建httpResponse对象
+        CloseableHttpResponse httpResponse = null;
+
+        try {
+            // 执行请求并获得响应结果
+            return getHttpClientResult(httpResponse, httpClient, httpPost, cookieStore);
         } finally {
             // 释放资源
             release(httpResponse, httpClient);
@@ -217,21 +266,46 @@ public class HttpUtils {
      * @return
      * @throws Exception
      */
-    public static JSONObject getHttpClientResult(CloseableHttpResponse httpResponse, CloseableHttpClient httpClient, HttpRequestBase httpMethod) throws Exception {
+    public static JSONObject getHttpClientResult(CloseableHttpResponse httpResponse, CloseableHttpClient httpClient,
+                                                 HttpRequestBase httpMethod, CookieStore cookieStore) throws Exception {
         // 执行请求
         httpResponse = httpClient.execute(httpMethod);
 
         // 获取返回结果
         if (httpResponse != null && httpResponse.getStatusLine() != null) {
             String content = "";
+            String sessionid = "";
             if (httpResponse.getEntity() != null) {
                 content = EntityUtils.toString(httpResponse.getEntity(), ENCODING);
             }
+            if (cookieStore != null) {
+                List<Cookie> cookies = cookieStore.getCookies();
+                for (int i = 0; i < cookies.size(); i++) {
+                    if (cookies.get(i).getName().equals("sessionid")) {
+                        sessionid = cookies.get(i).getValue();
+                    }
+                }
+            }
+            if (sessionid != null)
+                return JsonResult(httpResponse.getStatusLine().getStatusCode(), content, sessionid);
             return JsonResult(httpResponse.getStatusLine().getStatusCode(), content);
         }
         return JsonResult(HttpStatus.SC_INTERNAL_SERVER_ERROR);
     }
 
+    /**
+     * <p>可获取cookies中的值,获取响应结果</p>
+     *
+     * @param httpResponse
+     * @param httpClient
+     * @param httpMethod
+     * @return
+     * @throws Exception
+     */
+    public static JSONObject getHttpClientResult(CloseableHttpResponse httpResponse, CloseableHttpClient httpClient,
+                                                 HttpRequestBase httpMethod) throws Exception {
+        return getHttpClientResult(httpResponse, httpClient, httpMethod, null);
+    }
 
     /**
      * <p>释放资源</p>
@@ -257,15 +331,22 @@ public class HttpUtils {
      * @param content 响应内容
      * @return
      */
-    public static JSONObject JsonResult(int code, String content) {
+    public static JSONObject JsonResult(int code, String content, String sessionid) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code", code);
-        jsonObject.put("content", content);
+        if (content != null && !"".equals(content))
+            jsonObject.put("content", content);
+        if (sessionid != null && !"".equals(sessionid))
+            jsonObject.put("sessionid", sessionid);
         return jsonObject;
     }
 
     public static JSONObject JsonResult(int code) {
-        return JsonResult(code, null);
+        return JsonResult(code, null, null);
+    }
+
+    public static JSONObject JsonResult(int code, String content) {
+        return JsonResult(code, content, null);
     }
 
     public static void main(String[] args) {
