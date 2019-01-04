@@ -15,7 +15,7 @@ public class WebMvcConfg implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/index","/login/**","/api/**","/jsp/**","/static/**","/websock-server/**","/error");
+                .excludePathPatterns("/index","/login/**","/api/**","/jsp/**","/static/**","/websock-server/**","/error","/sock/**");
     }
 
     @Override

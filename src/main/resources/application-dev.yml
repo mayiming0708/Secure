@@ -1,9 +1,9 @@
 spring:
   datasource:
     name: test
-    url: jdbc:mysql://127.0.0.1:3306/secure
+    url: jdbc:mysql://39.96.45.191:3306/secure
     username: root
-    password: mysql1995MYM
+    password: mysql2019!
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
