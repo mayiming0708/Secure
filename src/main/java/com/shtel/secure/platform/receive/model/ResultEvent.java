@@ -21,12 +21,25 @@ public class ResultEvent {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date receiveTime;
 
-    private String url;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createdAt;
-
-    private String type;
+    private String virtualGroupId;
 
     private String value;
+
+    private String total;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date startAt;
+
+    private String taskId;
+
+    private String moduleType;
+
+    private String groupId;
+
+    private String siteId;
+
+    private String site;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date endAt;
 }

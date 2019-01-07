@@ -1,10 +1,9 @@
 package com.shtel.secure.platform.type.service;
 
-import com.shtel.secure.platform.type.moel.Type;
-import com.shtel.secure.platform.type.moel.mapper.TypeMapper;
+import com.shtel.secure.platform.type.model.Type;
+import com.shtel.secure.platform.type.model.mapper.TypeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tk.mybatis.mapper.entity.Example;
 
 @Service
 public class TypeService {

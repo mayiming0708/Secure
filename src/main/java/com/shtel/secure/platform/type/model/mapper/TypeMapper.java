@@ -1,6 +1,6 @@
-package com.shtel.secure.platform.type.moel.mapper;
+package com.shtel.secure.platform.type.model.mapper;
 
-import com.shtel.secure.platform.type.moel.Type;
+import com.shtel.secure.platform.type.model.Type;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;

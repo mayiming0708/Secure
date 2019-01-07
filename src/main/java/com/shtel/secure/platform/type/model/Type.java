@@ -1,4 +1,4 @@
-package com.shtel.secure.platform.type.moel;
+package com.shtel.secure.platform.type.model;
 
 import lombok.Getter;
 import lombok.Setter;

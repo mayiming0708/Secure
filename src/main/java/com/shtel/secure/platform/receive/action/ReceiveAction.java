@@ -1,10 +1,9 @@
 package com.shtel.secure.platform.receive.action;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.shtel.secure.platform.receive.model.ResultEvent;
 import com.shtel.secure.platform.receive.service.ReceiveService;
-import com.shtel.secure.platform.type.moel.Type;
+import com.shtel.secure.platform.type.model.Type;
 import com.shtel.secure.platform.type.service.TypeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,24 +27,28 @@ public class ReceiveAction {
     @RequestMapping(value = "/sock/v1/inform", method = RequestMethod.POST)
     public int receiveData(HttpServletRequest request, HttpServletResponse response, @RequestParam("parameter") String parameter) {
 
-        JSONArray jsonArray = JSONArray.parseArray(parameter);
-        for (Object jsonObject : jsonArray) {
-            JSONObject oneJsonObject = (JSONObject) jsonObject;
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            try {
-                ResultEvent resultEvent = new ResultEvent();
-                resultEvent.setUrl(oneJsonObject.getString("url"));
-                resultEvent.setCreatedAt(simpleDateFormat.parse(oneJsonObject.getString("created_at")));
-                resultEvent.setReceiveTime(new Date());
-                Type type = typeService.getTypeByNameEn(oneJsonObject.getString("type"));
-                resultEvent.setType(String.valueOf(type.getId()));
-                resultEvent.setValue(oneJsonObject.getString("value"));
+        JSONObject oneJsonObject = (JSONObject) JSONObject.parse(parameter);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            ResultEvent resultEvent = new ResultEvent();
+            resultEvent.setReceiveTime(new Date());
+            resultEvent.setVirtualGroupId(oneJsonObject.getString("virtual_group_id"));
+            resultEvent.setValue(oneJsonObject.getJSONArray("values").toString());
+            resultEvent.setTotal(oneJsonObject.getString("total"));
+            resultEvent.setStartAt(simpleDateFormat.parse(oneJsonObject.getString("start_at")));
+            resultEvent.setTaskId(oneJsonObject.getString("task_id"));
+            Type type = typeService.getTypeByNameEn(oneJsonObject.getString("module_type"));
+            resultEvent.setModuleType(String.valueOf(type.getId()));
+            resultEvent.setGroupId(oneJsonObject.getString("group_id"));
+            resultEvent.setSiteId(oneJsonObject.getString("site_id"));
+            resultEvent.setSite(oneJsonObject.getString("site"));
+            resultEvent.setEndAt(simpleDateFormat.parse(oneJsonObject.getString("end_at")));
 
-                receiveService.resultEventInsert(resultEvent);
-            } catch (Exception e) {
-                logger.info("|ERROR");
-            }
+            receiveService.resultEventInsert(resultEvent);
+        } catch (Exception e) {
+            logger.info("|ERROR");
         }
+
 
         return receiveService.insert(parameter);
     }
