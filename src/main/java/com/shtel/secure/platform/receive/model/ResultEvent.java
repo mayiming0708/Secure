@@ -18,7 +18,6 @@ public class ResultEvent {
     @Id
     private int id;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date receiveTime;
 
     private String virtualGroupId;
@@ -27,7 +26,6 @@ public class ResultEvent {
 
     private String total;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startAt;
 
     private String taskId;
@@ -40,6 +38,5 @@ public class ResultEvent {
 
     private String site;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endAt;
 }
