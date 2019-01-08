@@ -1,5 +1,4 @@
 package com.shtel.secure.platform.login.model.mapper;
-
 import com.shtel.secure.platform.login.model.User;
 import org.springframework.stereotype.Component;
 import tk.mybatis.mapper.common.Mapper;

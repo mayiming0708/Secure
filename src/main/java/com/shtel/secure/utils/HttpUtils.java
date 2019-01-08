@@ -190,16 +190,22 @@ public class HttpUtils {
      * <p>获取授权以后的post请求</p>
      *
      * @param url
+     * @param url1
      * @param params
+     * @param params1
      * @return
      * @throws Exception
      */
-    public static JSONObject doPostWithCookies(String url, Map<String, String> params) throws Exception {
-        String sessionid = doPost(url, params).getString("sessionid");
-        //存储cookies值
+    public static JSONObject doPostWithCookies(String url, String url1, Map<String, String> params, Map<String, String> params1) throws Exception {
+        String sessionid = doPost(url1, params1).getString("sessionid");
         CookieStore cookieStore = new BasicCookieStore();
+        //添加cookie
+        if (sessionid != null && !"".equals(sessionid)) {
+            BasicClientCookie cookie = new BasicClientCookie("sessionid", sessionid);
+            cookieStore.addCookie(cookie);
+        }
         // 创建httpClient对象Post，允许post请求重定向
-        CloseableHttpClient httpClient = HttpClients.custom().setDefaultCookieStore(cookieStore)
+        CloseableHttpClient httpClient = HttpClients.custom()
                 .setRedirectStrategy(new LaxRedirectStrategy())
                 .build();
         // 创建http对象
@@ -208,10 +214,7 @@ public class HttpUtils {
                 setSocketTimeout(SOCKET_TIMEOUT).build();
         httpPost.setConfig(requestConfig);
         httpPost.setHeader("Content-Type", "application/json;charset=UTF-8");
-        //添加cookie
-        if (sessionid != null && !"".equals(sessionid)) {
-            BasicClientCookie cookie = new BasicClientCookie("sessionid", sessionid);
-        }
+        httpPost.addHeader("Cookie", "sessionid=" + sessionid);
         // 封装请求参数
         if (params != null)
             packageParam(params, httpPost);
@@ -351,9 +354,17 @@ public class HttpUtils {
 
     public static void main(String[] args) {
         Map<String, String> map = new HashMap<>();
-        map.put("parameter", "{\"username\": \"apiadmin\", \"password\": \"Api.websoc123\"}");
+        map.put("parameter", "{\n" +
+                "    \"name\": \"test-vgroup-name\",\n" +
+                "    \"site_list\": [\n" +
+                "        \"http://www.a.com/\",\n" +
+                "        \"http://www.b.com\"\n" +
+                "    ]\n" +
+                "}");
+        Map<String, String> map1 = new HashMap<>();
+        map1.put("parameter", "{\"username\": \"apiadmin\", \"password\": \"Api.websoc123\"}");
         try {
-            JSONObject jsonObject = HttpUtils.doPost("http://61.151.249.44/api/v2/login_auth/", map);
+            JSONObject jsonObject = HttpUtils.doPostWithCookies("http://61.151.249.44/api/v2/vgroup/create_temp/","http://61.151.249.44/api/v2/login_auth/", map, map1);
             System.out.println(jsonObject.toJSONString());
         } catch (Exception e) {
             e.printStackTrace();

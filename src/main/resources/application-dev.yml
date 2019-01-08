@@ -1,7 +1,7 @@
 spring:
   datasource:
     name: test
-    url: jdbc:mysql://39.96.45.191:3306/secure?useTimezone=true&serverTimezone=GMT%2B8
+    url: jdbc:mysql://39.96.45.191:3306/secure?useTimezone=true&serverTimezone=GMT%2B8&characterEncoding=UTF-8
     username: root
     password: mysql2019!
     # 使用druid数据源

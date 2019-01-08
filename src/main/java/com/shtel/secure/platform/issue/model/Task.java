@@ -19,6 +19,7 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private String virtualGroupId;
     private Integer userId;
     private String urls;
     private Integer siteinfo;
@@ -29,14 +30,15 @@ public class Task {
     private Integer sql;
     private Integer xss;
     private Integer webvul;
-    private Integer info_leak;
+    private Integer infoLeak;
     private Integer cgi;
     private Integer csrf;
-    private Integer is_period;
+    private Integer isPeriod;
+    private Integer isSuccess;
     private Integer formCrack;
     private String message;
-    private Date create_time;
-    private Date update_time;
+    private Date createTime;
+    private Date updateTime;
     private Integer status;
 
     public Integer getId() {
@@ -45,6 +47,14 @@ public class Task {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getVirtualGroupId() {
+        return virtualGroupId;
+    }
+
+    public void setVirtualGroupId(String virtualGroupId) {
+        this.virtualGroupId = virtualGroupId;
     }
 
     public Integer getUserId() {
@@ -127,12 +137,12 @@ public class Task {
         this.webvul = webvul;
     }
 
-    public Integer getInfo_leak() {
-        return info_leak;
+    public Integer getInfoLeak() {
+        return infoLeak;
     }
 
-    public void setInfo_leak(Integer info_leak) {
-        this.info_leak = info_leak;
+    public void setInfoLeak(Integer infoLeak) {
+        this.infoLeak = infoLeak;
     }
 
     public Integer getCgi() {
@@ -151,12 +161,20 @@ public class Task {
         this.csrf = csrf;
     }
 
-    public Integer getIs_period() {
-        return is_period;
+    public Integer getIsPeriod() {
+        return isPeriod;
     }
 
-    public void setIs_period(Integer is_period) {
-        this.is_period = is_period;
+    public void setIsPeriod(Integer isPeriod) {
+        this.isPeriod = isPeriod;
+    }
+
+    public Integer getIsSuccess() {
+        return isSuccess;
+    }
+
+    public void setIsSuccess(Integer isSuccess) {
+        this.isSuccess = isSuccess;
     }
 
     public Integer getFormCrack() {
@@ -175,20 +193,20 @@ public class Task {
         this.message = message;
     }
 
-    public Date getCreate_time() {
-        return create_time;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreate_time(Date create_time) {
-        this.create_time = create_time;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
-    public Date getUpdate_time() {
-        return update_time;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdate_time(Date update_time) {
-        this.update_time = update_time;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
     public Integer getStatus() {

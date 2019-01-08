@@ -43,7 +43,7 @@ public class LoginAction {
         User result=userMapper.selectOne(user);
         if (account.equals(result.getAccount()) || password.equals(result.getPassword())) {
             request.getSession().setAttribute("USERID", result.getId());
-            request.getSession().setMaxInactiveInterval(60);
+            request.getSession().setMaxInactiveInterval(60*30);
             logger.info("登录成功");
             return ResultUtil.Result(EnumType.SUCCESS);
         }
