@@ -18,4 +18,8 @@ public class FinishTypeService {
     public int updateFinishType(FinishType finishType) {
         return finishTypeMapper.updateByPrimaryKeySelective(finishType);
     }
+
+    public int insertFinishType(FinishType finishType) {
+        return finishTypeMapper.insert(finishType);
+    }
 }
