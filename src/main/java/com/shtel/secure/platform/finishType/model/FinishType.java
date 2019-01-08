@@ -1,9 +1,5 @@
 package com.shtel.secure.platform.finishType.model;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
 import javax.persistence.Id;
 import javax.persistence.Table;
 

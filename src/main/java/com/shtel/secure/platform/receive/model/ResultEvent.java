@@ -1,11 +1,5 @@
 package com.shtel.secure.platform.receive.model;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import org.springframework.boot.convert.DataSizeUnit;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
