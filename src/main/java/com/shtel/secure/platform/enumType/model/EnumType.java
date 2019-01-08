@@ -2,7 +2,7 @@ package com.shtel.secure.platform.enumType.model;
 
 public enum EnumType {
 
-    SUCCESS(200, "操作成功"),
+    SUCCESS(0, "操作成功"),
     UNAUTH(401,"登陆未授权"),
     LOGINFAIL(100,"登陆失败"),
     QUIT(200,"退出登录");

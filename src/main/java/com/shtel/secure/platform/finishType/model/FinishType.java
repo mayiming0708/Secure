@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Table(name = "ws_finish_type")
 public class FinishType {
     @Id
-    private String groupId;
+    private String virtualGroupId;
 
     private String siteinfo;
     private String availability;

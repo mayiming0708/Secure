@@ -9,6 +9,7 @@ import com.shtel.secure.platform.receive.service.ResultEventService;
 import com.shtel.secure.platform.type.model.Type;
 import com.shtel.secure.platform.type.service.TypeService;
 import com.shtel.secure.utils.ResultUtil;
+import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import java.util.UUID;
 /**
  *
  */
+@Api(tags = "ReceiveAction", description = "回调接口ACTION")
 @RestController
 @RequestMapping(value = "/sock/v1")
 public class ReceiveAction {
@@ -44,6 +46,12 @@ public class ReceiveAction {
      * @param parameter
      * @return
      */
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "success")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "parameter", value = "回调接口参数", required = true, dataType = "String")
+    })
     @RequestMapping(value = "/inform", method = RequestMethod.POST)
     public String receiveData(HttpServletRequest request, HttpServletResponse response, @RequestParam("parameter") String parameter) {
 
@@ -75,7 +83,7 @@ public class ReceiveAction {
             resultEventService.resultEventInsert(resultEvent);
             //结果存入finishtype
             FinishType finishType = new FinishType();
-            finishType.setGroupId(groupId);
+            finishType.setVirtualGroupId(virtualGroupId);
             switch (moduleType) {
                 case "siteinfo":
                     finishType.setSiteinfo(id);
