@@ -53,7 +53,7 @@ public class ResultEventAction {
                 map.put(field.getName(), resultEventService.getResultEventById((String) field.get(finishType)));
             }
         } catch (Exception e) {
-            logger.info("|ERROR" + e);
+            logger.info("|获取任务结果失败：" + e);
         }
 
         return map;
