@@ -16,7 +16,7 @@ import java.util.Date;
 @ToString
 public class ResultEvent {
     @Id
-    private int id;
+    private String id;
 
     private Date receiveTime;
 
