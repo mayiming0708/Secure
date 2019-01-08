@@ -6,8 +6,10 @@ import javax.persistence.Table;
 @Table(name = "ws_finish_type")
 public class FinishType {
     @Id
-    private String virtualGroupId;
+    private int id;
 
+    private String virtualGroupId;
+    private String url;
     private String siteinfo;
     private String availability;
     private String blackLinks;
@@ -125,4 +127,19 @@ public class FinishType {
         this.formCrack = formCrack;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }

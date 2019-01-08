@@ -41,10 +41,10 @@ public class ResultEventAction {
      * @return
      */
     @RequestMapping(value = "/resultEvents", method = RequestMethod.GET)
-    public Map<String, ResultEvent> resultEventByGroup(@RequestParam("groupId") String groupId) {
+    public Map<String, ResultEvent> resultEventByGroup(@RequestParam("groupId") String groupId ,@RequestParam("url") String url) {
         Map<String, ResultEvent> map = new HashMap<>();
         try {
-            FinishType finishType = finishTypeService.getFinishTypeByGourpId(groupId);
+            FinishType finishType = finishTypeService.getFinishTypeByGourpIdAndUrl(groupId,url);
             for (Field field : finishType.getClass().getDeclaredFields()) {
                 if ("groupId".equals(field.getName())) {
                     continue;

@@ -63,8 +63,7 @@ public class ReceiveAction {
             resultEvent.setId(id);
             resultEvent.setReceiveTime(new Date());
 
-            String virtualGroupId = oneJsonObject.getString("virtual_group_id");
-            resultEvent.setVirtualGroupId(virtualGroupId);
+            resultEvent.setVirtualGroupId(oneJsonObject.getString("virtual_group_id"));
             resultEvent.setValue(oneJsonObject.getJSONArray("values").toString());
             resultEvent.setTotal(oneJsonObject.getString("total"));
             resultEvent.setStartAt(simpleDateFormat.parse(oneJsonObject.getString("start_at")));
@@ -83,7 +82,8 @@ public class ReceiveAction {
             resultEventService.resultEventInsert(resultEvent);
             //结果存入finishtype
             FinishType finishType = new FinishType();
-            finishType.setVirtualGroupId(virtualGroupId);
+            finishType.setVirtualGroupId(oneJsonObject.getString("virtual_group_id"));
+            finishType.setUrl(oneJsonObject.getString("site"));
             switch (moduleType) {
                 case "siteinfo":
                     finishType.setSiteinfo(id);
