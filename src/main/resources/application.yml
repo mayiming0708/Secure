@@ -11,8 +11,8 @@ logging:
 
 basic:
   websocURL: http://61.151.249.44
-  username: apiadmin
-  password: Api.websoc123
+  username: cwqapi
+  password: Cwqapi@123
 # 下发任务url
 myProps:
   tempURL: http://61.151.249.44/api/v2/vgroup/create_temp/

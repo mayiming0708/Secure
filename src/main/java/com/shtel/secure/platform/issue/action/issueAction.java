@@ -2,6 +2,8 @@ package com.shtel.secure.platform.issue.action;
 
 import com.alibaba.fastjson.JSONObject;
 import com.shtel.secure.platform.enumType.model.EnumType;
+import com.shtel.secure.platform.finishType.model.FinishType;
+import com.shtel.secure.platform.finishType.service.FinishTypeService;
 import com.shtel.secure.platform.issue.model.Task;
 import com.shtel.secure.platform.issue.service.issueService;
 import com.shtel.secure.utils.ResultUtil;
@@ -26,6 +28,8 @@ public class issueAction {
     private static Logger logger = LogManager.getLogger(issueAction.class.getName());
     @Autowired
     private issueService issueService;
+    @Autowired
+    private FinishTypeService finishTypeService;
     /**
      * <p>下发临时任务</p>
      *
@@ -39,7 +43,13 @@ public class issueAction {
         issueService.taskProcessRecord(response,task,userId);
         task.setIsPeriod(0);
         issueService.innsert(task);
-        return ResultUtil.Result(EnumType.SUCCESS);
+        logger.info("下发临时任务");
+        if(1==task.getIsSuccess()) {
+            FinishType finishType=new FinishType();
+            finishType.setVirtualGroupId(task.getVirtualGroupId());
+            finishTypeService.insertFinishType(finishType);
+        }
+        return response.toJSONString();
     }
 
     /**
@@ -54,7 +64,13 @@ public class issueAction {
         JSONObject response= issueService.issuePeriodTask(task).getJSONObject("content");
         issueService.taskProcessRecord(response,task,userId);
         task.setIsPeriod(1);
-        return ResultUtil.Result(EnumType.SUCCESS);
+        logger.info("下发周期任务");
+        if(1==task.getIsSuccess()) {
+            FinishType finishType=new FinishType();
+            finishType.setVirtualGroupId(task.getVirtualGroupId());
+            finishTypeService.insertFinishType(finishType);
+        }
+        return  response.toJSONString();
     }
 
 }
