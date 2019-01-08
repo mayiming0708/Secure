@@ -10,6 +10,5 @@ import tk.mybatis.mapper.common.Mapper;
  * @Description: UserMapper接口
  */
 @Component
-@org.apache.ibatis.annotations.Mapper
 public interface UserMapper extends Mapper<User> {
 }

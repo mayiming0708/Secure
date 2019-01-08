@@ -1,12 +1,14 @@
 package com.shtel.secure.platform.receive.action;
 
 import com.alibaba.fastjson.JSONObject;
+import com.shtel.secure.platform.enumType.model.EnumType;
 import com.shtel.secure.platform.finishType.model.FinishType;
 import com.shtel.secure.platform.finishType.service.FinishTypeService;
 import com.shtel.secure.platform.receive.model.ResultEvent;
 import com.shtel.secure.platform.receive.service.ResultEventService;
 import com.shtel.secure.platform.type.model.Type;
 import com.shtel.secure.platform.type.service.TypeService;
+import com.shtel.secure.utils.ResultUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +45,7 @@ public class ReceiveAction {
      * @return
      */
     @RequestMapping(value = "/inform", method = RequestMethod.POST)
-    public int receiveData(HttpServletRequest request, HttpServletResponse response, @RequestParam("parameter") String parameter) {
+    public String receiveData(HttpServletRequest request, HttpServletResponse response, @RequestParam("parameter") String parameter) {
 
         JSONObject oneJsonObject = (JSONObject) JSONObject.parse(parameter);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -115,11 +117,13 @@ public class ReceiveAction {
 
             finishTypeService.updateFinishType(finishType);
         } catch (Exception e) {
-            logger.info("|ERROR");
+            logger.info("|回调接口接收数据失败：" + e);
         }
 
 
-        return resultEventService.insert(parameter);
+        resultEventService.insert(parameter);
+
+        return ResultUtil.Result(EnumType.SUCCESS);
     }
 
 }
