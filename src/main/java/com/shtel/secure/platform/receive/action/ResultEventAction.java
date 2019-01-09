@@ -3,6 +3,7 @@ package com.shtel.secure.platform.receive.action;
 import com.shtel.secure.platform.finishType.model.FinishType;
 import com.shtel.secure.platform.finishType.service.FinishTypeService;
 import com.shtel.secure.platform.receive.model.ResultEvent;
+import com.shtel.secure.platform.receive.model.mapper.ResultEventMapper;
 import com.shtel.secure.platform.receive.service.ResultEventService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -20,7 +21,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-@Api(tags = "任务结果查询",description = "ResultEvent")
+@Api(tags = "任务结果查询", description = "ResultEvent")
 @RestController
 @RequestMapping(value = "/service")
 public class ResultEventAction {
@@ -34,7 +35,7 @@ public class ResultEventAction {
 
     @ApiOperation(value = "根据resultEvent id查询返回的resultEvent结果", tags = "任务结果查询")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query",name = "id",value = "resultEventId",required = true,dataType = "String")
+            @ApiImplicitParam(paramType = "query", name = "id", value = "resultEventId", required = true, dataType = "String")
     })
     @RequestMapping(value = "/resultEvent", method = RequestMethod.GET)
     public ResultEvent resultEventById(@RequestParam("id") String id) {
@@ -50,8 +51,8 @@ public class ResultEventAction {
      */
     @ApiOperation(value = "根据FinishType中的virtualGroupID与url匹配一条结果并查询返回resultEvent结果", tags = "任务结果查询")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query",name = "virtualGroupId",value = "任务ID",required = true,dataType = "String"),
-            @ApiImplicitParam(paramType = "query",name = "url",value = "url",required = true,dataType = "String")
+            @ApiImplicitParam(paramType = "query", name = "virtualGroupId", value = "任务ID", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "url", value = "url", required = true, dataType = "String")
     })
     @RequestMapping(value = "/resultEvents", method = RequestMethod.GET)
     public Map<String, ResultEvent> resultEventByGroup(@RequestParam("virtualGroupId") String virtualGroupId, @RequestParam("url") String url) {
@@ -59,7 +60,7 @@ public class ResultEventAction {
         try {
             FinishType finishType = finishTypeService.getFinishTypeByGourpIdAndUrl(virtualGroupId, url);
             for (Field field : finishType.getClass().getDeclaredFields()) {
-                if ("groupId".equals(field.getName()) || "virtualGroupId".equals(field.getName()) || "url".equals(field.getName()) || "score".equals(field.getName()) || "riskHighCount".equals(field.getName()) || "riskMiddleCount".equals(field.getName()) || "riskLowCount".equals(field.getName())) {
+                if ("id".equals(field.getName()) || "virtualGroupId".equals(field.getName()) || "url".equals(field.getName()) || "score".equals(field.getName()) || "riskHighCount".equals(field.getName()) || "riskMiddleCount".equals(field.getName()) || "riskLowCount".equals(field.getName())) {
                     continue;
                 }
                 field.setAccessible(true);
@@ -68,7 +69,6 @@ public class ResultEventAction {
         } catch (Exception e) {
             logger.info("|获取任务结果失败：" + e);
         }
-
         return map;
     }
 }

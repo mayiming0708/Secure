@@ -1,11 +1,19 @@
 package com.shtel.secure.platform.receive.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Date;
 
 @Table(name = "ws_result_event")
-public class ResultEvent {
+public class ResultEvent implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     @Id
     private String id;
 
@@ -15,7 +23,7 @@ public class ResultEvent {
 
     private String value;
 
-    private Integer total;
+    private String total;
 
     private Date startAt;
 
@@ -63,11 +71,11 @@ public class ResultEvent {
         this.value = value;
     }
 
-    public Integer getTotal() {
+    public String getTotal() {
         return total;
     }
 
-    public void setTotal(Integer total) {
+    public void setTotal(String total) {
         this.total = total;
     }
 
