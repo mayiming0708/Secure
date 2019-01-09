@@ -95,7 +95,7 @@ public class IssueService {
         Map<String, String> groupMap = new HashMap<>();
         JSONObject virtualGroupId = new JSONObject();
         virtualGroupId.put("virtual_group_id", virtual_group_id);
-        groupMap.put("parameter", virtual_group_id);
+        groupMap.put("parameter", virtualGroupId.toJSONString());
         Map<String, String> logMap = new HashMap<>();
         JSONObject logJson = new JSONObject();
         logJson.put("username", username);
