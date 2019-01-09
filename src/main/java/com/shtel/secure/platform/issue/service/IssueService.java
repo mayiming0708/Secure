@@ -21,8 +21,8 @@ import java.util.Map;
  * @Description: 下发任务服务层
  */
 @Service
-public class issueService {
-    private static Logger logger = LogManager.getLogger(issueService.class.getName());
+public class IssueService {
+    private static Logger logger = LogManager.getLogger(IssueService.class.getName());
     @Autowired
     private TaskMapper taskMapper;
     @Value("${myProps.tempURL}")
@@ -31,6 +31,8 @@ public class issueService {
     private String periodURL;
     @Value("${myProps.loginAuthURL}")
     private String loginAuthURL;
+    @Value("${myProps.progressTempURL}")
+    private String progressTempURL;
     @Value("${basic.username}")
     private String username;
     @Value("${basic.password}")
@@ -43,7 +45,7 @@ public class issueService {
      * @return
      */
     public JSONObject issueTemporaryTask(Task task) {
-        return issueTask(tempUrl,task);
+        return issueTask(tempUrl, task);
     }
 
     /**
@@ -53,7 +55,7 @@ public class issueService {
      * @return
      */
     public JSONObject issuePeriodTask(Task task) {
-        return issueTask(periodURL,task);
+        return issueTask(periodURL, task);
     }
 
     /**
@@ -70,19 +72,43 @@ public class issueService {
         JSONObject logJson = new JSONObject();
         logJson.put("username", username);
         logJson.put("password", password);
-        logMap.put("parameter",logJson.toJSONString());
+        logMap.put("parameter", logJson.toJSONString());
         JSONObject taskResponse;
         try {
             taskResponse = HttpUtils.doPostWithCookies(url, loginAuthURL, taskMap, logMap);
         } catch (Exception e) {
-            taskResponse = new JSONObject();
-            JSONObject content=new JSONObject();
-            content.put("message", "secure下发任务失败");
-            content.put("code",100);
-            taskResponse.put("content",content);
+            JSONObject content = new JSONObject();
+            taskResponse = Response("secure下发任务失败", 100, content);
             logger.info("secure下发任务失败:" + e.getMessage());
         }
         return taskResponse;
+    }
+
+    /**
+     * <p>获取临时组检测进度</p>
+     *
+     * @param virtual_group_id
+     * @return
+     */
+    public String progressTempResponse(String virtual_group_id) {
+        JSONObject response;
+        Map<String, String> groupMap = new HashMap<>();
+        JSONObject virtualGroupId = new JSONObject();
+        virtualGroupId.put("virtual_group_id", virtual_group_id);
+        groupMap.put("parameter", virtual_group_id);
+        Map<String, String> logMap = new HashMap<>();
+        JSONObject logJson = new JSONObject();
+        logJson.put("username", username);
+        logJson.put("password", password);
+        logMap.put("parameter", logJson.toJSONString());
+        try {
+            response = HttpUtils.doPostWithCookies(progressTempURL, loginAuthURL, groupMap, logMap);
+        } catch (Exception e) {
+            JSONObject content = new JSONObject();
+            response = Response("secure获取临时组检测进度", 100, content);
+            logger.info("secure获取临时组检测进度:" + e.getMessage());
+        }
+        return response.toJSONString();
     }
 
     /**
@@ -97,36 +123,36 @@ public class issueService {
         String name = String.valueOf(new Date().getTime());//任务名
         jsonObject.put("name", name);
         task.setVirtualGroupId(name);
-        plugin.put("dns",getParameter(true));
-        plugin.put("dns_hijack",getParameter(true));
-        plugin.put("ping",getParameter(true));
-        plugin.put("http_get",getParameter(true));
-        plugin.put("http_get_full_time",getParameter(true));
+        plugin.put("dns", getParameter(true));
+        plugin.put("dns_hijack", getParameter(true));
+        plugin.put("ping", getParameter(true));
+        plugin.put("http_get", getParameter(true));
+        plugin.put("http_get_full_time", getParameter(true));
         if (0 == task.getBlackLinks()) {
             plugin.put("black_links", getParameter(false));
         }
-        if (0 == task.getBlackLinks()) {
+        if (0 == task.getMalscan()) {
             plugin.put("malscan", getParameter(false));
         }
-        if (0 == task.getBlackLinks()) {
+        if (0 == task.getKeyword()) {
             plugin.put("keyword", getParameter(false));
         }
-        if (0 == task.getBlackLinks()) {
+        if (0 == task.getSqlInjection()) {
             plugin.put("sql", getParameter(false));
         }
-        if (0 == task.getBlackLinks()) {
+        if (0 == task.getXss()) {
             plugin.put("xss", getParameter(false));
         }
-        if (0 == task.getBlackLinks()) {
+        if (0 == task.getWebvul()) {
             plugin.put("webvul", getParameter(false));
         }
-        if (0 == task.getBlackLinks()) {
+        if (0 == task.getCgi()) {
             plugin.put("cgi", getParameter(false));
         }
-        if (0 == task.getBlackLinks()) {
+        if (0 == task.getCsrf()) {
             plugin.put("csrf", getParameter(false));
         }
-        if (0 == task.getBlackLinks()) {
+        if (0 == task.getFormCrack()) {
             plugin.put("form_crack", getParameter(false));
         }
         if (0 == task.getBlackLinks()) {
@@ -157,16 +183,48 @@ public class issueService {
      *
      * @param task
      */
-    public void innsert(Task task){
+    public void innsert(Task task) {
         taskMapper.insertTaskRecord(task);
     }
 
-    public void taskProcessRecord(JSONObject response,Task task,String userId){
-        if (response.getInteger("code")==0){
-            JSONObject result=response.getJSONObject("result");
+    /**
+     * <p>virtual_group_id字段检测</p>
+     *
+     * @param virtual_group_id
+     * @return
+     */
+    public JSONObject validateNULL(String virtual_group_id) {
+        if (virtual_group_id == null || "".equals(virtual_group_id))
+            return Response("输入任务id为空", 100, new JSONObject());
+        Task task = new Task();
+        task.setVirtualGroupId(virtual_group_id);
+        if (taskMapper.select(task).size() < 1)
+            return Response("临时任务不存在", 100, new JSONObject());
+        return Response("任务存在", 0, new JSONObject());
+    }
+
+    /**
+     * <p>响应结果封装</p>
+     *
+     * @param message
+     * @param code
+     * @param content
+     * @return
+     */
+    public static JSONObject Response(String message, int code, JSONObject content) {
+        JSONObject response = new JSONObject();
+        response.put("message", message);
+        response.put("code", code);
+        response.put("content", content);
+        return response;
+    }
+
+    public void taskProcessRecord(JSONObject response, Task task, String userId) {
+        if (response.getInteger("code") == 0) {
+            JSONObject result = response.getJSONObject("result");
             task.setVirtualGroupId(result.getString("virtual_group_id"));
             task.setIsSuccess(1);
-        }else{
+        } else {
             //若下发不成功，virtual_group_id为下发任务时间戳
             task.setIsSuccess(0);
         }

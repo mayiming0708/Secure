@@ -18,3 +18,4 @@ myProps:
   tempURL: http://61.151.249.44/api/v2/vgroup/create_temp/
   periodURL: http://61.151.249.44/api/v2/vgroup/create_cycle/
   loginAuthURL: http://61.151.249.44/api/v2/login_auth/
+  progressTempURL: http://61.151.249.44/api/v2/vgroup/progress_temp/
