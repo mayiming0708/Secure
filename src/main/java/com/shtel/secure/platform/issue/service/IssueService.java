@@ -130,34 +130,57 @@ public class IssueService {
         plugin.put("http_get_full_time", getParameter(true));
         if (0 == task.getBlackLinks()) {
             plugin.put("black_links", getParameter(false));
+        } else {
+            plugin.put("black_links", getParameter(true));
         }
         if (0 == task.getMalscan()) {
             plugin.put("malscan", getParameter(false));
+        } else {
+            plugin.put("malscan", getParameter(true));
         }
         if (0 == task.getKeyword()) {
             plugin.put("keyword", getParameter(false));
+        } else {
+            plugin.put("keyword", getParameter(true));
         }
         if (0 == task.getSqlInjection()) {
             plugin.put("sql", getParameter(false));
+        } else {
+            plugin.put("sql", getParameter(true));
         }
         if (0 == task.getXss()) {
             plugin.put("xss", getParameter(false));
+        } else {
+            plugin.put("xss", getParameter(true));
         }
         if (0 == task.getWebvul()) {
             plugin.put("webvul", getParameter(false));
+        } else {
+            plugin.put("webvul", getParameter(true));
         }
         if (0 == task.getCgi()) {
             plugin.put("cgi", getParameter(false));
+        } else {
+            plugin.put("cgi", getParameter(true));
         }
         if (0 == task.getCsrf()) {
             plugin.put("csrf", getParameter(false));
+        } else {
+            plugin.put("csrf", getParameter(true));
         }
         if (0 == task.getFormCrack()) {
             plugin.put("form_crack", getParameter(false));
+        } else {
+            plugin.put("form_crack", getParameter(true));
         }
         if (0 == task.getBlackLinks()) {
             JSONObject info_leak = new JSONObject();
             info_leak.put("enabled", false);
+            info_leak.put("items", new JSONArray());
+            plugin.put("info_leak", info_leak);
+        } else {
+            JSONObject info_leak = new JSONObject();
+            info_leak.put("enabled", true);
             info_leak.put("items", new JSONArray());
             plugin.put("info_leak", info_leak);
         }
