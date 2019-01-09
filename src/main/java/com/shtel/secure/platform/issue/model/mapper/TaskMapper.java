@@ -14,9 +14,9 @@ import tk.mybatis.mapper.common.Mapper;
 public interface TaskMapper extends Mapper<Task> {
     @Insert("insert into " +
             "ws_task " +
-            "(virtual_group_id,user_id,urls,black_links,malscan,keyword,`sql`,xss,webvul,info_leak,cgi,csrf,is_period,is_success,form_crack,message) " +
+            "(virtual_group_id,user_id,urls,black_links,malscan,keyword,sql_injection,xss,webvul,info_leak,cgi,csrf,is_period,is_success,form_crack,message) " +
             "values " +
-            "(#{task.virtualGroupId},#{task.userId},#{task.urls},#{task.blackLinks},#{task.malscan},#{task.keyword},#{task.sql},#{task.xss}," +
+            "(#{task.virtualGroupId},#{task.userId},#{task.urls},#{task.blackLinks},#{task.malscan},#{task.keyword},#{task.sqlInjection},#{task.xss}," +
             "#{task.webvul},#{task.infoLeak},#{task.cgi},#{task.csrf},#{task.isPeriod},#{task.isSuccess},#{task.formCrack},#{task.message})")
    // @Options(useGeneratedKeys=true,keyProperty="task.id")
     int insertTaskRecord(@Param("task")Task task);

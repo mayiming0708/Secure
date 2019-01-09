@@ -27,7 +27,7 @@ public class Task {
     private Integer blackLinks;
     private Integer malscan;
     private Integer keyword;
-    private Integer sql;
+    private Integer sqlInjection;
     private Integer xss;
     private Integer webvul;
     private Integer infoLeak;
@@ -113,12 +113,12 @@ public class Task {
         this.keyword = keyword;
     }
 
-    public Integer getSql() {
-        return sql;
+    public Integer getSqlInjection() {
+        return sqlInjection;
     }
 
-    public void setSql(Integer sql) {
-        this.sql = sql;
+    public void setSqlInjection(Integer sqlInjection) {
+        this.sqlInjection = sqlInjection;
     }
 
     public Integer getXss() {
