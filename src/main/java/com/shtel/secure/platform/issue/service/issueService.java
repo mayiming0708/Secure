@@ -97,32 +97,37 @@ public class issueService {
         String name = String.valueOf(new Date().getTime());//任务名
         jsonObject.put("name", name);
         task.setVirtualGroupId(name);
+        plugin.put("dns",getParameter(true));
+        plugin.put("dns_hijack",getParameter(true));
+        plugin.put("ping",getParameter(true));
+        plugin.put("http_get",getParameter(true));
+        plugin.put("http_get_full_time",getParameter(true));
         if (0 == task.getBlackLinks()) {
-            plugin.put("black_links", getParameter());
+            plugin.put("black_links", getParameter(false));
         }
         if (0 == task.getBlackLinks()) {
-            plugin.put("malscan", getParameter());
+            plugin.put("malscan", getParameter(false));
         }
         if (0 == task.getBlackLinks()) {
-            plugin.put("keyword", getParameter());
+            plugin.put("keyword", getParameter(false));
         }
         if (0 == task.getBlackLinks()) {
-            plugin.put("sql", getParameter());
+            plugin.put("sql", getParameter(false));
         }
         if (0 == task.getBlackLinks()) {
-            plugin.put("xss", getParameter());
+            plugin.put("xss", getParameter(false));
         }
         if (0 == task.getBlackLinks()) {
-            plugin.put("webvul", getParameter());
+            plugin.put("webvul", getParameter(false));
         }
         if (0 == task.getBlackLinks()) {
-            plugin.put("cgi", getParameter());
+            plugin.put("cgi", getParameter(false));
         }
         if (0 == task.getBlackLinks()) {
-            plugin.put("csrf", getParameter());
+            plugin.put("csrf", getParameter(false));
         }
         if (0 == task.getBlackLinks()) {
-            plugin.put("form_crack", getParameter());
+            plugin.put("form_crack", getParameter(false));
         }
         if (0 == task.getBlackLinks()) {
             JSONObject info_leak = new JSONObject();
@@ -141,9 +146,9 @@ public class issueService {
         return jsonObject;
     }
 
-    public JSONObject getParameter() {
+    public JSONObject getParameter(boolean flag) {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("enabled", false);
+        jsonObject.put("enabled", flag);
         return jsonObject;
     }
 
