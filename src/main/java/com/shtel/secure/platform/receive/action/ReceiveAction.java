@@ -90,18 +90,28 @@ public class ReceiveAction {
             FinishType finishType = new FinishType();
             finishType.setVirtualGroupId(oneJsonObject.getString("virtual_group_id"));
             finishType.setUrl(oneJsonObject.getString("site"));
-            finishType = finishTypeService.getFinishTypeByGourpIdAndUrl(finishType.getVirtualGroupId(), finishType.getUrl());
+            FinishType tmp = finishTypeService.getFinishTypeByGourpIdAndUrl(finishType.getVirtualGroupId(), finishType.getUrl());
+            if (tmp == null) {
+                finishType.setRiskHighCount(0);
+                finishType.setRiskMiddleCount(0);
+                finishType.setRiskLowCount(0);
+                finishType.setScore(0);
+                finishTypeService.insertFinishType(finishType);
+            } else {
+                finishType = tmp;
+            }
+
             int riskHighCount = finishType.getRiskHighCount();
             int riskMiddleCount = finishType.getRiskMiddleCount();
             int riskLowCount = finishType.getRiskLowCount();
             try {
                 RiskLevel riskLevel = riskLevelService.getRiskLevel(type.getRiskLevelId());
                 if (riskLevel.getLevel() == 3) {
-                    riskHighCount+=resultEvent.getTotal();
+                    riskHighCount += resultEvent.getTotal();
                 } else if (riskLevel.getLevel() == 2) {
-                    riskMiddleCount+=resultEvent.getTotal();
+                    riskMiddleCount += resultEvent.getTotal();
                 } else if (riskLevel.getLevel() == 1) {
-                    riskLowCount+=resultEvent.getTotal();
+                    riskLowCount += resultEvent.getTotal();
                 }
             } catch (Exception e) {
                 logger.info("|RiskLevel查询失败：" + e);
