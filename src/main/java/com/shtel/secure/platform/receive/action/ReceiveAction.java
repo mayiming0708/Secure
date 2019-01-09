@@ -6,6 +6,8 @@ import com.shtel.secure.platform.finishType.model.FinishType;
 import com.shtel.secure.platform.finishType.service.FinishTypeService;
 import com.shtel.secure.platform.receive.model.ResultEvent;
 import com.shtel.secure.platform.receive.service.ResultEventService;
+import com.shtel.secure.platform.riskLevel.model.RiskLevel;
+import com.shtel.secure.platform.riskLevel.service.RiskLevelService;
 import com.shtel.secure.platform.type.model.Type;
 import com.shtel.secure.platform.type.service.TypeService;
 import com.shtel.secure.utils.ResultUtil;
@@ -36,6 +38,8 @@ public class ReceiveAction {
     private TypeService typeService;
     @Autowired
     private FinishTypeService finishTypeService;
+    @Autowired
+    private RiskLevelService riskLevelService;
 
 
     /**
@@ -65,13 +69,14 @@ public class ReceiveAction {
 
             resultEvent.setVirtualGroupId(oneJsonObject.getString("virtual_group_id"));
             resultEvent.setValue(oneJsonObject.getJSONArray("values").toString());
-            resultEvent.setTotal(oneJsonObject.getString("total"));
+            resultEvent.setTotal(oneJsonObject.getInteger("total"));
             resultEvent.setStartAt(simpleDateFormat.parse(oneJsonObject.getString("start_at")));
             resultEvent.setTaskId(oneJsonObject.getString("task_id"));
 
             String moduleType = oneJsonObject.getString("module_type");
             Type type = typeService.getTypeByNameEn(moduleType);
             resultEvent.setModuleType(String.valueOf(type.getId()));
+
 
             String groupId = oneJsonObject.getString("group_id");
             resultEvent.setGroupId(groupId);
@@ -80,10 +85,33 @@ public class ReceiveAction {
             resultEvent.setEndAt(simpleDateFormat.parse(oneJsonObject.getString("end_at")));
 
             resultEventService.resultEventInsert(resultEvent);
+
             //结果存入finishtype
             FinishType finishType = new FinishType();
             finishType.setVirtualGroupId(oneJsonObject.getString("virtual_group_id"));
             finishType.setUrl(oneJsonObject.getString("site"));
+            finishType = finishTypeService.getFinishTypeByGourpIdAndUrl(finishType.getVirtualGroupId(), finishType.getUrl());
+            int riskHighCount = finishType.getRiskHighCount();
+            int riskMiddleCount = finishType.getRiskMiddleCount();
+            int riskLowCount = finishType.getRiskLowCount();
+            try {
+                RiskLevel riskLevel = riskLevelService.getRiskLevel(type.getRiskLevelId());
+                if (riskLevel.getLevel() == 3) {
+                    riskHighCount+=resultEvent.getTotal();
+                } else if (riskLevel.getLevel() == 2) {
+                    riskMiddleCount+=resultEvent.getTotal();
+                } else if (riskLevel.getLevel() == 1) {
+                    riskLowCount+=resultEvent.getTotal();
+                }
+            } catch (Exception e) {
+                logger.info("|RiskLevel查询失败：" + e);
+
+            }
+            finishType.setRiskHighCount(riskHighCount);
+            finishType.setRiskMiddleCount(riskMiddleCount);
+            finishType.setRiskLowCount(riskLowCount);
+            finishType.setScore(resultEventService.calculationScore(finishType));
+
             switch (moduleType) {
                 case "siteinfo":
                     finishType.setSiteinfo(id);

@@ -22,7 +22,11 @@ public class FinishTypeService {
     }
 
     public int updateFinishType(FinishType finishType) {
-        return finishTypeMapper.updateByPrimaryKeySelective(finishType);
+        Example example = new Example(FinishType.class);
+        Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("virtualGroupId", finishType.getVirtualGroupId());
+        criteria.andEqualTo("url", finishType.getUrl());
+        return finishTypeMapper.updateByExample(finishType,example);
     }
 
     public int insertFinishType(FinishType finishType) {

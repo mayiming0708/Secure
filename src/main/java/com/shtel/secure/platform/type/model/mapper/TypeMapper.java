@@ -8,6 +8,6 @@ import tk.mybatis.mapper.common.Mapper;
 
 @Component
 public interface TypeMapper extends Mapper<Type> {
-    @Select("select id,name_en as nameEn,name_cn as nameCn from ws_type where name_en = #{nameEn}")
+    @Select("select id,name_en as nameEn,name_cn as nameCn,risk_level_id as RiskLevelId from ws_type where name_en = #{nameEn}")
     public Type getTypeByName(@Param("nameEn") String nameEn);
 }

@@ -12,6 +12,8 @@ public class Type {
 
     private String nameCn;
 
+    private int riskLevelId;
+
     public int getId() {
         return id;
     }
@@ -34,5 +36,13 @@ public class Type {
 
     public void setNameCn(String nameCn) {
         this.nameCn = nameCn;
+    }
+
+    public int getRiskLevelId() {
+        return riskLevelId;
+    }
+
+    public void setRiskLevelId(int riskLevelId) {
+        this.riskLevelId = riskLevelId;
     }
 }

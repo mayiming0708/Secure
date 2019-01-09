@@ -6,7 +6,7 @@ import javax.persistence.Table;
 @Table(name = "ws_finish_type")
 public class FinishType {
     @Id
-    private int id;
+    private Integer id;
 
     private String virtualGroupId;
     private String url;
@@ -22,6 +22,18 @@ public class FinishType {
     private String cgi;
     private String csrf;
     private String formCrack;
+    private Integer riskHighCount;
+    private Integer riskMiddleCount;
+    private Integer riskLowCount;
+    private Integer score;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getVirtualGroupId() {
         return virtualGroupId;
@@ -29,6 +41,14 @@ public class FinishType {
 
     public void setVirtualGroupId(String virtualGroupId) {
         this.virtualGroupId = virtualGroupId;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getSiteinfo() {
@@ -127,19 +147,35 @@ public class FinishType {
         this.formCrack = formCrack;
     }
 
-    public int getId() {
-        return id;
+    public Integer getRiskHighCount() {
+        return riskHighCount;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setRiskHighCount(Integer riskHighCount) {
+        this.riskHighCount = riskHighCount;
     }
 
-    public String getUrl() {
-        return url;
+    public Integer getRiskMiddleCount() {
+        return riskMiddleCount;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setRiskMiddleCount(Integer riskMiddleCount) {
+        this.riskMiddleCount = riskMiddleCount;
+    }
+
+    public Integer getRiskLowCount() {
+        return riskLowCount;
+    }
+
+    public void setRiskLowCount(Integer riskLowCount) {
+        this.riskLowCount = riskLowCount;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
     }
 }

@@ -37,16 +37,16 @@ public class ResultEventAction {
 
     /**
      * 根据group_id查找一个group的所有resultEvent
-     * @param groupId
+     * @param virtualGroupId
      * @return
      */
     @RequestMapping(value = "/resultEvents", method = RequestMethod.GET)
-    public Map<String, ResultEvent> resultEventByGroup(@RequestParam("groupId") String groupId ,@RequestParam("url") String url) {
+    public Map<String, ResultEvent> resultEventByGroup(@RequestParam("virtualGroupId") String virtualGroupId ,@RequestParam("url") String url) {
         Map<String, ResultEvent> map = new HashMap<>();
         try {
-            FinishType finishType = finishTypeService.getFinishTypeByGourpIdAndUrl(groupId,url);
+            FinishType finishType = finishTypeService.getFinishTypeByGourpIdAndUrl(virtualGroupId,url);
             for (Field field : finishType.getClass().getDeclaredFields()) {
-                if ("groupId".equals(field.getName())) {
+                if ("groupId".equals(field.getName())||"virtualGroupId".equals(field.getName())||"url".equals(field.getName())||"score".equals(field.getName())||"riskHighCount".equals(field.getName())||"riskMiddleCount".equals(field.getName())||"riskLowCount".equals(field.getName())) {
                     continue;
                 }
                 field.setAccessible(true);

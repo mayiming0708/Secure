@@ -1,5 +1,6 @@
 package com.shtel.secure.platform.receive.service;
 
+import com.shtel.secure.platform.finishType.model.FinishType;
 import com.shtel.secure.platform.receive.model.ResultEvent;
 import com.shtel.secure.platform.receive.model.Temp;
 import com.shtel.secure.platform.receive.model.mapper.ResultEventMapper;
@@ -42,5 +43,22 @@ public class ResultEventService {
      */
     public ResultEvent getResultEventById(String id) {
         return resultEventMapper.selectByPrimaryKey(id);
+    }
+
+    public Integer calculationScore(FinishType finishType) {
+        Integer score;
+        if (finishType.getRiskHighCount() > 0) {
+            score = 66 + finishType.getRiskHighCount();
+        }else{
+            if (finishType.getRiskMiddleCount() > 0) {
+                score = 33 + finishType.getRiskMiddleCount();
+            }else{
+                score = finishType.getRiskLowCount();
+            }
+        }
+        if (score > 100) {
+            score = 100;
+        }
+        return score;
     }
 }
