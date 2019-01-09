@@ -69,7 +69,7 @@ public class ReceiveAction {
 
             resultEvent.setVirtualGroupId(oneJsonObject.getString("virtual_group_id"));
             resultEvent.setValue(oneJsonObject.getJSONArray("values").toString());
-            resultEvent.setTotal(oneJsonObject.getInteger("total"));
+            resultEvent.setTotal(oneJsonObject.getString("total"));
             resultEvent.setStartAt(simpleDateFormat.parse(oneJsonObject.getString("start_at")));
             resultEvent.setTaskId(oneJsonObject.getString("task_id"));
 
@@ -107,11 +107,11 @@ public class ReceiveAction {
             try {
                 RiskLevel riskLevel = riskLevelService.getRiskLevel(type.getRiskLevelId());
                 if (riskLevel.getLevel() == 3) {
-                    riskHighCount += resultEvent.getTotal();
+                    riskHighCount += Integer.valueOf(resultEvent.getTotal());
                 } else if (riskLevel.getLevel() == 2) {
-                    riskMiddleCount += resultEvent.getTotal();
+                    riskHighCount += Integer.valueOf(resultEvent.getTotal());
                 } else if (riskLevel.getLevel() == 1) {
-                    riskLowCount += resultEvent.getTotal();
+                    riskHighCount += Integer.valueOf(resultEvent.getTotal());
                 }
             } catch (Exception e) {
                 logger.info("|RiskLevel查询失败：" + e);
