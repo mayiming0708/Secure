@@ -8,6 +8,8 @@ import com.shtel.secure.platform.finishType.model.FinishType;
 import com.shtel.secure.platform.finishType.service.FinishTypeService;
 import com.shtel.secure.platform.receive.model.ResultEvent;
 import com.shtel.secure.platform.receive.service.ResultEventService;
+import com.shtel.secure.platform.risk.model.Risk;
+import com.shtel.secure.platform.risk.service.RiskService;
 import com.shtel.secure.platform.riskLevel.model.RiskLevel;
 import com.shtel.secure.platform.riskLevel.service.RiskLevelService;
 import com.shtel.secure.platform.type.model.Type;
@@ -42,6 +44,8 @@ public class ReceiveAction {
     private FinishTypeService finishTypeService;
     @Autowired
     private RiskLevelService riskLevelService;
+    @Autowired
+    private RiskService riskService;
 
 
     /**
@@ -126,19 +130,37 @@ public class ReceiveAction {
                 JSONObject jsonObject = (JSONObject) object;
 
                 try {
-                    Integer riskLevel = jsonObject.getJSONObject("value").getInteger("level");
-                    if (riskLevel != null) {
-                        if (riskLevel >= highLevel) {
-                            riskHighCount++;
-                        } else if (riskLevel >= middleLevel) {
-                            riskMiddleCount++;
-                        } else if (riskLevel >= lowLevel) {
-                            riskLowCount++;
-                        } else if (riskLevel == infoLevel) {
-                            riskInfoCount++;
+                    try {
+                        Integer riskLevel = jsonObject.getJSONObject("value").getInteger("level");
+                        if (riskLevel == null) {
+                            Type type = typeService.getTypeByNameEn(jsonObject.getString("type"));
+                            if (type == null) {
+                                Integer total = jsonObject.getJSONObject("value").getInteger("total");
+                                riskUrlCount += total;
+                            }else{
+                                Risk risk = riskService.getRisk(type.getRiskLevelId());
+                                if (risk == null) {
+                                    Integer total = jsonObject.getJSONObject("value").getInteger("total");
+                                    riskUrlCount += total;
+                                }else{
+                                    riskLevel = risk.getLevel();
+                                }
+                            }
+
                         }
-                    } else {
-                        riskUrlCount += jsonObject.getJSONObject("value").getInteger("total");
+                        if (riskLevel != null) {
+                            if (riskLevel >= highLevel) {
+                                riskHighCount++;
+                            } else if (riskLevel >= middleLevel) {
+                                riskMiddleCount++;
+                            } else if (riskLevel >= lowLevel) {
+                                riskLowCount++;
+                            } else if (riskLevel >= infoLevel) {
+                                riskInfoCount++;
+                            }
+                        }
+                    } catch (Exception e) {
+                        logger.info("|统计出错" + e);
                     }
 
 

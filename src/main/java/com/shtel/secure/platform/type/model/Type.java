@@ -6,19 +6,19 @@ import javax.persistence.Table;
 @Table(name = "ws_type")
 public class Type {
     @Id
-    private int id;
+    private Integer id;
 
     private String nameEn;
 
     private String nameCn;
 
-    private int riskLevelId;
+    private Integer riskLevelId;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -38,11 +38,11 @@ public class Type {
         this.nameCn = nameCn;
     }
 
-    public int getRiskLevelId() {
+    public Integer getRiskLevelId() {
         return riskLevelId;
     }
 
-    public void setRiskLevelId(int riskLevelId) {
+    public void setRiskLevelId(Integer riskLevelId) {
         this.riskLevelId = riskLevelId;
     }
 }
