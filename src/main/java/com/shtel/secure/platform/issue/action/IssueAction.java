@@ -5,6 +5,7 @@ import com.shtel.secure.platform.finishType.model.FinishType;
 import com.shtel.secure.platform.finishType.service.FinishTypeService;
 import com.shtel.secure.platform.issue.model.Task;
 import com.shtel.secure.platform.issue.service.IssueService;
+import io.swagger.annotations.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
  * @Date: 2019/1/7 15:37
  * @Description: 下发临时周期任务
  */
+@Api(tags = "issue-action", description = "下发任务接口")
 @RestController
 public class IssueAction {
     private static Logger logger = LogManager.getLogger(IssueAction.class.getName());
@@ -34,8 +36,15 @@ public class IssueAction {
      * @param task
      * @return
      */
+    @ApiOperation(value = "下发临时任务", notes = "下发任务:urls必填，(10种必填)字段0是不监测，1是监测")
+    @ApiResponses({
+            @ApiResponse(code = 100, message = "{错误信息}"),
+            @ApiResponse(code = 0, message = "操作成功")
+    })
     @PostMapping("/issue/temp")
-    public String issueTempTask(@RequestBody Task task, HttpServletRequest request) {
+    public String issueTempTask(@RequestBody @ApiParam(name = "临时任务对象", value = "传入json格式"
+            , allowableValues = "[urls,blackLinks,malscan,keyword,xss,sqlInjection,webvul,info_leak,cgi,csrf,formCrack]",
+            required = true) Task task, HttpServletRequest request) {
         String userId = String.valueOf(request.getSession().getAttribute("USERID"));
         JSONObject response = issueService.issueTemporaryTask(task).getJSONObject("content");
         issueService.taskProcessRecord(response, task, userId);
@@ -55,7 +64,7 @@ public class IssueAction {
                 finishTypeService.insertFinishType(finishType);
             }
         }
-        return response.toJSONString();
+        return IssueService.Response(response.getString("message"),response.getInteger("code"),response.getJSONObject("result")).toJSONString();
     }
 
     /**
@@ -64,8 +73,15 @@ public class IssueAction {
      * @param task
      * @return
      */
+    @ApiOperation(value = "下发周期任务", notes = "下发任务:urls必填，(10种必填)字段0是不监测，1是监测")
+    @ApiResponses({
+            @ApiResponse(code = 100, message = "{错误信息}"),
+            @ApiResponse(code = 0, message = "操作成功")
+    })
     @PostMapping("/issue/period")
-    public String issueTempPeriod(@RequestBody Task task, HttpServletRequest request) {
+    public String issueTempPeriod(@RequestBody @ApiParam(name = "周期任务对象", value = "传入json格式",
+            allowableValues = "range[1,5]",
+            required = true) Task task, HttpServletRequest request) {
         String userId = String.valueOf(request.getSession().getAttribute("USERID"));
         JSONObject response = issueService.issuePeriodTask(task).getJSONObject("content");
         issueService.taskProcessRecord(response, task, userId);
@@ -85,7 +101,7 @@ public class IssueAction {
                 finishTypeService.insertFinishType(finishType);
             }
         }
-        return response.toJSONString();
+        return IssueService.Response(response.getString("message"),response.getInteger("code"),response.getJSONObject("result")).toJSONString();
     }
 
     /**
@@ -94,13 +110,22 @@ public class IssueAction {
      * @param virtual_group_id
      * @return
      */
+    @ApiOperation(value = "获取临时组监测接口", notes = "virtual_group_id：临时任务id必填")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "virtual_group_id", value = "任务id", required = true, dataType = "String"),
+    })
+    @ApiResponses({
+            @ApiResponse(code = 100, message = "临时任务不存在|用户为空"),
+            @ApiResponse(code = 0, message = "返回站点信息")
+    })
     @PostMapping("/issue/processPeriod")
     public String progressTemp(@RequestParam("virtual_group_id") String virtual_group_id) {
         logger.info("获取临时组检测进度");
         JSONObject validateResponse = issueService.validateNULL(virtual_group_id);
         if (validateResponse.getInteger("code") == 0) {
-            String response = issueService.progressTempResponse(virtual_group_id);
-            return response;
+            JSONObject response = issueService.progressTempResponse(virtual_group_id).getJSONObject("content");
+            JSONObject endResponse=IssueService.Response(response.getString("message"),response.getInteger("code"),response.getJSONObject("result"));
+            return endResponse.toJSONString();
         }
         return validateResponse.toString();
     }

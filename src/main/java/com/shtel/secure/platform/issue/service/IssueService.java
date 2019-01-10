@@ -90,7 +90,7 @@ public class IssueService {
      * @param virtual_group_id
      * @return
      */
-    public String progressTempResponse(String virtual_group_id) {
+    public JSONObject progressTempResponse(String virtual_group_id) {
         JSONObject response;
         Map<String, String> groupMap = new HashMap<>();
         JSONObject virtualGroupId = new JSONObject();
@@ -108,7 +108,7 @@ public class IssueService {
             response = Response("secure获取临时组检测进度", 100, content);
             logger.info("secure获取临时组检测进度:" + e.getMessage());
         }
-        return response.toJSONString();
+        return response;
     }
 
     /**
