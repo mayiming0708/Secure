@@ -39,6 +39,8 @@ public class ResultEvent implements Serializable {
 
     private Date endAt;
 
+    private String reportUrl;
+
     public String getId() {
         return id;
     }
@@ -133,5 +135,13 @@ public class ResultEvent implements Serializable {
 
     public void setEndAt(Date endAt) {
         this.endAt = endAt;
+    }
+
+    public String getReportUrl() {
+        return reportUrl;
+    }
+
+    public void setReportUrl(String reportUrl) {
+        this.reportUrl = reportUrl;
     }
 }

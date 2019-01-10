@@ -1,5 +1,7 @@
 package com.shtel.secure.platform.receive.action;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.shtel.secure.platform.enumType.model.EnumType;
 import com.shtel.secure.platform.finishType.model.FinishType;
@@ -68,14 +70,15 @@ public class ReceiveAction {
             resultEvent.setReceiveTime(new Date());
 
             resultEvent.setVirtualGroupId(oneJsonObject.getString("virtual_group_id"));
-            resultEvent.setValue(oneJsonObject.getJSONArray("values").toString());
+
+            JSONArray values = oneJsonObject.getJSONArray("values");
+            resultEvent.setValue(values.toString());
             resultEvent.setTotal(oneJsonObject.getString("total"));
             resultEvent.setStartAt(simpleDateFormat.parse(oneJsonObject.getString("start_at")));
             resultEvent.setTaskId(oneJsonObject.getString("task_id"));
 
             String moduleType = oneJsonObject.getString("module_type");
-            Type type = typeService.getTypeByNameEn(moduleType);
-            resultEvent.setModuleType(String.valueOf(type.getId()));
+            resultEvent.setModuleType(moduleType);
 
 
             String groupId = oneJsonObject.getString("group_id");
@@ -83,8 +86,10 @@ public class ReceiveAction {
             resultEvent.setSiteId(oneJsonObject.getString("site_id"));
             resultEvent.setSite(oneJsonObject.getString("site"));
             resultEvent.setEndAt(simpleDateFormat.parse(oneJsonObject.getString("end_at")));
+            resultEvent.setReportUrl(oneJsonObject.getString("report_url"));
 
             resultEventService.resultEventInsert(resultEvent);
+
 
             //结果存入finishtype
             FinishType finishType = new FinishType();
@@ -106,66 +111,80 @@ public class ReceiveAction {
             Integer riskMiddleCount = finishType.getRiskMiddleCount();
             Integer riskLowCount = finishType.getRiskLowCount();
             Integer riskInfoCount = finishType.getRiskInfoCount();
-            try {
-                RiskLevel riskLevel = riskLevelService.getRiskLevel(type.getRiskLevelId());
-                if (riskLevel.getLevel() == 3) {
-                    riskHighCount += Integer.valueOf(resultEvent.getTotal());
-                } else if (riskLevel.getLevel() == 2) {
-                    riskHighCount += Integer.valueOf(resultEvent.getTotal());
-                } else if (riskLevel.getLevel() == 1) {
-                    riskHighCount += Integer.valueOf(resultEvent.getTotal());
-                }else{
-                    riskInfoCount += Integer.valueOf(resultEvent.getTotal());
+            Integer riskUrlCount = finishType.getRiskUrlCount();
+
+            //解析values
+
+            for (Object object : values) {
+                JSONObject jsonObject = (JSONObject) object;
+
+                try {
+                    Integer riskLevel = jsonObject.getJSONObject("value").getInteger("level");
+                    if (riskLevel != null) {
+                        if (riskLevel >=8) {
+                            riskHighCount++;
+                        } else if (riskLevel >= 5) {
+                            riskMiddleCount++;
+                        } else if (riskLevel >= 2) {
+                            riskLowCount++;
+                        }else if (riskLevel == 1) {
+                            riskInfoCount++;
+                        }
+                    } else {
+                        riskUrlCount += jsonObject.getJSONObject("value").getInteger("total");
+                    }
+
+
+                    switch (jsonObject.getString("type")) {
+                        case "siteinfo":
+                            finishType.setSiteinfo(id);
+                            break;
+                        case "availability":
+                            finishType.setAvailability(id);
+                            break;
+                        case "blackLinks":
+                            finishType.setBlackLinks(id);
+                            break;
+                        case "malscan":
+                            finishType.setMalscan(id);
+                            break;
+                        case "keyword":
+                            finishType.setKeyword(id);
+                            break;
+                        case "sql":
+                            finishType.setSqlInjection(id);
+                            break;
+                        case "xss":
+                            finishType.setXss(id);
+                            break;
+                        case "webvul":
+                            finishType.setWebvul(id);
+                            break;
+                        case "infoLeak":
+                            finishType.setInfoLeak(id);
+                            break;
+                        case "cgi":
+                            finishType.setCgi(id);
+                            break;
+                        case "csrf":
+                            finishType.setCsrf(id);
+                            break;
+                        case "formCrack":
+                            finishType.setFormCrack(id);
+                            break;
+                    }
+                } catch (Exception e) {
+                    logger.info("|解析" + jsonObject + "失败：" + e);
                 }
-            } catch (Exception e) {
-                logger.info("|RiskLevel查询失败：" + e);
 
             }
+
             finishType.setRiskHighCount(riskHighCount);
             finishType.setRiskMiddleCount(riskMiddleCount);
             finishType.setRiskLowCount(riskLowCount);
             finishType.setRiskInfoCount(riskInfoCount);
+            finishType.setRiskUrlCount(riskUrlCount);
             finishType.setScore(resultEventService.calculationScore(finishType));
-
-            switch (moduleType) {
-                case "siteinfo":
-                    finishType.setSiteinfo(id);
-                    break;
-                case "availability":
-                    finishType.setAvailability(id);
-                    break;
-                case "blackLinks":
-                    finishType.setBlackLinks(id);
-                    break;
-                case "malscan":
-                    finishType.setMalscan(id);
-                    break;
-                case "keyword":
-                    finishType.setKeyword(id);
-                    break;
-                case "sql":
-                    finishType.setSqlInjection(id);
-                    break;
-                case "xss":
-                    finishType.setXss(id);
-                    break;
-                case "webvul":
-                    finishType.setWebvul(id);
-                    break;
-                case "infoLeak":
-                    finishType.setInfoLeak(id);
-                    break;
-                case "cgi":
-                    finishType.setCgi(id);
-                    break;
-                case "csrf":
-                    finishType.setCsrf(id);
-                    break;
-                case "formCrack":
-                    finishType.setFormCrack(id);
-                    break;
-            }
-
             finishTypeService.updateFinishType(finishType);
         } catch (Exception e) {
             logger.info("|回调接口接收数据失败：" + e);

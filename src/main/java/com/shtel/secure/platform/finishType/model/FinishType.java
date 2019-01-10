@@ -22,6 +22,7 @@ public class FinishType {
     private String cgi;
     private String csrf;
     private String formCrack;
+    private Integer riskUrlCount;
     private Integer riskInfoCount;
     private Integer riskHighCount;
     private Integer riskMiddleCount;
@@ -186,5 +187,13 @@ public class FinishType {
 
     public void setRiskInfoCount(Integer riskInfoCount) {
         this.riskInfoCount = riskInfoCount;
+    }
+
+    public Integer getRiskUrlCount() {
+        return riskUrlCount;
+    }
+
+    public void setRiskUrlCount(Integer riskUrlCount) {
+        this.riskUrlCount = riskUrlCount;
     }
 }
