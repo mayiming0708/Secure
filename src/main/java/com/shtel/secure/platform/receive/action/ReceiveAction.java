@@ -92,6 +92,7 @@ public class ReceiveAction {
             finishType.setUrl(oneJsonObject.getString("site"));
             FinishType tmp = finishTypeService.getFinishTypeByGourpIdAndUrl(finishType.getVirtualGroupId(), finishType.getUrl());
             if (tmp == null) {
+                finishType.setRiskInfoCount(0);
                 finishType.setRiskHighCount(0);
                 finishType.setRiskMiddleCount(0);
                 finishType.setRiskLowCount(0);
@@ -101,9 +102,10 @@ public class ReceiveAction {
                 finishType = tmp;
             }
 
-            int riskHighCount = finishType.getRiskHighCount();
-            int riskMiddleCount = finishType.getRiskMiddleCount();
-            int riskLowCount = finishType.getRiskLowCount();
+            Integer riskHighCount = finishType.getRiskHighCount();
+            Integer riskMiddleCount = finishType.getRiskMiddleCount();
+            Integer riskLowCount = finishType.getRiskLowCount();
+            Integer riskInfoCount = finishType.getRiskInfoCount();
             try {
                 RiskLevel riskLevel = riskLevelService.getRiskLevel(type.getRiskLevelId());
                 if (riskLevel.getLevel() == 3) {
@@ -112,6 +114,8 @@ public class ReceiveAction {
                     riskHighCount += Integer.valueOf(resultEvent.getTotal());
                 } else if (riskLevel.getLevel() == 1) {
                     riskHighCount += Integer.valueOf(resultEvent.getTotal());
+                }else{
+                    riskInfoCount += Integer.valueOf(resultEvent.getTotal());
                 }
             } catch (Exception e) {
                 logger.info("|RiskLevel查询失败：" + e);
@@ -120,6 +124,7 @@ public class ReceiveAction {
             finishType.setRiskHighCount(riskHighCount);
             finishType.setRiskMiddleCount(riskMiddleCount);
             finishType.setRiskLowCount(riskLowCount);
+            finishType.setRiskInfoCount(riskInfoCount);
             finishType.setScore(resultEventService.calculationScore(finishType));
 
             switch (moduleType) {
