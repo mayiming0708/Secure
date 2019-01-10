@@ -101,6 +101,7 @@ public class ReceiveAction {
                 finishType.setRiskHighCount(0);
                 finishType.setRiskMiddleCount(0);
                 finishType.setRiskLowCount(0);
+                finishType.setRiskUrlCount(0);
                 finishType.setScore(0);
                 finishTypeService.insertFinishType(finishType);
             } else {
@@ -113,6 +114,12 @@ public class ReceiveAction {
             Integer riskInfoCount = finishType.getRiskInfoCount();
             Integer riskUrlCount = finishType.getRiskUrlCount();
 
+            Integer highLevel = riskLevelService.getRiskLevel("high").getLevel();
+            Integer middleLevel = riskLevelService.getRiskLevel("middle").getLevel();
+            Integer lowLevel = riskLevelService.getRiskLevel("low").getLevel();
+            Integer infoLevel = riskLevelService.getRiskLevel("info").getLevel();
+
+
             //解析values
 
             for (Object object : values) {
@@ -121,13 +128,13 @@ public class ReceiveAction {
                 try {
                     Integer riskLevel = jsonObject.getJSONObject("value").getInteger("level");
                     if (riskLevel != null) {
-                        if (riskLevel >=8) {
+                        if (riskLevel >= highLevel) {
                             riskHighCount++;
-                        } else if (riskLevel >= 5) {
+                        } else if (riskLevel >= middleLevel) {
                             riskMiddleCount++;
-                        } else if (riskLevel >= 2) {
+                        } else if (riskLevel >= lowLevel) {
                             riskLowCount++;
-                        }else if (riskLevel == 1) {
+                        } else if (riskLevel == infoLevel) {
                             riskInfoCount++;
                         }
                     } else {
