@@ -1,9 +1,7 @@
 package com.shtel.secure.platform.receive.action;
 
-import com.shtel.secure.platform.finishType.model.FinishType;
 import com.shtel.secure.platform.finishType.service.FinishTypeService;
 import com.shtel.secure.platform.receive.model.ResultEvent;
-import com.shtel.secure.platform.receive.model.mapper.ResultEventMapper;
 import com.shtel.secure.platform.receive.service.ResultEventService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -17,10 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Api(tags = "任务结果查询", description = "ResultEvent")
 @RestController
