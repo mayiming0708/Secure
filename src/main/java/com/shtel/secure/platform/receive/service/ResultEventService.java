@@ -51,11 +51,7 @@ public class ResultEventService {
     }
 
     public List<ResultEvent> getResultEventsByGroupAndUrl(String virtualGroupId, String url) {
-        Example example = new Example(ResultEvent.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("virtualGroupId", virtualGroupId);
-        criteria.andEqualTo("site", url);
-        List<ResultEvent> resultEvents = resultEventMapper.selectByExample(example);
+        List<ResultEvent> resultEvents = resultEventMapper.getResultEventsByGroupAndUrl(virtualGroupId, url);
         return resultEvents;
     }
 
