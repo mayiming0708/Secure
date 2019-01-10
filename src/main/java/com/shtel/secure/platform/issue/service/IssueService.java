@@ -191,7 +191,7 @@ public class IssueService {
             site_list.add(url);
         }
         jsonObject.put("site_list", site_list);
-
+        String json=jsonObject.toJSONString();
         return jsonObject;
     }
 
