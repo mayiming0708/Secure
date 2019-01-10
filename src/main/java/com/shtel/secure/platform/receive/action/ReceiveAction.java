@@ -130,39 +130,36 @@ public class ReceiveAction {
                 JSONObject jsonObject = (JSONObject) object;
 
                 try {
-                    try {
-                        Integer riskLevel = jsonObject.getJSONObject("value").getInteger("level");
-                        if (riskLevel == null) {
-                            Type type = typeService.getTypeByNameEn(jsonObject.getString("type"));
-                            if (type == null) {
-                                Integer total = jsonObject.getJSONObject("value").getInteger("total");
+                    Type type = typeService.getTypeByNameEn(jsonObject.getString("type"));
+                    Integer riskLevel = jsonObject.getJSONObject("value").getInteger("level");
+                    if (riskLevel == null) {
+                        if (type == null) {
+                            Integer total = jsonObject.getJSONObject("value").getInteger("total");
+                            if (total != null)
                                 riskUrlCount += total;
-                            }else{
-                                Risk risk = riskService.getRisk(type.getRiskLevelId());
-                                if (risk == null) {
-                                    Integer total = jsonObject.getJSONObject("value").getInteger("total");
+                        } else {
+                            Risk risk = riskService.getRisk(type.getRiskLevelId());
+                            if (risk == null) {
+                                Integer total = jsonObject.getJSONObject("value").getInteger("total");
+                                if (total != null)
                                     riskUrlCount += total;
-                                }else{
-                                    riskLevel = risk.getLevel();
-                                }
+                            } else {
+                                riskLevel = risk.getLevel();
                             }
+                        }
 
-                        }
-                        if (riskLevel != null) {
-                            if (riskLevel >= highLevel) {
-                                riskHighCount++;
-                            } else if (riskLevel >= middleLevel) {
-                                riskMiddleCount++;
-                            } else if (riskLevel >= lowLevel) {
-                                riskLowCount++;
-                            } else if (riskLevel >= infoLevel) {
-                                riskInfoCount++;
-                            }
-                        }
-                    } catch (Exception e) {
-                        logger.info("|统计出错" + e);
                     }
-
+                    if (riskLevel != null) {
+                        if (riskLevel >= highLevel) {
+                            riskHighCount++;
+                        } else if (riskLevel >= middleLevel) {
+                            riskMiddleCount++;
+                        } else if (riskLevel >= lowLevel) {
+                            riskLowCount++;
+                        } else if (riskLevel >= infoLevel) {
+                            riskInfoCount++;
+                        }
+                    }
 
                     switch (jsonObject.getString("type")) {
                         case "siteinfo":
@@ -202,6 +199,7 @@ public class ReceiveAction {
                             finishType.setFormCrack(id);
                             break;
                     }
+
                 } catch (Exception e) {
                     logger.info("|解析" + jsonObject + "失败：" + e);
                 }
