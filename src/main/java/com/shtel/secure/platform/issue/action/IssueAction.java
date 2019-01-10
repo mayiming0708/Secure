@@ -64,7 +64,7 @@ public class IssueAction {
                 finishTypeService.insertFinishType(finishType);
             }
         }
-        return response.toJSONString();
+        return IssueService.Response(response.getString("message"),response.getInteger("code"),response.getJSONObject("result")).toJSONString();
     }
 
     /**
@@ -73,7 +73,7 @@ public class IssueAction {
      * @param task
      * @return
      */
-    @ApiOperation(value = "下发临时任务", notes = "下发任务:urls必填，(10种必填)字段0是不监测，1是监测")
+    @ApiOperation(value = "下发周期任务", notes = "下发任务:urls必填，(10种必填)字段0是不监测，1是监测")
     @ApiResponses({
             @ApiResponse(code = 100, message = "{错误信息}"),
             @ApiResponse(code = 0, message = "操作成功")
@@ -101,7 +101,7 @@ public class IssueAction {
                 finishTypeService.insertFinishType(finishType);
             }
         }
-        return response.toJSONString();
+        return IssueService.Response(response.getString("message"),response.getInteger("code"),response.getJSONObject("result")).toJSONString();
     }
 
     /**
@@ -115,7 +115,7 @@ public class IssueAction {
             @ApiImplicitParam(paramType = "query", name = "virtual_group_id", value = "任务id", required = true, dataType = "String"),
     })
     @ApiResponses({
-            @ApiResponse(code = 100, message = "用户不存再|用户为空"),
+            @ApiResponse(code = 100, message = "临时任务不存在|用户为空"),
             @ApiResponse(code = 0, message = "返回站点信息")
     })
     @PostMapping("/issue/processPeriod")
