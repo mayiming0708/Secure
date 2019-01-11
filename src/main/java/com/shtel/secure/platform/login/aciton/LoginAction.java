@@ -61,7 +61,7 @@ public class LoginAction {
         User result = userMapper.selectOne(user);
         if (result == null)
             return IssueService.Response("该用户不存在", 100, new JSONObject()).toJSONString();
-        if (account.equals(result.getAccount()) || password.equals(result.getPassword())) {
+        if (account.equals(result.getAccount()) && password.equals(result.getPassword())) {
             request.getSession().setAttribute("USERID", result.getId());
             request.getSession().setMaxInactiveInterval(60 * 30);
             logger.info("登录成功");
