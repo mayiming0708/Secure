@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.shtel.secure.platform.issue.service.IssueService;
 import com.shtel.secure.platform.login.model.User;
 import com.shtel.secure.platform.login.model.mapper.UserMapper;
+import com.shtel.secure.utils.MD5Utils;
 import io.swagger.annotations.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -61,7 +62,7 @@ public class LoginAction {
         User result = userMapper.selectOne(user);
         if (result == null)
             return IssueService.Response("该用户不存在", 100, new JSONObject()).toJSONString();
-        if (account.equals(result.getAccount()) && password.equals(result.getPassword())) {
+        if (account.equals(result.getAccount()) && (MD5Utils.MD5Encode(password,"utf-8")).equals(result.getPassword())) {
             request.getSession().setAttribute("USERID", result.getId());
             request.getSession().setMaxInactiveInterval(60 * 30);
             logger.info("登录成功");
@@ -81,8 +82,11 @@ public class LoginAction {
     }
 
     @PostMapping("/test")
-    public void test(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println(userMapper.selectByPrimaryKey(1));
+    public void test(@RequestParam("account") String account, @RequestParam("password") String password) {
+        User user=new User();
+        user.setAccount(account);
+        user.setPassword(MD5Utils.MD5Encode(password,"utf-8"));
+        userMapper.insert(user);
     }
 
 
