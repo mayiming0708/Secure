@@ -57,6 +57,7 @@ public class IssueAction {
                 FinishType finishType = new FinishType();
                 finishType.setVirtualGroupId(task.getVirtualGroupId());
                 finishType.setUrl(url);
+                finishType.setRiskUrlCount(0);
                 finishType.setRiskInfoCount(0);
                 finishType.setRiskLowCount(0);
                 finishType.setRiskMiddleCount(0);
@@ -95,6 +96,7 @@ public class IssueAction {
                 FinishType finishType = new FinishType();
                 finishType.setVirtualGroupId(task.getVirtualGroupId());
                 finishType.setUrl(url);
+                finishType.setRiskUrlCount(0);
                 finishType.setRiskInfoCount(0);
                 finishType.setRiskLowCount(0);
                 finishType.setRiskMiddleCount(0);

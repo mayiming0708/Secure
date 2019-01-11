@@ -17,8 +17,8 @@ public class RiskLevelService {
     @Autowired
     private RiskLevelMapper riskLevelMapper;
 
-    public RiskLevel getRiskLevel(int id) {
-        return riskLevelMapper.selectByPrimaryKey(id);
+    public RiskLevel getRiskLevel(String riskName) {
+        return riskLevelMapper.selectByPrimaryKey(riskName);
     }
 
     public List<RiskLevel> getAllRiskLevel(){

@@ -9,6 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
+
+import java.util.List;
 
 @Service
 public class ResultEventService {
@@ -29,6 +32,7 @@ public class ResultEventService {
 
     /**
      * resultEvent插入
+     *
      * @param resultEvent
      * @return
      */
@@ -38,6 +42,7 @@ public class ResultEventService {
 
     /**
      * 通过ID获取resultEvent结果
+     *
      * @param id
      * @return
      */
@@ -45,14 +50,24 @@ public class ResultEventService {
         return resultEventMapper.selectByPrimaryKey(id);
     }
 
+    public List<ResultEvent> getResultEventsByGroupAndUrl(String virtualGroupId, String url) {
+        Example example = new Example(ResultEvent.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("virtualGroupId", virtualGroupId);
+        criteria.andEqualTo("site", url);
+        List<ResultEvent> resultEvents = resultEventMapper.selectByExample(example);
+        return resultEvents;
+    }
+
+
     public Integer calculationScore(FinishType finishType) {
         Integer score;
         if (finishType.getRiskHighCount() > 0) {
             score = 66 + finishType.getRiskHighCount();
-        }else{
+        } else {
             if (finishType.getRiskMiddleCount() > 0) {
                 score = 33 + finishType.getRiskMiddleCount();
-            }else{
+            } else {
                 score = finishType.getRiskLowCount();
             }
         }
