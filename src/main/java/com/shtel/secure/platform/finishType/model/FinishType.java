@@ -10,18 +10,18 @@ public class FinishType {
 
     private String virtualGroupId;
     private String url;
-    private String siteinfo;
-    private String availability;
-    private String blackLinks;
-    private String malscan;
-    private String keyword;
-    private String sqlInjection;
-    private String xss;
-    private String webvul;
-    private String infoLeak;
-    private String cgi;
-    private String csrf;
-    private String formCrack;
+    private Integer siteinfo;
+    private Integer availability;
+    private Integer blackLinks;
+    private Integer malscan;
+    private Integer keyword;
+    private Integer sqlInjection;
+    private Integer xss;
+    private Integer webvul;
+    private Integer infoLeak;
+    private Integer cgi;
+    private Integer csrf;
+    private Integer formCrack;
     private Integer riskUrlCount;
     private Integer riskInfoCount;
     private Integer riskHighCount;
@@ -53,100 +53,116 @@ public class FinishType {
         this.url = url;
     }
 
-    public String getSiteinfo() {
+    public Integer getSiteinfo() {
         return siteinfo;
     }
 
-    public void setSiteinfo(String siteinfo) {
+    public void setSiteinfo(Integer siteinfo) {
         this.siteinfo = siteinfo;
     }
 
-    public String getAvailability() {
+    public Integer getAvailability() {
         return availability;
     }
 
-    public void setAvailability(String availability) {
+    public void setAvailability(Integer availability) {
         this.availability = availability;
     }
 
-    public String getBlackLinks() {
+    public Integer getBlackLinks() {
         return blackLinks;
     }
 
-    public void setBlackLinks(String blackLinks) {
+    public void setBlackLinks(Integer blackLinks) {
         this.blackLinks = blackLinks;
     }
 
-    public String getMalscan() {
+    public Integer getMalscan() {
         return malscan;
     }
 
-    public void setMalscan(String malscan) {
+    public void setMalscan(Integer malscan) {
         this.malscan = malscan;
     }
 
-    public String getKeyword() {
+    public Integer getKeyword() {
         return keyword;
     }
 
-    public void setKeyword(String keyword) {
+    public void setKeyword(Integer keyword) {
         this.keyword = keyword;
     }
 
-    public String getSqlInjection() {
+    public Integer getSqlInjection() {
         return sqlInjection;
     }
 
-    public void setSqlInjection(String sqlInjection) {
+    public void setSqlInjection(Integer sqlInjection) {
         this.sqlInjection = sqlInjection;
     }
 
-    public String getXss() {
+    public Integer getXss() {
         return xss;
     }
 
-    public void setXss(String xss) {
+    public void setXss(Integer xss) {
         this.xss = xss;
     }
 
-    public String getWebvul() {
+    public Integer getWebvul() {
         return webvul;
     }
 
-    public void setWebvul(String webvul) {
+    public void setWebvul(Integer webvul) {
         this.webvul = webvul;
     }
 
-    public String getInfoLeak() {
+    public Integer getInfoLeak() {
         return infoLeak;
     }
 
-    public void setInfoLeak(String infoLeak) {
+    public void setInfoLeak(Integer infoLeak) {
         this.infoLeak = infoLeak;
     }
 
-    public String getCgi() {
+    public Integer getCgi() {
         return cgi;
     }
 
-    public void setCgi(String cgi) {
+    public void setCgi(Integer cgi) {
         this.cgi = cgi;
     }
 
-    public String getCsrf() {
+    public Integer getCsrf() {
         return csrf;
     }
 
-    public void setCsrf(String csrf) {
+    public void setCsrf(Integer csrf) {
         this.csrf = csrf;
     }
 
-    public String getFormCrack() {
+    public Integer getFormCrack() {
         return formCrack;
     }
 
-    public void setFormCrack(String formCrack) {
+    public void setFormCrack(Integer formCrack) {
         this.formCrack = formCrack;
+    }
+
+    public Integer getRiskUrlCount() {
+        return riskUrlCount;
+    }
+
+    public void setRiskUrlCount(Integer riskUrlCount) {
+        this.riskUrlCount = riskUrlCount;
+    }
+
+    public Integer getRiskInfoCount() {
+        return riskInfoCount;
+    }
+
+    public void setRiskInfoCount(Integer riskInfoCount) {
+        this.riskInfoCount = riskInfoCount;
     }
 
     public Integer getRiskHighCount() {
@@ -179,21 +195,5 @@ public class FinishType {
 
     public void setScore(Integer score) {
         this.score = score;
-    }
-
-    public Integer getRiskInfoCount() {
-        return riskInfoCount;
-    }
-
-    public void setRiskInfoCount(Integer riskInfoCount) {
-        this.riskInfoCount = riskInfoCount;
-    }
-
-    public Integer getRiskUrlCount() {
-        return riskUrlCount;
-    }
-
-    public void setRiskUrlCount(Integer riskUrlCount) {
-        this.riskUrlCount = riskUrlCount;
     }
 }
