@@ -173,7 +173,7 @@ public class IssueService {
         } else {
             plugin.put("form_crack", getParameter(true));
         }
-        if (0 == task.getBlackLinks()) {
+        if (0 == task.getInfoLeak()) {
             JSONObject info_leak = new JSONObject();
             info_leak.put("enabled", false);
             info_leak.put("items", new JSONArray());
