@@ -4,14 +4,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.shtel.secure.platform.issue.service.IssueService;
 import com.shtel.secure.platform.login.model.User;
 import com.shtel.secure.platform.login.model.mapper.UserMapper;
+import com.shtel.secure.utils.MD5Utils;
 import io.swagger.annotations.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  * @Description: 登陆接口
  */
 @Api(tags = "login-action", description = "登录接口")
+@CrossOrigin
 @RestController
 @RequestMapping("/login")
 public class LoginAction {
@@ -61,7 +60,9 @@ public class LoginAction {
         User result = userMapper.selectOne(user);
         if (result == null)
             return IssueService.Response("该用户不存在", 100, new JSONObject()).toJSONString();
-        if (account.equals(result.getAccount()) || password.equals(result.getPassword())) {
+        user.setPassword(MD5Utils.MD5Encode(password,"utf-8"));
+        User result2 = userMapper.selectOne(user);
+        if (result2!=null) {
             request.getSession().setAttribute("USERID", result.getId());
             request.getSession().setMaxInactiveInterval(60 * 30);
             logger.info("登录成功");
@@ -81,8 +82,11 @@ public class LoginAction {
     }
 
     @PostMapping("/test")
-    public void test(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println(userMapper.selectByPrimaryKey(1));
+    public void test(@RequestParam("account") String account, @RequestParam("password") String password) {
+        User user=new User();
+        user.setAccount(account);
+        user.setPassword(MD5Utils.MD5Encode(password,"utf-8"));
+        userMapper.insert(user);
     }
 
 

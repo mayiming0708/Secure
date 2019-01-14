@@ -9,10 +9,7 @@ import io.swagger.annotations.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
  * @Description: 下发临时周期任务
  */
 @Api(tags = "issue-action", description = "下发任务接口")
+@CrossOrigin
 @RestController
 public class IssueAction {
     private static Logger logger = LogManager.getLogger(IssueAction.class.getName());
