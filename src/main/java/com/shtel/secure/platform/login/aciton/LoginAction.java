@@ -60,9 +60,9 @@ public class LoginAction {
         User result = userMapper.selectOne(user);
         if (result == null)
             return IssueService.Response("该用户不存在", 100, new JSONObject()).toJSONString();
-        user.setPassword(password);
+        user.setPassword(MD5Utils.MD5Encode(password,"utf-8"));
         User result2 = userMapper.selectOne(user);
-        if (account.equals(result2.getAccount()) && (MD5Utils.MD5Encode(password,"utf-8")).equals(result2.getPassword())) {
+        if (result2!=null) {
             request.getSession().setAttribute("USERID", result.getId());
             request.getSession().setMaxInactiveInterval(60 * 30);
             logger.info("登录成功");
