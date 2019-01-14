@@ -1,10 +1,12 @@
 package com.shtel.secure.platform.login.aciton;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
@@ -16,10 +18,29 @@ import java.io.InputStreamReader;
  * @Date: 2019/1/3 14:35
  * @Description: 回调接口
  */
-@RequestMapping("/websock-server")
 @Controller
 public class AcceptAction {
-    @PostMapping("/sock/v1/inform")
+    @GetMapping("/login/index")
+    public void loginIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/static/html/login.html").forward(request,response);
+    }
+    @GetMapping("/html/taskprogress")
+    public void taskprogress(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/static/html/taskprogress.html").forward(request,response);
+    }
+    @GetMapping("/html/taskdetail")
+    public void taskdetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/static/html/taskdetail.html").forward(request,response);
+    }
+    @GetMapping("/html/sitemonitor")
+    public void sitemonitor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/static/html/sitemonitor.html").forward(request,response);
+    }
+    @GetMapping("/html/sitedetail")
+    public void sitedetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/static/html/sitedetail.html").forward(request,response);
+    }
+
     public void acceptData(HttpServletRequest request, HttpServletResponse response, @RequestParam("parameter") String parameter) {
         String str = parameter;
         System.out.println(str);
