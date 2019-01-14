@@ -24,6 +24,23 @@ public class AcceptAction {
     public void loginIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/static/html/login.html").forward(request,response);
     }
+    @GetMapping("/html/taskprogress")
+    public void taskprogress(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/static/html/taskprogress.html").forward(request,response);
+    }
+    @GetMapping("/html/taskdetail")
+    public void taskdetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/static/html/taskdetail.html").forward(request,response);
+    }
+    @GetMapping("/html/sitemonitor")
+    public void sitemonitor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/static/html/sitemonitor.html").forward(request,response);
+    }
+    @GetMapping("/html/sitedetail")
+    public void sitedetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/static/html/sitedetail.html").forward(request,response);
+    }
+
     public void acceptData(HttpServletRequest request, HttpServletResponse response, @RequestParam("parameter") String parameter) {
         String str = parameter;
         System.out.println(str);
