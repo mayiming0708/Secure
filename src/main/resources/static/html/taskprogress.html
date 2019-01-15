@@ -566,18 +566,6 @@
 									</label>
 								</li>
 							</ul>
-							<!--<select class="selectpicker form-control" multiple  title="请选择">
-                                <option value="1">暗链</option>
-                                <option value="2">挂马</option>
-                                <option value="3">关键词</option>
-                                <option value="4">SQL注入漏洞</option>
-                                <option value="5">XSS跨站脚本漏洞</option>
-                                <option value="6">应用漏洞</option>
-                                <option value="7">信息泄露</option>
-                                <option value="8">CGI漏洞</option>
-                                <option value="9">CSRF跨站请求伪造漏洞</option>
-                                <option value="10">表单破解漏洞</option>
-                            </select>-->
 						</div>
 						<div class="commit-btn" id="addTask">
 							提交任务
@@ -586,7 +574,7 @@
 
 						</div>
 						<div class="pop-alert">
-							<div class="title"><i class="fa fa-warning"></i><span>下发任务失败</span></div>
+							<div class="title"><i class="fa fa-warning"></i><span></span></div>
 							<div class="pop-alert-content">
 
 							</div>
@@ -682,6 +670,9 @@
 
         //新增任务
         $("#addBtn").click(function() {
+            //每次点击时重置弹窗
+            $(".task-site input").val("");
+            $(".checkbox li input").prop("checked",false);
             $("#taskAddModal").show();
             //点击全选时 所有复选框都选中
 
