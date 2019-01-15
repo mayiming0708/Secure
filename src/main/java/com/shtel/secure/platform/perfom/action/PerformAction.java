@@ -24,7 +24,7 @@ public class PerformAction {
     private PerformService performService;
 
     @PostMapping("/taskList")
-    public JSONObject taskList(@RequestParam("=") String userId){
+    public JSONObject taskList(@RequestParam("userId") String userId){
         return performService.selectTaskByUserId(userId);
     }
 
