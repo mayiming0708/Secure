@@ -715,3 +715,11 @@ button.close{
 .navbar-nav > .user-menu > .dropdown-menu > li.user-header{
 	height: 118px;
 }
+.tableStyle{
+	width: 86px !important;
+	overflow: initial !important;
+	text-overflow: initial !important;
+	white-space: initial !important;
+	margin: 0 auto !important;
+	padding: 5px 0 !important;
+}
