@@ -61,6 +61,7 @@ public class PerformService {
             detail.put("isPeriod",task.getKeyword());
             detail.put("isSuccess",task.getKeyword());
             detail.put("finishRate",task.getKeyword());
+            detail.put("createTime",task.getCreateTime());
             detailArray.add(detail);
         }
         response.put("rows",detailArray);
