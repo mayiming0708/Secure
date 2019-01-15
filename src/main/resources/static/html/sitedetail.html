@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>AdminLTE 2 | Dashboard</title>
+		<!-- Tell the browser to be responsive to screen width -->
+		<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+		<!-- Bootstrap 3.3.7 -->
+		<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
+		<!-- Ionicons -->
+		<link rel="stylesheet" href="/static/Ionicons/css/ionicons.min.css">
+		<!-- Theme style -->
+		<link rel="stylesheet" href="/static/css/AdminLTE.css">
+		<!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+		<link rel="stylesheet" href="/static/css/_all-skins.css">
+		<!-- Morris chart -->
+		<!--<link rel="stylesheet" href="/static/css/morris.css">-->
+		<link rel="stylesheet" href="/static/css/daterangepicker.css">
+		<!-- bootstrap wysihtml5 - text editor -->
+		<link rel="stylesheet" href="/static/css/bootstrap3-wysihtml5.min.css">
+		<link rel="stylesheet" type="text/css" href="/static/css/dataTables.bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-table.css" />
+		<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-select.min.css" />
+		<!-- Google Font -->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+		<link rel="stylesheet" type="text/css" href="/static/css/index.css" />
+
+		<style>
+			.sidebar .user-panel {
+				display: none;
+			}
+			
+			.sidebar .sidebar-form {
+				display: none;
+			}
+			
+			.sidebar-menu.tree li.header {
+				display: none;
+			}
+			
+			.temporary-task {
+				margin-bottom: 20px;
+				background: #fff;
+				box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+				border-radius: 3px;
+				height: 300px;
+			}
+			
+			.temporary-task .title {
+				line-height: 35px;
+				padding: 0 10px;
+				font-size: 20px;
+				color: #444;
+			}
+			
+			.pull-left.header .fa-inbox {
+				color: lightseagreen;
+			}
+			
+			.nav-tabs-custom {
+				/*box-shadow: 0 0 2px rgba(0,0,0,0.3);*/
+				border-radius: 10px;
+			}
+			
+			#tempory-task .flow {
+				margin-top: 18px;
+				position: relative;
+				display: inline-block;
+				float: left;
+			}
+			
+			#tempory-task .line {
+				position: absolute;
+				width: 2px;
+				border-radius: 5px;
+				height: 240px;
+				background-color: lightblue;
+				left: 78%;
+			}
+			
+			#tempory-task .flow-img {
+				display: inline-block;
+				list-style-type: none;
+				position: relative;
+				z-index: 2;
+			}
+			
+			#tempory-task .flow-img li {
+				height: 78px;
+			}
+		</style>
+	</head>
+
+	<body class="hold-transition skin-blue sidebar-mini">
+		<div class="wrapper">
+			<div class="content-wrapper site-detail-total">
+				<div class="row">
+					<section class="col-lg-12 connectedSortable site-detail box">
+						<nav id="navbar-example" class="navbar navbar-default navbar-static" role="navigation">
+							<div class="container-fluid">
+								<div class="navbar-header">
+									<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-js-navbar-scrollspy">
+										<span class="sr-only">切换导航</span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+									</button>
+									<a class="navbar-brand" href="#">检测报告</a>
+								</div>
+								<div class="collapse navbar-collapse bs-js-navbar-scrollspy">
+									<ul class="nav navbar-nav">
+										<li>
+											<a href="#site-summary">综述</a>
+										</li>
+										<li>
+											<a href="#site-ablity">可用性</a>
+										</li>
+										<li>
+											<a href="#site-leak">漏洞</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</nav>
+						<div class="title">
+							<i class="fa fa-warning"></i>http://www.baidu.com
+						</div>
+						<div data-spy="scroll" data-target="#navbar-example" data-offset="0" >
+							<!--<h4 id="site-summary">综述</h4>-->
+							<div class="box box-solid bg-teal-gradient site-summary-item" id="site-summary">
+								<div class="box-header ui-sortable-handle" style="cursor: move;">
+									<i class="fa fa-th"></i>
+									<h3 class="box-title">综述</h3>
+									<div class="box-tools pull-right">
+										<button type="button" class="btn bg-teal btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
+                						</button>
+									</div>
+								</div>
+								<div class="box-body border-radius-none site-summary-content" style="height: 430px;">
+									<div class="top">
+										<div class="top-left">风险值<span class="fengxian">67</span></div>
+										<div class="top-right">
+											共发现url<span class="fengxian">153</span>
+										</div>
+									</div>
+									<div class="row center">
+										<section class="col-lg-4 connectedSortable site-summary-content-chart" id="site-summary-content-chart">
+
+										</section>
+										<section class="col-lg-8 connectedSortable site-summary-content-table">
+											<table class="table table-bordered table-striped table-condensed" id="site-summary-content-table">
+
+											</table>
+										</section>
+									</div>
+								</div>
+							</div>
+							<div class="box box-solid bg-teal-gradient site-summary-item" id="site-ablity">
+								<div class="box-header ui-sortable-handle" style="cursor: move;">
+									<i class="fa fa-th"></i>
+									<h3 class="box-title">可用性</h3>
+									<div class="box-tools pull-right">
+										<button type="button" class="btn bg-teal btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
+                						</button>
+									</div>
+								</div>
+								<div class="box-body border-radius-none site-ablity-content" style="height: 430px;">
+									<div class="top">
+										<div class="top-left">风险值<span class="fengxian">67</span></div>
+										<div class="top-right">
+											共发现url<span class="fengxian">153</span>
+										</div>
+									</div>
+									<div class="row center">
+										<section class="col-lg-4 connectedSortable site-ablity-content-chart" id="site-ablity-content-chart">
+
+										</section>
+										<section class="col-lg-8 connectedSortable site-ablity-content-table">
+											<table class="table table-bordered table-striped table-condensed" id="site-ablity-content-table">
+
+											</table>
+										</section>
+									</div>
+								</div>
+							</div>
+							
+							<div class="box box-solid bg-teal-gradient site-summary-item" id="site-leak">
+								<div class="box-header ui-sortable-handle" style="cursor: move;">
+									<i class="fa fa-th"></i>
+									<h3 class="box-title">漏洞</h3>
+									<div class="box-tools pull-right">
+										<button type="button" class="btn bg-teal btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
+                						</button>
+									</div>
+								</div>
+								<div class="box-body border-radius-none site-ablity-content" style="height: 430px;">
+									<div class="top">
+										<div class="top-left">风险值<span class="fengxian">67</span></div>
+										<div class="top-right">
+											共发现url<span class="fengxian">153</span>
+										</div>
+									</div>
+									<div class="row center">
+										<section class="col-lg-4 connectedSortable site-leak-content-chart" id="site-leak-content-chart">
+
+										</section>
+										<section class="col-lg-8 connectedSortable site-leak-content-table">
+											<table class="table table-bordered table-striped table-condensed" id="site-leak-content-table">
+
+											</table>
+										</section>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</section>
+				</div>
+			</div>
+		</div>
+
+		<!-- ./wrapper -->
+
+		<script src="/static/js/jquery.min.js"></script>
+		<!-- jQuery UI 1.11.4 -->
+		<script src="/static/js/jquery-ui.min.js"></script>
+		<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+		<script>
+			$.widget.bridge('uibutton', $.ui.button);
+		</script>
+		<!-- Bootstrap 3.3.7 -->
+		<script src="/static/js/bootstrap.min.js"></script>
+		<!-- daterangepicker -->
+		<script src="/static/js/moment.min.js"></script>
+		<script src="/static/js/daterangepicker.js"></script>
+		<!-- datepicker -->
+		<script src="/static/js/bootstrap-datepicker.min.js"></script>
+		<!-- Bootstrap WYSIHTML5 -->
+		<script src="/static/js/bootstrap3-wysihtml5.all.min.js"></script>
+		<!-- Slimscroll -->
+		<script src="/static/js/jquery.slimscroll.min.js"></script>
+		<!-- FastClick -->
+		<script src="/static/js/fastclick.js"></script>
+		<!--表格插件-->
+		<script src="/static/js/jquery.dataTables.min.js" type="text/javascript" charset="utf-8"></script>
+		<!--<script src="/static/js/dataTables.bootstrap.min.css" type="text/javascript" charset="utf-8"></script>-->
+		<!-- AdminLTE App -->
+		<script src="/static/js/adminlte.min.js"></script>
+		<script src="/static/js/echarts.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/js/bootstrap-table.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/js/bootstrap-table-zh-CN.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/js/bootstrap-select.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var summaryTable=$("#site-summary-content-table");
+			$(function(){
+				//综述中图表
+				resultChart();
+				//综述中表格
+				siteSummaryTable();
+			})
+			//综述中图表
+			function resultChart() {
+				var myChart = echarts.init(document.getElementById('site-summary-content-chart'));
+
+				var option = {
+					tooltip: {
+						trigger: 'item',
+						formatter: "{a} <br/>{b} : {c} ({d}%)"
+					},
+					legend:{
+						show:true,
+						right:0
+					},
+					grid:{
+						left:'10%',
+						top:'5%'
+					},
+					series: [{
+						name: '库存情况',
+						type: 'pie',
+						radius: '68%',
+						center: ['50%', '50%'],
+						clockwise: false,
+						data: [{
+							value: 45,
+							name: '高危'
+						}, {
+							value: 25,
+							name: '中危'
+						}, {
+							value: 15,
+							name: '低危'
+						}, {
+							value: 8,
+							name: '信息'
+						}],
+						label: {
+							normal: {
+								textStyle: {
+									color: '#000',
+									fontSize: 14,
+								}
+							}
+						},
+						labelLine: {
+							normal: {
+								show: true,
+								color: '#000'
+							}
+						},
+						itemStyle: {
+							normal: {
+								borderWidth: 4,
+								borderColor: '#ffffff',
+							},
+							emphasis: {
+								borderWidth: 0,
+								shadowBlur: 10,
+								shadowOffsetX: 0,
+								shadowColor: 'rgba(0, 0, 0, 0.5)'
+							}
+						}
+					}],
+					color: [
+						'#00acee',
+						'#52cdd5',
+						'#79d9f1',
+						'#a7e7ff',
+						'#c8efff'
+					],
+					backgroundColor: '#fff'
+				};
+				myChart.setOption(option);
+			}
+			//综述中table
+			function siteSummaryTable(){
+				summaryTable.bootstrapTable('destroy');
+				summaryTable.bootstrapTable({
+					//gau请求地址,此处数据为本地加载
+					url: "/static/json/siteSummary.json",
+					//请求方式
+					method: "GET",
+					//table高度：如果没有设置，表格自动根据记录条数觉得表格高度
+					//	    	height: '582',
+					//是否显示行间隔色
+					toolbar: '#toolbar', //工具按钮用哪个容器
+					striped: true, //是否显示行间隔色
+					cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+					pagination: true, //是否显示分页（*）
+					sortable: false, //是否启用排序
+					sortOrder: "asc", //排序方式
+					//          queryParams: oTableInit.queryParams,//传递参数（*）
+					sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+					pageNumber: 1, //初始化加载第一页，默认第一页
+					pageSize: 10, //每页的记录行数（*）
+					pageList: [10, 25, 50, 100], //可供选择的每页的行数（*）
+					search: true, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+					strictSearch: true,
+					showColumns: true, //是否显示所有的列
+					showRefresh: true, //是否显示刷新按钮
+					minimumCountColumns: 2, //最少允许的列数
+					clickToSelect: true, //是否启用点击选中行
+					//          height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+					uniqueId: "ID", //每一行的唯一标识，一般为主键列
+					showToggle: true, //是否显示详细视图和列表视图的切换按钮
+					cardView: false, //是否显示详细视图
+					detailView: false,
+					//表头
+					columns: [{
+						title: '检测项',
+						field: 'checkItem', //id
+						//	    		checkbox: true, //checkbox
+						align: 'center', //对其方式
+						valign: 'middle' //对其方式
+					}, {
+						title: '高危',
+						field: 'highFaq',
+						align: 'center',
+						valign: 'middle',
+					}, {
+						title: '中危',
+						field: 'middleFaq',
+						align: 'center',
+						valign: 'middle'
+					}, {
+						title: '低危',
+						field: 'lowFaq',
+						align: 'center',
+						valign: 'middle'
+					}, {
+						title: '结果',
+						field: 'result',
+						align: 'center',
+						valign: 'middle'
+					}],
+					onLoadSuccess: function(res) { //可不写
+						//加载成功时
+						console.log(res);
+					},
+					onLoadError: function(statusCode) {
+						return "加载失败了"
+					},
+					formatLoadingMessage: function() {
+						//正在加载
+						return "拼命加载中...";
+					},
+					formatNoMatches: function() {
+						//没有匹配的结果
+						return '无符合条件的记录';
+					}
+				})
+			}
+		</script>
+	</body>
+
+</html>
