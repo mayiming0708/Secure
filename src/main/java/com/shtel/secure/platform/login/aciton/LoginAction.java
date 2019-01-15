@@ -67,8 +67,8 @@ public class LoginAction {
         if (result2!=null) {
             request.getSession().setAttribute("USERID", result.getId());
             request.getSession().setMaxInactiveInterval(60 * 30);
-            Cookie cookie=new Cookie("USERID", String.valueOf( result.getId()));
-            response.addCookie(cookie);
+            JSONObject uesrJSON=new JSONObject();
+            uesrJSON.put("USERID",result.getId());
             logger.info("登录成功");
             return IssueService.Response("登录成功", 0, new JSONObject()).toJSONString();
         }
