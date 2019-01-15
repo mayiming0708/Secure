@@ -1,16 +1,15 @@
 package com.shtel.secure.platform.receive.action;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.shtel.secure.platform.enumType.model.EnumType;
 import com.shtel.secure.platform.finishType.model.FinishType;
 import com.shtel.secure.platform.finishType.service.FinishTypeService;
+import com.shtel.secure.platform.issue.service.IssueService;
 import com.shtel.secure.platform.receive.model.ResultEvent;
 import com.shtel.secure.platform.receive.service.ResultEventService;
 import com.shtel.secure.platform.risk.model.Risk;
 import com.shtel.secure.platform.risk.service.RiskService;
-import com.shtel.secure.platform.riskLevel.model.RiskLevel;
 import com.shtel.secure.platform.riskLevel.service.RiskLevelService;
 import com.shtel.secure.platform.type.model.Type;
 import com.shtel.secure.platform.type.service.TypeService;
@@ -19,7 +18,10 @@ import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,6 +48,8 @@ public class ReceiveAction {
     private RiskLevelService riskLevelService;
     @Autowired
     private RiskService riskService;
+    @Autowired
+    private IssueService issueService;
 
 
     /**
@@ -90,8 +94,6 @@ public class ReceiveAction {
             resultEvent.setSite(oneJsonObject.getString("site"));
             resultEvent.setEndAt(simpleDateFormat.parse(oneJsonObject.getString("end_at")));
             resultEvent.setReportUrl(oneJsonObject.getString("report_url"));
-
-
 
             //结果存入finishtype
             FinishType finishType = new FinishType();
@@ -259,6 +261,8 @@ public class ReceiveAction {
             resultEventService.resultEventInsert(resultEvent);
             //更新finishtype记录
             finishTypeService.updateFinishType(finishType);
+
+            issueService.updateFinishRate(oneJsonObject.getString("virtual_group_id"));
         } catch (Exception e) {
             logger.info("|回调接口接收数据失败：" + e);
         }
