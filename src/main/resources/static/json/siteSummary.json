@@ -1,0 +1,36 @@
+{
+    "total":"4",
+    "rows":[
+        {
+            "checkItem":"暗链",
+            "highFaq":"5",
+            "middleFaq":"3",
+            "lowFaq":8,
+            "result":1
+        },
+        {
+      		"checkItem":"暗链",
+            "highFaq":"5",
+            "middleFaq":"3",
+            "lowFaq":8,
+            "result":1
+        },
+        
+        {
+          	"checkItem":"暗链",
+            "highFaq":"5",
+            "middleFaq":"3",
+            "lowFaq":8,
+            "result":1
+        },
+        
+        {
+           	"checkItem":"暗链",
+            "highFaq":"5",
+            "middleFaq":"3",
+            "lowFaq":8,
+            "result":1
+        }
+        
+    ]
+}

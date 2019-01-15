@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+
+		<head>
+		<meta charset="utf-8" />
+		<title>管理平台</title>
+		<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="/static/iconfont/iconfont1.css" />
+		<link rel="stylesheet" type="text/css" href="/static/css/style02.css" />
+		<style>
+			.service .header{
+				background-color: transparent;
+			}
+			.content.service .divleft .title {
+				width: 37%;
+				float: right;
+				font-size: 30px;
+				color: #fff;
+				/* font-size: 50px; */
+				line-height: 48px;
+				margin-top: 30%;
+				text-align: center;
+				font-weight: bold;
+			}
+			
+			.service .divleft {
+				padding-right: 0;
+				padding-top: 0;
+			}
+			
+			.service .divright {
+				padding-left: 4vw;
+			}
+			.wrapper img{
+				padding: 0.5vh 1vh;
+			}
+			.service .form-groups .info{
+				margin-top: 5px;
+			}
+			#user_forget{
+				float: right;
+			}
+			.service .form-groups .prompt{
+				display: block;
+			}
+		</style>
+	</head>
+
+	<body class="content service">
+		<div class="header">
+			<div class="wrapper">
+				<!--<p class="logo"><img src="image/logo011.png" alt=""></p>-->
+				<img src="/static/image/logo.png" alt="">
+			</div>
+		</div>
+		<div class="section clearfix">
+			<div class="divleft">
+				<!--<p class="imgs"><img  src="image/imf.png" alt=""></p>-->
+				<div class="title">
+					基于WebSock的网站安全监测应用
+				</div>
+			</div>
+			<div class="divright">
+				<div class="form-groups">
+					<form method="post" name="loginForm" action="">
+						<p class="title">登录</p>
+						<div class="form-group">
+							<label for=""><i class="iconfont icon-user user"></i></label>
+							<input class="form-control" id="username" maxlength="20" name="username" type="text" placeholder="请输入用户名">
+							<span class="clear"><i class="iconfont icon-guanbi"></i></span>
+							<input id="loginposition" name="loginposition" type="hidden" value="1">
+						</div>
+						<div class="form-group">
+							<label for=""><i class="iconfont icon-password"></i></label>
+							<i class="password"></i>
+							<input class="form-control" id="password" name="password" maxlength="20" type="password" onkeydown="" autocomplete="off" placeholder="请输入密码">
+							<span class="clear"><i class="iconfont icon-guanbi"></i></span>
+						</div>
+						<div class="info clearfix">
+							<label id="user_save">
+                        <span class="auto"><i class="iconfont icon-fuxuankuang1" name='user_save' onkeydown=""></i>注册账号</span>
+
+                       <!-- <input  id="user_save" name="user_save" type="checkbox" onkeydown="EnterPress(event)" placeholder="记住账号">-->
+
+                       <!--   <span class="forget"><a href="javascript:;">忘记密码</a></span> -->
+
+                    </label>
+                    						<label id="user_forget">
+                        <span class="auto"><i class="iconfont icon-fuxuankuang1" name='user_save' onkeydown=""></i>忘记密码</span>
+
+                       <!-- <input  id="user_save" name="user_save" type="checkbox" onkeydown="EnterPress(event)" placeholder="记住账号">-->
+
+                       <!--   <span class="forget"><a href="javascript:;">忘记密码</a></span> -->
+
+                    </label>
+						</div>
+						<p class="prompt errormessege">
+							
+						</p>
+						<div class="btns">
+							<input onclick="loginUser()" type="button" class="submit btn-login" value="登  录" disabled>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="copyRight">
+			<!-- 2016 上海理想信息产业（集团）有限公司  版权所有-->中国电信股份有限公司上海公司</div>
+	</body>
+	<script src="/static/js/common.js" type="text/javascript" charset="utf-8"></script>
+	<!--<script src="js/verifyCode.js" type="text/javascript"></script>-->
+	<!--<script src="js/shortcutfunc.js" type="text/javascript"></script>-->
+	<!--<script src="js/validate.js" type="text/javascript"></script>-->
+	<!--<script src="js/cookie.js" type="text/javascript"></script>-->
+	<script src="/static/js/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			var user=$("#user");
+			var psw=$("#psw");
+			var ipt=$(".form-control");
+			var login=$(".btn-login");
+			var prompt=$(".prompt");
+				ipt.each(function(i,index){
+				//键盘抬起事件
+				ipt.on("keyup",function(){				
+					if(user.val()!=""&&psw.val()!=""){ 		
+		 				login.attr('disabled', false);
+		 			}else if(user.val()!="" || psw.val()!=""){
+						
+		 			}
+				})
+			});
+		})
+		
+		//点击登录按钮
+		function loginUser(){
+			var u_name = $.trim($("#username").val());
+			var u_pwd = $.trim($("#password").val());
+				if(u_name==""||u_pwd==""){
+				$('.errormessege').html("用户名或密码不能为空");
+				return false;
+			}else{
+				if(u_name.length>100||u_pwd.length>100){
+					$('.errormessege').html('用户名或密码长度超出范围');
+					return false;
+				}else{
+					$.ajax({
+						type:"post",
+						url:"http://localhost/login/loginIndex",
+						 data:{ "account":u_name,"password":u_pwd},
+						 xhrFields: {withCredentials: true},
+        				dataType: "json",
+						async:true,
+						success:function(data){
+							if(data.code==0){
+								window.location.href="newIndex";
+								setCookie("username",u_name);
+							}else{
+								$('.errormessege').html(data.message);
+							}
+						}
+					});
+				}
+			}
+		}
+		//$(document).ready(function(){
+		//  var user_save = cookie.get('user_save');
+		//  $("#username").val(user_save);
+		//
+		//	var user=$("#user");
+		//	var psw=$("#psw");
+		//	var ipt=$(".form-control")
+		//	var info=$(".auto");
+		//	var login=$(".btn-login");
+		//	var clear=$(".clear");
+		//	var prompt=$(".prompt");
+		//  prompt.addClass("active");
+		//	var flag=1;
+		//	ipt.each(function(i,index){
+		//		//键盘抬起事件
+		//		ipt.on("keyup",function(){				
+		//			if(user.val()!=""&&psw.val()!=""){ 		
+		// 				login.attr('disabled', false);
+		// 			}else if(user.val()!="" || psw.val()!=""){
+		//				
+		// 			}
+		//		})
+		//	})
+		//	info.click(function(){
+		//		if(flag){
+		//			$(this).children('i').removeClass("icon-fuxuankuang1");
+		//			$(this).children('i').addClass("icon-fuxuankuang");
+		//			flag=0;
+		//			EnterPress(event);
+		//		}else{
+		//			$(this).children('i').removeClass("icon-fuxuankuang");
+		//			$(this).children('i').addClass("icon-fuxuankuang1");
+		//			flag=1;
+		//			EnterPress(event);
+		//		}
+		//	})
+		// 		
+		//})
+		//
+		//
+		///* new Vidage('#VidageVideo');
+		// */
+		//String.prototype.trim=function(){return this.replace(/(^\s*)|(\s*$)/g,"");};
+		//
+		////<!-- iframe中请求页面而session失效时页面跳转 -->
+		//if(top!=self){
+		//  if(top.location != self.location){
+		//       top.location=self.location;
+		//  }
+		//}
+		//
+		//
+		//function loginUser(){
+		//	var u_name = $.trim($("#username").val());
+		//	var u_pwd = $.trim($("#password").val());
+		//	if(u_name==""||u_pwd==""){
+		//		$('.errormessege').html("用户名或密码不能为空");
+		//		return false;
+		//	}else{
+		//		if(u_name.length>100||u_pwd.length>100){
+		//			$('.errormessege').html('用户名或密码长度超出范围');
+		//			return false;
+		//		}
+		//		
+		//		var code = $("#veryCode").val();
+		//	    if(code.length!=4&&code.length!=0){
+		//	    	$('.errormessege').html('验证码只能是四位数字');
+		//			return false;
+		//		}else if(code.length==0){
+		//			$('.errormessege').html('验证码不能为空');
+		//			return false;
+		//		}
+		//	    
+		//	    $.ajax({
+		//	        type:"POST",    
+		//	        url:"${resultServlet}",
+		//	        data:{"c":code},
+		//	        success:function(data){
+		//	        	var json = eval('(' + data + ')');
+		//				if(json.status == "100"){
+		//					//记住账号
+		//					try {
+		//                      var SFcheck = $("[name='user_save']").attr("class");
+		//                      $.each(SFcheck.split(" "), function (index, value) {
+		//                          if (value == "icon-fuxuankuang") {
+		//                              cookie.set('user_save', u_name, 7);
+		//                          }
+		//                      })
+		//                  }catch (e) {
+		//                  }
+		//	        		document.all.loginForm.submit();
+		//		        }else{
+		//		        	changeImg();
+		//		        	if(json.status == "101"){
+		//		        		$('.errormessege').html('验证码异常');
+		//			        }else if(json.status == "102"){
+		//			        	$('.errormessege').html('验证码超时');
+		//			        }else if(json.status == "103"){
+		//			        	$('.errormessege').html('验证码错误');
+		//			        }
+		//		    		return false;
+		//			    }
+		//	        }
+		//	    });
+		//	}
+		//}
+		//
+		//function EnterPress(event){
+		//	var e = event || window.event || arguments.callee.caller.arguments[0];
+		//	if(e.keyCode == 13){
+		//		loginUser();
+		//	} 
+		//}
+		//
+		//function showhelppage(){
+		//	var url=encodeURI("${helpPage}"); //转向网页的地址;
+		//	var name="newwindow"; //网页名称，可为空;
+		//	var iWidth=600; //弹出窗口的宽度;
+		//	var iHeight=350; //弹出窗口的高度;
+		//	//window.screen.height获得屏幕的高，window.screen.width获得屏幕的宽
+		//	var iTop = (window.screen.height-30-iHeight)/2; //获得窗口的垂直位置;
+		//	var iLeft = (window.screen.width-10-iWidth)/2; //获得窗口的水平位置;
+		//	window.open(url,name,'height='+iHeight+',,innerHeight='+iHeight+',width='+iWidth+',innerWidth='+iWidth+',top='+iTop+',left='+iLeft+',toolbar=no,menubar=no,scrollbars=auto,resizeable=no,location=no,status=no');
+		//}
+	</script>       
+
+</html>

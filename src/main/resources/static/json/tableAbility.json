@@ -1,0 +1,21 @@
+{
+    "total":"2",
+    "rows":[
+        {
+            "site":"http://aaa.com",
+            "startTime":"2018-10-3 9:50:00",
+            "endTime":"2018-10-3 18:50:00",
+            "history":"1",
+            "errorCount":"5",
+            "status":"安全"
+        },
+        {
+            "site":"http://aaa.com",
+            "startTime":"2018-10-3 9:50:00",
+            "endTime":"2018-10-3 18:50:00",
+            "history":"1",
+            "errorCount":"5",
+            "status":"安全"
+        }
+    ]
+}
