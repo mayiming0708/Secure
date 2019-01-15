@@ -20,25 +20,25 @@ import java.io.InputStreamReader;
  */
 @Controller
 public class AcceptAction {
-    @GetMapping("/login/index")
+    @GetMapping("/ws/index")
     public void loginIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/static/html/login.html").forward(request,response);
     }
-    @GetMapping("/html/taskprogress")
+    @GetMapping("/ws/newIndex")
     public void taskprogress(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/static/html/newIndex.html").forward(request,response);
+    }
+    @GetMapping("/ws/taskprogress")
+    public void taskdetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/static/html/taskprogress.html").forward(request,response);
     }
-    @GetMapping("/html/taskdetail")
-    public void taskdetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @GetMapping("/ws/taskdetail")
+    public void sitemonitor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/static/html/taskdetail.html").forward(request,response);
     }
-    @GetMapping("/html/sitemonitor")
-    public void sitemonitor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/static/html/sitemonitor.html").forward(request,response);
-    }
-    @GetMapping("/html/sitedetail")
+    @GetMapping("/ws/sitemonitor")
     public void sitedetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/static/html/sitedetail.html").forward(request,response);
+        request.getRequestDispatcher("/static/html/sitemonitor.html").forward(request,response);
     }
 
     public void acceptData(HttpServletRequest request, HttpServletResponse response, @RequestParam("parameter") String parameter) {

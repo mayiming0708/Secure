@@ -33,7 +33,7 @@ public class LoginAction {
     @ApiResponses({
             @ApiResponse(code = 100, message = "请登录账号")
     })
-    @PostMapping("/loginAuth")
+    @GetMapping("/loginAuth")
     public String loginAuth(HttpServletRequest request, HttpServletResponse response) {
         logger.info("请登录账号");
         return IssueService.Response("请登录账号", 100, new JSONObject()).toJSONString();
@@ -77,7 +77,7 @@ public class LoginAction {
     })
     @PostMapping("/quit")
     public String quit(HttpServletRequest request, HttpServletResponse response) {
-        request.getSession().removeAttribute("USERACCOUNT");
+        request.getSession().invalidate();
         return IssueService.Response("退出账号成功", 0, new JSONObject()).toJSONString();
     }
 
