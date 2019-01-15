@@ -70,7 +70,7 @@ public class LoginAction {
             JSONObject uesrJSON=new JSONObject();
             uesrJSON.put("USERID",result.getId());
             logger.info("登录成功");
-            return IssueService.Response("登录成功", 0, new JSONObject()).toJSONString();
+            return IssueService.Response("登录成功", 0, uesrJSON).toJSONString();
         }
         return IssueService.Response("密码错误，请重新输入", 100, new JSONObject()).toJSONString();
     }
