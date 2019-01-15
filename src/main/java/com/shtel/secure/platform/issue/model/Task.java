@@ -37,6 +37,7 @@ public class Task {
     private Integer isSuccess;
     private Integer formCrack;
     private String message;
+    private float finishRate;
     private Date createTime;
     private Date updateTime;
     private Integer status;
@@ -191,6 +192,14 @@ public class Task {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public float getFinishRate() {
+        return finishRate;
+    }
+
+    public void setFinishRate(float finishRate) {
+        this.finishRate = finishRate;
     }
 
     public Date getCreateTime() {
