@@ -33,7 +33,7 @@ public class LoginAction {
     @ApiResponses({
             @ApiResponse(code = 100, message = "请登录账号")
     })
-    @PostMapping("/loginAuth")
+    @RequestMapping("/loginAuth")
     public String loginAuth(HttpServletRequest request, HttpServletResponse response) {
         logger.info("请登录账号");
         return IssueService.Response("请登录账号", 100, new JSONObject()).toJSONString();
@@ -53,6 +53,7 @@ public class LoginAction {
     @PostMapping("/loginIndex")
     public String login(@RequestParam("account") String account, @RequestParam("password") String password,
                         HttpServletRequest request, HttpServletResponse response) {
+        request.getSession().invalidate();
         User user = new User();
         if (account == null || "".equals(account) || password == null || "".equals(password))
             return IssueService.Response("登录账号或密码为空", 100, new JSONObject()).toJSONString();
@@ -75,9 +76,9 @@ public class LoginAction {
     @ApiResponses({
             @ApiResponse(code = 0, message = "退出账号成功")
     })
-    @PostMapping("/quit")
+    @GetMapping("/quit")
     public String quit(HttpServletRequest request, HttpServletResponse response) {
-        request.getSession().removeAttribute("USERACCOUNT");
+        request.getSession().invalidate();
         return IssueService.Response("退出账号成功", 0, new JSONObject()).toJSONString();
     }
 
