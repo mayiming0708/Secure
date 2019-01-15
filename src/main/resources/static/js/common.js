@@ -7,7 +7,7 @@ $(function(){
     //点击登出时 调用登出接口
     $(".user-footer .btn-flat").click(function(){
         $.ajax({
-            type:"post",
+            type:"get",
             url:"http://localhost/login/quit",
             xhrFields: {withCredentials: true},
             data:{},
@@ -16,6 +16,7 @@ $(function(){
             async:true,
             success:function(data){
                 alert("注销成功");
+                delCookie("username")
                 window.location.href="index";
             }
         });
