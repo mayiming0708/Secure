@@ -10,7 +10,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -191,7 +193,7 @@ public class IssueService {
             site_list.add(url);
         }
         jsonObject.put("site_list", site_list);
-        String json=jsonObject.toJSONString();
+        String json = jsonObject.toJSONString();
         return jsonObject;
     }
 
@@ -219,11 +221,44 @@ public class IssueService {
     public JSONObject validateNULL(String virtual_group_id) {
         if (virtual_group_id == null || "".equals(virtual_group_id))
             return Response("输入任务id为空", 100, new JSONObject());
-        Task task = new Task();
-        task.setVirtualGroupId(virtual_group_id);
-        if (taskMapper.select(task).size() < 1)
+        Example example = new Example(Task.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("virtualGroupId", virtual_group_id);
+        int count = taskMapper.selectCountByExample(example);
+        if (count < 1)
             return Response("临时任务不存在", 100, new JSONObject());
         return Response("任务存在", 0, new JSONObject());
+    }
+
+    /**
+     * <p>根据任务id更新任务完成度</p>
+     *
+     * @param virtual_group_id
+     * @return
+     */
+    public JSONObject updateFinishRate(String virtual_group_id) {
+        JSONObject result = validateNULL(virtual_group_id);
+        if (result.getInteger("code") != 0) {
+            return result;
+        } else {
+            JSONObject response = progressTempResponse(virtual_group_id).getJSONObject("content");
+            if (response.getInteger("code") == 0) {
+                float sitesCount = (response.getJSONObject("result")).getFloat("sites_count");
+                float sitesDoneCount = (response.getJSONObject("result")).getFloat("sites_done_count");
+                DecimalFormat df = new DecimalFormat("#.00");
+                float finishRate = Float.valueOf(df.format(sitesDoneCount / sitesCount));
+                try {
+                    int rows = taskMapper.updateFinishRate(finishRate, virtual_group_id);
+                    return Response("更新finshRate成功", 0, new JSONObject());
+                } catch (Exception e) {
+                    String message = e.getMessage();
+                    JSONObject content = new JSONObject();
+                    content.put("exception", message);
+                    return Response("更新finshRate失败", 100, content);
+                }
+            }
+            return Response(response.getString("message"),response.getInteger("code"),new JSONObject());
+        }
     }
 
     /**

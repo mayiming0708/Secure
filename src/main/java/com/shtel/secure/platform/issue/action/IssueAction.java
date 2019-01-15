@@ -47,6 +47,7 @@ public class IssueAction {
         JSONObject response = issueService.issueTemporaryTask(task).getJSONObject("content");
         issueService.taskProcessRecord(response, task, userId);
         task.setIsPeriod(0);
+        task.setFinishRate(0);
         issueService.innsert(task);
         logger.info("下发临时任务");
         if (1 == task.getIsSuccess()) {
@@ -130,6 +131,11 @@ public class IssueAction {
             return endResponse.toJSONString();
         }
         return validateResponse.toString();
+    }
+
+    @PostMapping("/ws/test")
+    public JSONObject test(@RequestParam("virtual_group_id") String virtual_group_id ) {
+       return issueService.updateFinishRate(virtual_group_id);
     }
 
 }
