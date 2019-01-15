@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -66,6 +67,8 @@ public class LoginAction {
         if (result2!=null) {
             request.getSession().setAttribute("USERID", result.getId());
             request.getSession().setMaxInactiveInterval(60 * 30);
+            Cookie cookie=new Cookie("USERID", String.valueOf( result.getId()));
+            response.addCookie(cookie);
             logger.info("登录成功");
             return IssueService.Response("登录成功", 0, new JSONObject()).toJSONString();
         }
