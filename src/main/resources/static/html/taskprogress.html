@@ -698,8 +698,7 @@
             var site = $("#taskAddModal #name");
             var siteVal = site.val();
             var siteArr = siteVal.split(',');
-            temCover.show();
-            temPop.show();
+
             //检验选择项
             checkItem.each(function() {
                 var checkItemVal = $(this).prop('checked');
@@ -732,9 +731,12 @@
                 temTitle.find('.fa').addClass('fa-warning');
                 temTitle.find('span').html('下发任务失败');
                 temAlert.html('请选择检测项');
+                temCover.show();
+                temPop.show();
                 return false;
-            }
-            addTaskItem(taskType,siteVal,item);
+            }else{
+                addTaskItem(taskType,siteVal,item);
+			}
         });
         //点击确定按钮 弹窗消失
         temBtn.click(function() {
@@ -840,9 +842,6 @@
     }
     //点击提交任务调用下发任务接口
     function addTaskItem(taskType,siteVal,item){
-        // console.log(taskType);
-        // console.log(siteVal);
-        // console.log(item);
         //临时任务调取接口
         if(taskType==0){
             $.ajax({
@@ -866,20 +865,18 @@
                 dataType: "json",
                 async:true,
                 success:function(data){
-            //         var data={
-            //             "code": 0,
-            //             "content": {virtual_group_id: "5c3d3c6043b909017ebfad81"},
-            //             "message": "操作成功",
-            // 		}
-                    console.log(data);
                     if(data.code==0){
                         temTitle.find('.fa').removeClass('fa-warning');
                         temTitle.find('.fa').addClass('fa-chevron-circle-down');
                         temTitle.find('span').html('下发任务成功');
                         temAlert.html('下发临时任务成功');
+                        temCover.show();
+                        temPop.show();
 					}else{
                         temTitle.find('span').html('下发任务失败');
                         temAlert.html(data.message);
+                        temCover.show();
+                        temPop.show();
 					}
                 }
             });
