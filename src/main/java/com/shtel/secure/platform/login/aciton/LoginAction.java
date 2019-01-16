@@ -93,5 +93,22 @@ public class LoginAction {
         userMapper.insert(user);
     }
 
+    @ApiOperation(value = "注册账号", notes = "注册账号")
+    @ApiResponses({
+            @ApiResponse(code = 0, message = "注册账号成功"),
+            @ApiResponse(code = 100, message = "此账号已被注册")
+    })
+    @PostMapping("/register ")
+    public String register (@RequestParam("account") String account, @RequestParam("password") String password) {
+        logger.info("账号注册");
+        User user=new User();
+        user.setAccount(account);
+        if(userMapper.selectOne(user)!=null)
+            return IssueService.Response("此账号已被注册",100,new JSONObject()).toJSONString();
+        user.setPassword(MD5Utils.MD5Encode(password,"utf-8"));
+        userMapper.insertSelective(user);
+        return  IssueService.Response("注册成功",0,new JSONObject()).toJSONString();
+    }
+
 
 }
