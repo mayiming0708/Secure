@@ -46,4 +46,15 @@ public interface PerformMapper extends Mapper<Task> {
             "a.virtual_group_id=b.virtual_group_id\n" +
             "order by a.create_time desc")
     List<Perform> selectWebDetail(@Param("userId") String userId,@Param("isPeriod") int isPeriod);
+
+    @Select("SELECT \n" +
+            "count(a.virtual_group_id)\n" +
+            "FROM \n" +
+            "(SELECT virtual_group_id,create_time,finish_rate,update_time FROM ws_task WHERE user_id=2 and is_success=1 AND is_period=0) a \n" +
+            "LEFT JOIN\n" +
+            "ws_finish_type b\n" +
+            "ON \n" +
+            "a.virtual_group_id=b.virtual_group_id  \n" +
+            "order by a.create_time ")
+    int countWebDetail(@Param("userId") String userId,@Param("isPeriod") int isPeriod);
 }

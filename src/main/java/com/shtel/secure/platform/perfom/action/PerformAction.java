@@ -1,6 +1,7 @@
 package com.shtel.secure.platform.perfom.action;
 
 import com.alibaba.fastjson.JSONObject;
+import com.shtel.secure.platform.perfom.model.Perform;
 import com.shtel.secure.platform.perfom.service.PerformService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @Auther: 陈文强
@@ -33,5 +36,13 @@ public class PerformAction {
         return performService.selectWebDetail(userId,isPeriod);
     }
 
+    @PostMapping("/webListPage")
+    public JSONObject webListPage(@RequestParam("userId") String userId, @RequestParam("isPeriod") Integer isPeriod,@RequestParam("currentPage") Integer currentPage,@RequestParam("pageSize") int pageSize){
+        return performService.selectWebPage(currentPage,pageSize,userId,isPeriod);
+    }
 
+    @PostMapping("/taskListPage")
+    public JSONObject taskListPage(@RequestParam("userId") String userId,@RequestParam("currentPage") Integer currentPage,@RequestParam("pageSize") int pageSize){
+        return performService.selectTaskPage(currentPage,pageSize,userId);
+    }
 }
