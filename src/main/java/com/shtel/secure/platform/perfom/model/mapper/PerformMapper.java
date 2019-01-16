@@ -2,6 +2,7 @@ package com.shtel.secure.platform.perfom.model.mapper;
 
 import com.shtel.secure.platform.issue.model.Task;
 import com.shtel.secure.platform.perfom.model.Perform;
+import com.shtel.secure.platform.perfom.model.PerformReq;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import tk.mybatis.mapper.common.Mapper;
@@ -39,13 +40,13 @@ public interface PerformMapper extends Mapper<Task> {
             "IF(a.finish_rate = 1,a.update_time,NOW()) endTime,\n" +
             "a.finish_rate finishRate\n" +
             "FROM \n" +
-            "(SELECT virtual_group_id,create_time,finish_rate,update_time FROM ws_task WHERE user_id=#{userId} and is_success=1 AND is_period=#{isPeriod}) a \n" +
+            "(SELECT virtual_group_id,create_time,finish_rate,update_time FROM ws_task WHERE user_id=#{userId} and is_success=1) a \n" +
             "LEFT JOIN\n" +
             "ws_finish_type b\n" +
             "ON \n" +
             "a.virtual_group_id=b.virtual_group_id\n" +
             "order by a.create_time desc")
-    List<Perform> selectWebDetail(@Param("userId") String userId,@Param("isPeriod") int isPeriod);
+    List<Perform> selectWebDetail(@Param("userId") String userId);
 
     @Select("SELECT \n" +
             "count(a.virtual_group_id)\n" +
@@ -56,5 +57,45 @@ public interface PerformMapper extends Mapper<Task> {
             "ON \n" +
             "a.virtual_group_id=b.virtual_group_id  \n" +
             "order by a.create_time ")
-    int countWebDetail(@Param("userId") String userId,@Param("isPeriod") int isPeriod);
+    int countWebDetail(@Param("userId") String userId);
+
+    @Select("SELECT " +
+            "COUNT(virtual_group_id)" +
+            " FROM " +
+            "ws_task")
+    int countTask();
+
+    @Select("SELECT " +
+            "SUM(risk_high_count) riskHighCount,SUM(risk_middle_count) riskMiddleCount,SUM(risk_low_count) riskLowCount,COUNT(DISTINCT(url)) urlCount" +
+            " FROM " +
+            "ws_finish_type")
+    PerformReq countWebAndBugCounts();
+
+    @Select("SELECT CEIL(AVG(b.time)/60) " +
+            "FROM " +
+            "(select SUM(UNIX_TIMESTAMP(end_at)-UNIX_TIMESTAMP(start_at)) time,virtual_group_id FROM ws_result_event GROUP BY virtual_group_id) b;")
+    PerformReq getAvgWebTime();
+
+    @Select("SELECT \n" +
+            "name_en nameEn,\n" +
+            "name_cn nameCn\n" +
+            "FROM \n" +
+            "ws_type a\n" +
+            "LEFT JOIN\n" +
+            "ws_risk b\n" +
+            "on a.risk_level_id=b.id \n" +
+            "WHERE b.`level`=8\n")
+    List<PerformReq> getCNENname();
+
+    @Select("SELECT \n" +
+            "if(sum(black_links) is null,0,sum(black_links)) blackLinks,\n" +
+            "if(sum(malscan) is null,0,sum(malscan)) malscan,\n" +
+            "if(sum(sql_injection) is null,0,sum(sql_injection)) sqlInjection,\n" +
+            "if(sum(xss) is null,0,SUM(xss)) xss,\n" +
+            "if(sum(webvul) is NULL,0,SUM(webvul)) webvul,\n" +
+            "if(sum(info_leak) is null,0,sum(info_leak)) infoLeak,\n" +
+            "if(sum(cgi) is null ,0,SUM(cgi)) cgi,\n" +
+            "if(sum(form_crack) is null,0,SUM(form_crack)) formCrack\n" +
+            "FROM ws_finish_type ")
+    PerformReq getBugCount();
 }

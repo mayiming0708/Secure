@@ -7,6 +7,7 @@ import com.shtel.secure.platform.issue.model.Task;
 import com.shtel.secure.platform.issue.model.mapper.TaskMapper;
 import com.shtel.secure.platform.perfom.model.PageBean;
 import com.shtel.secure.platform.perfom.model.Perform;
+import com.shtel.secure.platform.perfom.model.PerformReq;
 import com.shtel.secure.platform.perfom.model.mapper.PerformMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -77,11 +78,10 @@ public class PerformService {
      * <p>根据用户id是否周期查询站点列表</p>
      *
      * @param userId
-     * @param isPeriod
      * @return
      */
-    public JSONObject selectWebDetail(String userId, int isPeriod) {
-        List<Perform> performs = performMapper.selectWebDetail(userId, isPeriod);
+    public JSONObject selectWebDetail(String userId) {
+        List<Perform> performs = performMapper.selectWebDetail(userId);
         JSONObject response = new JSONObject();
         response.put("total", performs.size());
         JSONArray webArray = new JSONArray();
@@ -101,11 +101,11 @@ public class PerformService {
      * @param isPeriod
      * @return
      */
-    public JSONObject selectWebPage(int currentPage, int pageSize, String userId, int isPeriod) {
+    public JSONObject selectWebPage(int currentPage, int pageSize, String userId) {
         //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
         PageHelper.startPage(currentPage, pageSize);
-        List<Perform> performs = performMapper.selectWebDetail(userId, isPeriod);
-        int counts=performMapper.countWebDetail(userId,isPeriod);
+        List<Perform> performs = performMapper.selectWebDetail(userId);
+        int counts=performMapper.countWebDetail(userId);
         PageBean<Perform> pageData = new PageBean<>(currentPage, pageSize, counts);
         pageData.setItems(performs);
         JSONObject response=new JSONObject();
@@ -139,5 +139,22 @@ public class PerformService {
         return response;
     }
 
+    /**
+     * 获取展示页所需数据
+     *
+     * @return
+     */
+    public JSONObject getPerformData(){
+        int taskCounts=performMapper.countTask();
+        PerformReq perform=performMapper.countWebAndBugCounts();
+        int webCounts=perform.getUrlCount();
+        int higBugs=perform.getRiskHighCount();
+        int middleBugs=perform.getRiskMiddleCount();
+        int lowBugs=perform.getRiskLowCount();
+        int bugCounts=higBugs+middleBugs+lowBugs;
+        int userTime=perform.getAvgTime();
+
+        return null;
+    }
 
 }

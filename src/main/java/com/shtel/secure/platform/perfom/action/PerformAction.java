@@ -33,12 +33,12 @@ public class PerformAction {
 
     @PostMapping("/urlList")
     public JSONObject taskList(@RequestParam("userId") String userId,@RequestParam("isPeriod") Integer isPeriod){
-        return performService.selectWebDetail(userId,isPeriod);
+        return performService.selectWebDetail(userId);
     }
 
     @PostMapping("/webListPage")
     public JSONObject webListPage(@RequestParam("userId") String userId, @RequestParam("isPeriod") Integer isPeriod,@RequestParam("currentPage") Integer currentPage,@RequestParam("pageSize") int pageSize){
-        return performService.selectWebPage(currentPage,pageSize,userId,isPeriod);
+        return performService.selectWebPage(currentPage,pageSize,userId);
     }
 
     @PostMapping("/taskListPage")
