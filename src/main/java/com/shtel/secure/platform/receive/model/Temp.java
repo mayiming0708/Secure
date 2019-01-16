@@ -6,15 +6,15 @@ import javax.persistence.Table;
 @Table(name = "temp")
 public class Temp {
     @Id
-    private int id;
+    private Integer id;
 
     private String value;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

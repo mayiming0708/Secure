@@ -54,9 +54,10 @@ public class ResultEventService {
         Example example = new Example(ResultEvent.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("virtualGroupId", virtualGroupId);
-        criteria.andEqualTo("site", url);
-        List<ResultEvent> resultEvents = resultEventMapper.selectByExample(example);
-        return resultEvents;
+        if (url != null && !"".equals(url)) {
+            criteria.andEqualTo("site", url);
+        }
+        return resultEventMapper.selectByExample(example);
     }
 
 

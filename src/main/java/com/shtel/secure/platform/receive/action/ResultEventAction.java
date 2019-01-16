@@ -80,7 +80,7 @@ public class ResultEventAction {
             @ApiImplicitParam(paramType = "query", name = "url", value = "url", required = true, dataType = "String")
     })
     @RequestMapping(value = "/resultEvents", method = RequestMethod.GET)
-    public List<ResultEvent> resultEventByGroupAndUrl(@RequestParam("virtualGroupId") String virtualGroupId, @RequestParam("url") String url) {
+    public List<ResultEvent> resultEventByGroupAndUrl(@RequestParam String virtualGroupId, @RequestParam(required = false) String url) {
         return resultEventService.getResultEventsByGroupAndUrl(virtualGroupId, url);
     }
 }

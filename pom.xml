@@ -90,12 +90,12 @@
             <version>1.2.31</version>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-quartz</artifactId>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-starter-quartz</artifactId>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>org.quartz-scheduler</groupId>-->
-            <!--<artifactId>quartz-jobs</artifactId>-->
+        <!--<groupId>org.quartz-scheduler</groupId>-->
+        <!--<artifactId>quartz-jobs</artifactId>-->
         <!--</dependency>-->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -108,8 +108,8 @@
         </dependency>
         <!--&lt;!&ndash;WebSocket依赖&ndash;&gt;-->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-websocket</artifactId>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-starter-websocket</artifactId>-->
         <!--</dependency>-->
         <!--@Getter @Setter 依赖-->
         <dependency>
@@ -119,8 +119,8 @@
         </dependency>
         <!--配置servlet -->
         <!--<dependency>-->
-            <!--<groupId>javax.servlet</groupId>-->
-            <!--<artifactId>javax.servlet-api</artifactId>-->
+        <!--<groupId>javax.servlet</groupId>-->
+        <!--<artifactId>javax.servlet-api</artifactId>-->
         <!--</dependency>-->
         <!--JSP依赖-->
         <!--添加对tomcat的支持 -->
@@ -193,6 +193,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>websock-server</finalName>
     </build>
 
 </project>

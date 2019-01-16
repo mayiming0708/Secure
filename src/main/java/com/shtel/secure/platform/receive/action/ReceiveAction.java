@@ -1,16 +1,15 @@
 package com.shtel.secure.platform.receive.action;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.shtel.secure.platform.enumType.model.EnumType;
 import com.shtel.secure.platform.finishType.model.FinishType;
 import com.shtel.secure.platform.finishType.service.FinishTypeService;
+import com.shtel.secure.platform.issue.service.IssueService;
 import com.shtel.secure.platform.receive.model.ResultEvent;
 import com.shtel.secure.platform.receive.service.ResultEventService;
 import com.shtel.secure.platform.risk.model.Risk;
 import com.shtel.secure.platform.risk.service.RiskService;
-import com.shtel.secure.platform.riskLevel.model.RiskLevel;
 import com.shtel.secure.platform.riskLevel.service.RiskLevelService;
 import com.shtel.secure.platform.type.model.Type;
 import com.shtel.secure.platform.type.service.TypeService;
@@ -19,7 +18,10 @@ import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,6 +48,8 @@ public class ReceiveAction {
     private RiskLevelService riskLevelService;
     @Autowired
     private RiskService riskService;
+    @Autowired
+    private IssueService issueService;
 
 
     /**
@@ -76,7 +80,6 @@ public class ReceiveAction {
             resultEvent.setVirtualGroupId(oneJsonObject.getString("virtual_group_id"));
 
             JSONArray values = oneJsonObject.getJSONArray("values");
-            resultEvent.setValue(values.toString());
             resultEvent.setTotal(oneJsonObject.getString("total"));
             resultEvent.setStartAt(simpleDateFormat.parse(oneJsonObject.getString("start_at")));
             resultEvent.setTaskId(oneJsonObject.getString("task_id"));
@@ -91,9 +94,6 @@ public class ReceiveAction {
             resultEvent.setSite(oneJsonObject.getString("site"));
             resultEvent.setEndAt(simpleDateFormat.parse(oneJsonObject.getString("end_at")));
             resultEvent.setReportUrl(oneJsonObject.getString("report_url"));
-
-            resultEventService.resultEventInsert(resultEvent);
-
 
             //结果存入finishtype
             FinishType finishType = new FinishType();
@@ -123,9 +123,9 @@ public class ReceiveAction {
             Integer lowLevel = riskLevelService.getRiskLevel("low").getLevel();
             Integer infoLevel = riskLevelService.getRiskLevel("info").getLevel();
 
+            JSONArray resultValues = new JSONArray();
 
             //解析values
-
             for (Object object : values) {
                 JSONObject jsonObject = (JSONObject) object;
 
@@ -152,59 +152,103 @@ public class ReceiveAction {
                     if (riskLevel != null) {
                         if (riskLevel >= highLevel) {
                             riskHighCount++;
+                            jsonObject.put("risk_level", highLevel);
                         } else if (riskLevel >= middleLevel) {
                             riskMiddleCount++;
+                            jsonObject.put("risk_level", middleLevel);
                         } else if (riskLevel >= lowLevel) {
                             riskLowCount++;
+                            jsonObject.put("risk_level", lowLevel);
                         } else if (riskLevel >= infoLevel) {
                             riskInfoCount++;
+                            jsonObject.put("risk_level", infoLevel);
                         }
                     }
 
                     switch (jsonObject.getString("type")) {
                         case "siteinfo":
-                            finishType.setSiteinfo(id);
+                            if(finishType.getSiteinfo()==null){
+                                finishType.setSiteinfo(0);
+                            }
+                            finishType.setSiteinfo(finishType.getSiteinfo()+1);
                             break;
                         case "availability":
-                            finishType.setAvailability(id);
+                            if (finishType.getAvailability() == null) {
+                                finishType.setAvailability(0);
+                            }
+                            finishType.setAvailability(finishType.getAvailability()+1);
                             break;
                         case "blackLinks":
-                            finishType.setBlackLinks(id);
+                            if (finishType.getBlackLinks() == null) {
+                                finishType.setBlackLinks(0);
+                            }
+                            finishType.setBlackLinks(finishType.getBlackLinks()+1);
                             break;
                         case "malscan":
-                            finishType.setMalscan(id);
+                            if (finishType.getMalscan() == null) {
+                                finishType.setMalscan(0);
+                            }
+                            finishType.setMalscan(finishType.getMalscan()+1);
                             break;
                         case "keyword":
-                            finishType.setKeyword(id);
+                            if (finishType.getKeyword() == null) {
+                                finishType.setKeyword(0);
+                            }
+                            finishType.setKeyword(finishType.getKeyword()+1);
                             break;
                         case "sql":
-                            finishType.setSqlInjection(id);
+                            if (finishType.getSqlInjection() == null) {
+                                finishType.setSqlInjection(0);
+                            }
+                            finishType.setSqlInjection(finishType.getSqlInjection()+1);
                             break;
                         case "xss":
-                            finishType.setXss(id);
+                            if (finishType.getXss() == null) {
+                                finishType.setXss(0);
+                            }
+                            finishType.setXss(finishType.getXss()+1);
                             break;
                         case "webvul":
-                            finishType.setWebvul(id);
+                            if (finishType.getWebvul() == null) {
+                                finishType.setWebvul(0);
+                            }
+                            finishType.setWebvul(finishType.getWebvul()+1);
                             break;
                         case "infoLeak":
-                            finishType.setInfoLeak(id);
+                            if (finishType.getInfoLeak() == null) {
+                                finishType.setInfoLeak(0);
+                            }
+                            finishType.setInfoLeak(finishType.getInfoLeak()+1);
                             break;
                         case "cgi":
-                            finishType.setCgi(id);
+                            if (finishType.getCgi() == null) {
+                                finishType.setCgi(0);
+                            }
+                            finishType.setCgi(finishType.getCgi()+1);
                             break;
                         case "csrf":
-                            finishType.setCsrf(id);
+                            if (finishType.getCsrf() == null) {
+                                finishType.setCsrf(0);
+                            }
+                            finishType.setCsrf(finishType.getCsrf()+1);
                             break;
                         case "formCrack":
-                            finishType.setFormCrack(id);
+                            if (finishType.getFormCrack() == null) {
+                                finishType.setFormCrack(0);
+                            }
+                            finishType.setFormCrack(finishType.getFormCrack()+1);
                             break;
                     }
+                    resultValues.add(jsonObject);
 
                 } catch (Exception e) {
                     logger.info("|解析" + jsonObject + "失败：" + e);
                 }
 
+
             }
+
+            resultEvent.setValue(resultValues.toJSONString());
 
             finishType.setRiskHighCount(riskHighCount);
             finishType.setRiskMiddleCount(riskMiddleCount);
@@ -212,7 +256,13 @@ public class ReceiveAction {
             finishType.setRiskInfoCount(riskInfoCount);
             finishType.setRiskUrlCount(riskUrlCount);
             finishType.setScore(resultEventService.calculationScore(finishType));
+
+            //插入一条结果记录
+            resultEventService.resultEventInsert(resultEvent);
+            //更新finishtype记录
             finishTypeService.updateFinishType(finishType);
+
+            issueService.updateFinishRate(oneJsonObject.getString("virtual_group_id"));
         } catch (Exception e) {
             logger.info("|回调接口接收数据失败：" + e);
         }
