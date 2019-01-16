@@ -92,6 +92,15 @@ public class PerformService {
         return response;
     }
 
+    /**
+     * <p>根据用户id是否周期查询站点列表（分页）</p>
+     *
+     * @param currentPage
+     * @param pageSize
+     * @param userId
+     * @param isPeriod
+     * @return
+     */
     public JSONObject selectWebPage(int currentPage, int pageSize, String userId, int isPeriod) {
         //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
         PageHelper.startPage(currentPage, pageSize);
@@ -100,14 +109,19 @@ public class PerformService {
         PageBean<Perform> pageData = new PageBean<>(currentPage, pageSize, counts);
         pageData.setItems(performs);
         JSONObject response=new JSONObject();
-        response.put("currentPage",pageData.getCurrentPage());
-        response.put("pageSize",pageData.getPageSize());
-        response.put("totalPage",pageData.getTotalPage());
-        response.put("startIndex",pageData.getStartIndex());
-        response.put("data",pageData.getItems());
+        response.put("total",counts);
+        response.put("rows",pageData.getItems());
         return response;
     }
 
+    /**
+     * <p>根据用户Id查询所有任务(分页)</p>
+     *
+     * @param currentPage
+     * @param pageSize
+     * @param userId
+     * @return
+     */
     public JSONObject selectTaskPage(int currentPage, int pageSize, String userId) {
         //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
         PageHelper.startPage(currentPage, pageSize);
@@ -120,11 +134,8 @@ public class PerformService {
         PageBean<Task> pageData = new PageBean<>(currentPage, pageSize, counts);
         pageData.setItems(tasks);
         JSONObject response=new JSONObject();
-        response.put("currentPage",pageData.getCurrentPage());
-        response.put("pageSize",pageData.getPageSize());
-        response.put("totalPage",pageData.getTotalPage());
-        response.put("startIndex",pageData.getStartIndex());
-        response.put("data",pageData.getItems());
+        response.put("total",counts);
+        response.put("rows",pageData.getItems());
         return response;
     }
 

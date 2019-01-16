@@ -282,11 +282,19 @@ public class IssueService {
             JSONObject result = response.getJSONObject("result");
             task.setVirtualGroupId(result.getString("virtual_group_id"));
             task.setIsSuccess(1);
+            task.setMessage(response.getString("message"));
         } else {
             //若下发不成功，virtual_group_id为下发任务时间戳
             task.setIsSuccess(0);
+            JSONObject messageJSON=response.getJSONObject("message");
+            if(messageJSON.keySet().size()==0) {
+                task.setMessage(response.getJSONObject("message").toJSONString());
+            }else{
+                for (String key:messageJSON.keySet()){
+                    task.setMessage((response.getJSONObject("message")).getJSONArray(key).getString(0));
+                }
+            }
         }
-        task.setMessage(response.getString("message"));
         task.setUserId(Integer.parseInt(userId));
     }
 
