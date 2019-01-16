@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -66,8 +67,10 @@ public class LoginAction {
         if (result2!=null) {
             request.getSession().setAttribute("USERID", result.getId());
             request.getSession().setMaxInactiveInterval(60 * 30);
+            JSONObject uesrJSON=new JSONObject();
+            uesrJSON.put("USERID",result.getId());
             logger.info("登录成功");
-            return IssueService.Response("登录成功", 0, new JSONObject()).toJSONString();
+            return IssueService.Response("登录成功", 0, uesrJSON).toJSONString();
         }
         return IssueService.Response("密码错误，请重新输入", 100, new JSONObject()).toJSONString();
     }
@@ -88,6 +91,23 @@ public class LoginAction {
         user.setAccount(account);
         user.setPassword(MD5Utils.MD5Encode(password,"utf-8"));
         userMapper.insert(user);
+    }
+
+    @ApiOperation(value = "注册账号", notes = "注册账号")
+    @ApiResponses({
+            @ApiResponse(code = 0, message = "注册账号成功"),
+            @ApiResponse(code = 100, message = "此账号已被注册")
+    })
+    @PostMapping("/register ")
+    public String register (@RequestParam("account") String account, @RequestParam("password") String password) {
+        logger.info("账号注册");
+        User user=new User();
+        user.setAccount(account);
+        if(userMapper.selectOne(user)!=null)
+            return IssueService.Response("此账号已被注册",100,new JSONObject()).toJSONString();
+        user.setPassword(MD5Utils.MD5Encode(password,"utf-8"));
+        userMapper.insertSelective(user);
+        return  IssueService.Response("注册成功",0,new JSONObject()).toJSONString();
     }
 
 

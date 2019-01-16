@@ -1,5 +1,7 @@
 //页面获取用户cookie值
 $(function(){
+    //进入页面判断cookie是否存在
+    judgeCookie();
     //取出cookie中用户名
     var username=getCookie("username");
     console.log(username);
@@ -20,12 +22,15 @@ $(function(){
                 window.location.href="index";
             }
         });
-    })
+    });
+
 })
-
-
-
-
+//判断页面是否有cookie值 没有的话跳转登录页
+function judgeCookie(){
+    if(getCookie('username')==null||getCookie('username')==''||getCookie('username')==undefined){
+        window.location.href="index";
+    }
+}
 
 //获取cookie
 function getCookie(name){
