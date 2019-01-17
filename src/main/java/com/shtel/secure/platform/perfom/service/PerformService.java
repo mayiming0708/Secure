@@ -1,5 +1,6 @@
 package com.shtel.secure.platform.perfom.service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
@@ -15,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * @Auther: 陈文强
@@ -98,19 +99,18 @@ public class PerformService {
      * @param currentPage
      * @param pageSize
      * @param userId
-     * @param isPeriod
      * @return
      */
     public JSONObject selectWebPage(int currentPage, int pageSize, String userId) {
         //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
         PageHelper.startPage(currentPage, pageSize);
         List<Perform> performs = performMapper.selectWebDetail(userId);
-        int counts=performMapper.countWebDetail(userId);
+        int counts = performMapper.countWebDetail(userId);
         PageBean<Perform> pageData = new PageBean<>(currentPage, pageSize, counts);
         pageData.setItems(performs);
-        JSONObject response=new JSONObject();
-        response.put("total",counts);
-        response.put("rows",pageData.getItems());
+        JSONObject response = new JSONObject();
+        response.put("total", counts);
+        response.put("rows", pageData.getItems());
         return response;
     }
 
@@ -130,12 +130,12 @@ public class PerformService {
         criteria.andEqualTo("userId", userId);
         example.setOrderByClause("create_time DESC");
         List<Task> tasks = taskMapper.selectByExample(example);
-        int counts=taskMapper.selectCountByExample(example);
+        int counts = taskMapper.selectCountByExample(example);
         PageBean<Task> pageData = new PageBean<>(currentPage, pageSize, counts);
         pageData.setItems(tasks);
-        JSONObject response=new JSONObject();
-        response.put("total",counts);
-        response.put("rows",pageData.getItems());
+        JSONObject response = new JSONObject();
+        response.put("total", counts);
+        response.put("rows", pageData.getItems());
         return response;
     }
 
@@ -144,17 +144,62 @@ public class PerformService {
      *
      * @return
      */
-    public JSONObject getPerformData(){
-        int taskCounts=performMapper.countTask();
-        PerformReq perform=performMapper.countWebAndBugCounts();
-        int webCounts=perform.getUrlCount();
-        int higBugs=perform.getRiskHighCount();
-        int middleBugs=perform.getRiskMiddleCount();
-        int lowBugs=perform.getRiskLowCount();
-        int bugCounts=higBugs+middleBugs+lowBugs;
-        int userTime=perform.getAvgTime();
-
-        return null;
+    public JSONObject getPerformData() {
+        int taskCounts = performMapper.countTask();
+        PerformReq perform = performMapper.countWebAndBugCounts();
+        int webCounts = perform.getUrlCount();
+        int higBugs = perform.getRiskHighCount();
+        int middleBugs = perform.getRiskMiddleCount();
+        int lowBugs = perform.getRiskLowCount();
+        int availabilityCount = perform.getAvailabilityCount();
+        int siteinfoCount = perform.getSiteinfoCount();
+        int bugCounts = higBugs + middleBugs + lowBugs;
+        int useTime = perform.getAvgTime();
+        PerformReq performReq = performMapper.getBugCount();
+        Map<String, Integer> map = new HashMap<>();
+        map.put("暗链", performReq.getBlackLinks());
+        map.put("挂马", performReq.getMalscan());
+        map.put("sql注入", performReq.getSqlInjection());
+        map.put("XSS跨站脚本漏洞", performReq.getXss());
+        map.put("应用漏洞", performReq.getWebvul());
+        map.put("信息泄露", performReq.getInfoLeak());
+        map.put("CGI漏洞", performReq.getCgi());
+        map.put("表单破解漏洞", performReq.getFormCrack());
+        JSONArray bugTop = new JSONArray();
+        List<Map.Entry<String, Integer>> mapList = new ArrayList<>(map.entrySet());
+        Collections.sort(mapList, new Comparator<Map.Entry<String, Integer>>() {
+            //升序排序
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                return o1.getValue().compareTo(o2.getValue());
+            }
+        });
+        Collections.reverse(mapList);
+        for(Map.Entry<String, Integer> mapping:mapList) {
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put(mapping.getKey(),mapping.getValue());
+            bugTop.add(jsonObject);
+        }
+        JSONObject response = new JSONObject();
+        response.put("taskCounts", taskCounts);
+        response.put("webCounts", webCounts);
+        response.put("higBugs", higBugs);
+        response.put("middleBugs", middleBugs);
+        response.put("lowBugs", lowBugs);
+        response.put("availabilityCount", availabilityCount);
+        response.put("siteinfoCount", siteinfoCount);
+        response.put("bugCounts", bugCounts);
+        response.put("topBug", bugTop);
+        response.put("avgUseTime",useTime);
+        List<PerformReq> urlTop = performMapper.getTopUrl();
+        JSONArray topURL = new JSONArray();
+        for (PerformReq performReq1 : urlTop) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("url", performReq1.getUrl());
+            jsonObject.put("score", performReq1.getScore());
+            topURL.add(jsonObject);
+        }
+        response.put("topURL", topURL);
+        return response;
     }
 
 }

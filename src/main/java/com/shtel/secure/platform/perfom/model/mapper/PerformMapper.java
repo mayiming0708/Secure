@@ -65,10 +65,10 @@ public interface PerformMapper extends Mapper<Task> {
             "ws_task")
     int countTask();
 
-    @Select("SELECT " +
-            "SUM(risk_high_count) riskHighCount,SUM(risk_middle_count) riskMiddleCount,SUM(risk_low_count) riskLowCount,COUNT(DISTINCT(url)) urlCount" +
-            " FROM " +
-            "ws_finish_type")
+    @Select("SELECT SUM(siteinfo) siteinfoCount,SUM(availability) availabilityCount," +
+            "SUM(risk_high_count) riskHighCount,SUM(risk_middle_count) riskMiddleCount," +
+            "SUM(risk_low_count) riskLowCount,COUNT(DISTINCT(url)) urlCount" +
+            " FROM ws_finish_type;")
     PerformReq countWebAndBugCounts();
 
     @Select("SELECT CEIL(AVG(b.time)/60) " +
@@ -98,4 +98,7 @@ public interface PerformMapper extends Mapper<Task> {
             "if(sum(form_crack) is null,0,SUM(form_crack)) formCrack\n" +
             "FROM ws_finish_type ")
     PerformReq getBugCount();
+
+    @Select("SELECT url,Max(score) score FROM ws_finish_type GROUP BY url ORDER BY score DESC")
+    List<PerformReq> getTopUrl();
 }

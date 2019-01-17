@@ -9,6 +9,8 @@ public class PerformReq {
     private int riskHighCount;
     private int riskMiddleCount;
     private int riskLowCount;
+    private int siteinfoCount;
+    private int availabilityCount;
     private int urlCount;
     private int avgTime;
     private String nameEn;
@@ -21,6 +23,8 @@ public class PerformReq {
     private int infoLeak;
     private int cgi;
     private int formCrack;
+    private String url;
+    private int score;
 
     public int getRiskHighCount() {
         return riskHighCount;
@@ -44,6 +48,22 @@ public class PerformReq {
 
     public void setRiskLowCount(int riskLowCount) {
         this.riskLowCount = riskLowCount;
+    }
+
+    public int getSiteinfoCount() {
+        return siteinfoCount;
+    }
+
+    public void setSiteinfoCount(int siteinfoCount) {
+        this.siteinfoCount = siteinfoCount;
+    }
+
+    public int getAvailabilityCount() {
+        return availabilityCount;
+    }
+
+    public void setAvailabilityCount(int availabilityCount) {
+        this.availabilityCount = availabilityCount;
     }
 
     public int getUrlCount() {
@@ -140,5 +160,21 @@ public class PerformReq {
 
     public void setFormCrack(int formCrack) {
         this.formCrack = formCrack;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }
