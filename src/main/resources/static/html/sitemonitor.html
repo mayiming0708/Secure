@@ -437,22 +437,18 @@
 					<div class="col-lg-12 task-search">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								下发任务查询
+								监测网站查询
 							</div>
 							<div class="panel-body">
 								<div class="row">
 									<div class="form-group col-sm-3 task-type-progress">
-										<label for="name">任务类型:<p class="prompt"></p></label>
-										<select name="task-type-choose">
-											<option value="">--请选择--</option>
-											<option value="临时任务">临时任务</option>
-											<option value="周期任务">周期任务</option>
-										</select>
+										<label for="site-name">网站名称<p class="prompt"></p></label>
+										<input type="text" id="site-name">
 									</div>
-									<div class="form-group col-sm-3 task-time">
-										<label for="name">任务下发时间:<p class="prompt"></p></label>
-										<input type="text" id="datepicker">
-									</div>
+									<!--<div class="form-group col-sm-3 task-time">-->
+										<!--<label for="name">任务下发时间:<p class="prompt"></p></label>-->
+										<!--<input type="text" id="datepicker">-->
+									<!--</div>-->
 									<div class="form-group col-sm-3 pull-right text-right task-search-btn">
 										<button type="button" id="resetBtn" class="btn btn-danger btnAll">重置</button>
 										<button type="button" id="queryBtn" class="btn btn-warning btnAll">查询</button>
@@ -533,21 +529,21 @@
 		<script src="/static/js/bootstrap-select.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/static/js/common.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
+            var userId=getCookie("userId");
 			//网站监测table
 			var tableSite = $("#site-check-table");
 			$(function(){
+                judgeCookie();
 				siteCheck();
 			})
 			//网站表初始化
 			function siteCheck(){
 				tableSite.bootstrapTable('destroy');
 				tableSite.bootstrapTable({
-					//gau请求地址,此处数据为本地加载
-					url: "/static/json/tableSite.json",
-					//请求方式
-					method: "GET",
-					//table高度：如果没有设置，表格自动根据记录条数觉得表格高度
-					//	    	height: '582',
+                    url: "/perform/webListPage",
+                    method:"post",
+                    dataType:"json",
+                    contentType: "application/x-www-form-urlencoded",
 					//是否显示行间隔色
 					toolbar: '#toolbar', //工具按钮用哪个容器
 					striped: true, //是否显示行间隔色
@@ -571,26 +567,34 @@
 					showToggle: true, //是否显示详细视图和列表视图的切换按钮
 					cardView: false, //是否显示详细视图
 					detailView: false,
+                    queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的
+                        return {//这里的params是table提供的
+                            currentPage: params.offset/params.limit+1,
+                            pageSize: params.limit,//找多少条
+                            userId:userId,
+                            // isPeriod:0
+                        };
+                    },
 					//表头
 						columns: [{
 						title: '站点',
-						field: 'site', //id
+						field: 'url', //id
 						//	    		checkbox: true, //checkbox
 						align: 'center', //对其方式
 						valign: 'middle' //对其方式
 					}, {
 						title: '风险值',
-						field: 'faq',
+						field: 'score',
 						align: 'center',
 						valign: 'middle',
 					}, {
 						title: '暗链',
-						field: 'black_links',
+						field: 'blackLinks',
 						align: 'center',
 						valign: 'middle'
 					}, {
-						title: '挂马',
-						field: 'malscan',
+						title: '站点信息',
+						field: 'siteinfo',
 						align: 'center',
 						valign: 'middle'
 					}, {
@@ -600,7 +604,7 @@
 						valign: 'middle'
 					}, {
 						title: 'SQL注入漏洞',
-						field: 'sql',
+						field: 'sqlInjection',
 						align: 'center',
 						valign: 'middle'
 					}, {
@@ -615,7 +619,7 @@
 						valign: 'middle'
 					}, {
 						title: '信息泄露',
-						field: 'info_leak',
+						field: 'infoLeak',
 						align: 'center',
 						valign: 'middle'
 					}, {
@@ -630,12 +634,12 @@
 						valign: 'middle'
 					}, {
 						title: '表单破解漏洞',
-						field: 'form_crack',
+						field: 'formCrack',
 						align: 'center',
 						valign: 'middle'
 					},{
 			    		title:"任务ID",
-			    		field:"task_id",
+			    		field:"virtualGroupId",
 			    		align: 'center',
 						valign: 'middle'
 			    	},{

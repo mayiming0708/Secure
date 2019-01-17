@@ -439,8 +439,12 @@
 									<a href="#ablity" data-toggle="tab">可用性</a>
 								</li>
 								<li>
+									<a href="#safety" data-toggle="tab">安全事件</a>
+								</li>
+								<li>
 									<a href="#leak" data-toggle="tab">漏洞</a>
-									<li class="pull-left header"><i class="fa fa-inbox"></i>158932899</li>
+								</li>
+								<li class="pull-left header"><i class="fa fa-inbox"></i><span></span></li>
 							</ul>
 							<div class="tab-content no-padding">
 								<div class="tab-pane active" id="summary">
@@ -491,6 +495,34 @@
 											<div class="panel panel-default ablity-chart">
 												<div class="panel-heading">
 													可用性检测分析图
+												</div>
+												<div class="panel-body">
+
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="tab-pane" id="safety">
+									<div class="row">
+										<div class="col-lg-12">
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													安全事件检测列表
+												</div>
+												<div class="panel-body">
+													<table class="table table-bordered table-striped table-condensed" id="task-safety-table">
+
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-lg-12">
+											<div class="panel panel-default leak-chart">
+												<div class="panel-heading">
+													安全事件检测分析图
 												</div>
 												<div class="panel-body">
 
@@ -564,20 +596,54 @@
 		<script src="/static/js/bootstrap-table.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/static/js/bootstrap-table-zh-CN.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/static/js/bootstrap-select.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/js/common.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
+			//获取此任务的详细信息 读取url后面传过来的id参数
+            function GetQueryString(name)
+            {
+                var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);//search,查询？后面的参数，并匹配正则
+                if(r!=null)return  unescape(r[2]); return null;
+            }
+            // var id=GetQueryString("id");
+            // var taskId=getCookie(id);
+            var taskId=GetQueryString("id");
 			//概述table
 			var tableSummary = $("#task-summary-table");
 			var tableAbility= $("#task-abilty-table");
 			var tableLeak=$("#task-leak-table");
+            var tableSafe=$("#task-safety-table");
 			$(function() {
+                judgeCookie();
 				//概述表
 				tableInit();
 				//可用性表
 				abilityTable();
 				//漏洞表格
 				leakTable();
+
 				tableSummary.bootstrapTable('hideLoading');
+				//任务详情接口
+                getTaskDetail();
+                //任务名称填充
+				$(".task-detail .nav .header span").html(taskId);
 			})
+			//获取该任务id的详细信息
+			function getTaskDetail(){
+                $.ajax({
+                    type:"get",
+					url:"/static/json/data1.json",
+                    // url:"/service/resultEvents?virtualGroupId="+taskId,
+                    // xhrFields: {withCredentials: true},
+                    // dataType: "json",
+                    async:true,
+                    success:function(data){
+                        // console.log(data);
+                        //从data中获取可用性 安全事件 漏洞的值
+						taskItemDetail(data);
+                    }
+                });
+			}
 			//概述表初始化
 			function tableInit() {
 				tableSummary.bootstrapTable('destroy');
@@ -652,71 +718,66 @@
 				})
 			}
 			//可用性表初始化
-			function abilityTable(){
+			function abilityTable(abilityData){
 				tableAbility.bootstrapTable('destroy');
 				tableAbility.bootstrapTable({
 					//gau请求地址,此处数据为本地加载
-					url: "/static/json/tableAbility.json",
+					url: "",
 					//请求方式
-					method: "GET",
-					//table高度：如果没有设置，表格自动根据记录条数觉得表格高度
-					//	    	height: '582',
-					//是否显示行间隔色
-					toolbar: '#toolbar', //工具按钮用哪个容器
-					striped: true, //是否显示行间隔色
-					cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-					pagination: true, //是否显示分页（*）
-					sortable: false, //是否启用排序
-					sortOrder: "asc", //排序方式
-					//          queryParams: oTableInit.queryParams,//传递参数（*）
-					sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
-					pageNumber: 1, //初始化加载第一页，默认第一页
-					pageSize: 10, //每页的记录行数（*）
-					pageList: [10, 25, 50, 100], //可供选择的每页的行数（*）
-					search: true, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
-					strictSearch: true,
-					showColumns: true, //是否显示所有的列
-					showRefresh: true, //是否显示刷新按钮
-					minimumCountColumns: 2, //最少允许的列数
-					clickToSelect: true, //是否启用点击选中行
-					//          height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
-					uniqueId: "ID", //每一行的唯一标识，一般为主键列
-					showToggle: true, //是否显示详细视图和列表视图的切换按钮
-					cardView: false, //是否显示详细视图
-					detailView: false,
-					//表头
-					columns: [{
-						title: '站点',
-						field: 'site', //id
-						//	    		checkbox: true, //checkbox
-						align: 'center', //对其方式
-						valign: 'middle' //对其方式
-					}, {
-						title: '开始检测时间',
-						field: 'startTime',
-						align: 'center',
-						valign: 'middle',
-					}, {
-						title: '结束检测时间',
-						field: 'endTime',
-						align: 'center',
-						valign: 'middle'
-					}, {
-						title: '历史',
-						field: 'history',
-						align: 'center',
-						valign: 'middle'
-					}, {
-						title: '异常累计',
-						field: 'errorCount',
-						align: 'center',
-						valign: 'middle'
-					}, {
-						title: '最近状态',
-						field: 'status',
-						align: 'center',
-						valign: 'middle'
-					}],
+                    method: 'get',
+                    cache: false,
+                    // height: 400,
+                    striped: true,
+                    pagination: true,
+                    pageSize: 10,
+                    pageNumber:1,
+                    pageList: [10, 20, 50, 100, 200, 500],
+					sidePagination:'client',
+                    search: true,
+                    showColumns: true,
+                    showRefresh: false,
+                    showExport: false,
+                    exportTypes: ['csv','txt','xml'],
+                    search: true,
+                    clickToSelect: true,
+                    columns:
+                        [
+                            {field:"site",title:"检测站点",align:"center",valign:"middle",sortable:"true"},
+                            {field:"startAt",title:"开始测试时间",align:"center",valign:"middle",sortable:"true"},
+                            {field:"endAt",title:"结束检测时间",align:"center",valign:"middle",sortable:"true"},
+                            {
+                                field:"value",
+								title:"dns响应状态",
+								align:"center",
+								valign:"middle",
+								sortable:"true",
+								formatter:function(value,row,index){
+									var dns=value[0].value['dns_hijack'].hijacked;
+									if(dns==false){
+										return "无DNS劫持";
+									}else{
+                                        return "DNS响应异常";
+									}
+								}
+							},
+                            {
+                                field:"value",
+								title:"HTTP响应状态",
+								align:"center",
+								valign:"middle",
+								sortable:"true",
+                                formatter:function(value,row,index){
+                                    var http=value[0].value['http_get'].status;
+                                    console.log(http);
+                                    if(http==200){
+                                        return "正常";
+                                    }else{
+                                        return "异常";
+                                    }
+                                }
+							},
+                        ],
+                    data:abilityData,
 					onLoadSuccess: function(res) { //可不写
 						//加载成功时
 						console.log(res);
@@ -735,111 +796,137 @@
 				})
 			}
 			//漏洞表初始化
-			function leakTable(){
+			function leakTable(weaknessData){
 				tableLeak.bootstrapTable('destroy');
 				tableLeak.bootstrapTable({
 					//gau请求地址,此处数据为本地加载
-					url: "/static/json/tableLeak.json",
-					//请求方式
-					method: "GET",
-					//table高度：如果没有设置，表格自动根据记录条数觉得表格高度
-					//	    	height: '582',
-					//是否显示行间隔色
-					toolbar: '#toolbar', //工具按钮用哪个容器
-					striped: true, //是否显示行间隔色
-					cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-					pagination: true, //是否显示分页（*）
-					sortable: false, //是否启用排序
-					sortOrder: "asc", //排序方式
-					//          queryParams: oTableInit.queryParams,//传递参数（*）
-					sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
-					pageNumber: 1, //初始化加载第一页，默认第一页
-					pageSize: 10, //每页的记录行数（*）
-					pageList: [10, 25, 50, 100], //可供选择的每页的行数（*）
-					search: true, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
-					strictSearch: true,
-					showColumns: true, //是否显示所有的列
-					showRefresh: true, //是否显示刷新按钮
-					minimumCountColumns: 2, //最少允许的列数
-					clickToSelect: true, //是否启用点击选中行
-					//          height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
-					uniqueId: "ID", //每一行的唯一标识，一般为主键列
-					showToggle: true, //是否显示详细视图和列表视图的切换按钮
-					cardView: false, //是否显示详细视图
-					detailView: false,
-					//表头
-					columns: [{
-						title: '站点',
-						field: 'site', //id
-						//	    		checkbox: true, //checkbox
-						align: 'center', //对其方式
-						valign: 'middle' //对其方式
-					}, {
-						title: '开始检测时间',
-						field: 'startTime',
-						align: 'center',
-						valign: 'middle',
-					}, {
-						title: '结束检测时间',
-						field: 'endTime',
-						align: 'center',
-						valign: 'middle'
-					}, {
-						title: '暗链',
-						field: 'black_links',
-						align: 'center',
-						valign: 'middle'
-					}, {
-						title: '挂马',
-						field: 'malscan',
-						align: 'center',
-						valign: 'middle'
-					}, {
-						title: '关键词',
-						field: 'keyword',
-						align: 'center',
-						valign: 'middle'
-					}, {
-						title: 'SQL注入漏洞',
-						field: 'sql',
-						align: 'center',
-						valign: 'middle'
-					}, {
-						title: 'XSS跨站脚本漏洞',
-						field: 'xss',
-						align: 'center',
-						valign: 'middle'
-					}, {
-						title: '应用漏洞',
-						field: 'webvul',
-						align: 'center',
-						valign: 'middle'
-					}, {
-						title: '信息泄露',
-						field: 'info_leak',
-						align: 'center',
-						valign: 'middle'
-					}, {
-						title: 'CGI漏洞',
-						field: 'cgi',
-						align: 'center',
-						valign: 'middle'
-					}, {
-						title: 'CSRF跨站请求伪造漏洞',
-						field: 'csrf',
-						align: 'center',
-						valign: 'middle'
-					}, {
-						title: '表单破解漏洞',
-						field: 'form_crack',
-						align: 'center',
-						valign: 'middle'
-					},{
-			    		title:"操作",
-			    		field:"Button",
-			    		events:"operateEvents",
-			    		formatter:"AddFunctionAlty"
-			    	}],
+                    url: "",
+                    //请求方式
+                    method: 'get',
+                    cache: false,
+                    // height: 400,
+                    striped: true,
+                    pagination: true,
+                    pageSize: 10,
+                    pageNumber:1,
+                    pageList: [10, 20, 50, 100, 200, 500],
+                    sidePagination:'client',
+                    search: true,
+                    showColumns: true,
+                    showRefresh: false,
+                    showExport: false,
+                    exportTypes: ['csv','txt','xml'],
+                    search: true,
+                    clickToSelect: true,
+                    columns:
+                        [
+                            {field:"site",title:"检测站点",align:"center",valign:"middle",sortable:"true"},
+
+                            {
+                                field:"value",
+                                title:"CGI",
+                                align:"center",
+                                valign:"middle",
+                                sortable:"true",
+                                formatter:function(value,row,index){
+                                    var cgi=0;
+                                  for(var i=0;i<value.length;i++){
+										if(value[i].type=="CGI"){
+                                            cgi=cgi+1;
+										}
+								  }
+								  return cgi;
+                                }
+                            },
+                            {
+                                field:"value",
+                                title:"应用漏洞",
+                                align:"center",
+                                valign:"middle",
+                                sortable:"true",
+                                formatter:function(value,row,index){
+                                    var webvul=0;
+                                    for(var i=0;i<value.length;i++){
+                                        if(value[i].type=="webvul"){
+                                            webvul=webvul+1;
+                                        }
+                                    }
+                                    return webvul;
+                                }
+                            },
+                            {
+                                field:"value",
+                                title:"CSRF",
+                                align:"center",
+                                valign:"middle",
+                                sortable:"true",
+                                formatter:function(value,row,index){
+                                    var CSRF=0;
+                                    for(var i=0;i<value.length;i++){
+                                        if(value[i].type=="CSRF"){
+                                            CSRF=CSRF+1;
+                                        }
+                                    }
+                                    return CSRF;
+                                }
+                            },
+                            {
+                                field:"value",
+                                title:"SQL注入",
+                                align:"center",
+                                valign:"middle",
+                                sortable:"true",
+                                formatter:function(value,row,index){
+                                    var sql=0;
+                                    for(var i=0;i<value.length;i++){
+                                        if(value[i].type=="sql"){
+                                            sql=sql+1;
+                                        }
+                                    }
+                                    return sql;
+                                }
+                            },
+                            {
+                                field:"value",
+                                title:"XSS",
+                                align:"center",
+                                valign:"middle",
+                                sortable:"true",
+                                formatter:function(value,row,index){
+                                    var xss=0;
+                                    for(var i=0;i<value.length;i++){
+                                        if(value[i].type=="xss"){
+                                            xss=xss+1;
+                                        }
+                                    }
+                                    return xss;
+                                }
+                            },
+                            {
+                                field:"value",
+                                title:"表单破解",
+                                align:"center",
+                                valign:"middle",
+                                sortable:"true",
+                                formatter:function(value,row,index){
+                                    var statistics=0;
+                                    for(var i=0;i<value.length;i++){
+                                        if(value[i].type=="statistics"){
+                                            statistics=statistics+1;
+                                        }
+                                    }
+                                    return statistics;
+                                }
+                            },
+                            {field:"endAt",title:"结束检测时间",align:"center",valign:"middle",sortable:"true"},
+                            {
+                            title:"操作",
+                            field:"Button",
+                            events:"operateEvents",
+                            formatter:"AddFunctionAlty"
+                        }
+                        ],
+                    data:weaknessData,
 					onLoadSuccess: function(res) { //可不写
 						//加载成功时
 						console.log(res);
@@ -857,7 +944,187 @@
 					}
 				})
 			}
-		
+			//安全事件表初始化
+			function safetyTable(contentData){
+                tableSafe.bootstrapTable('destroy');
+                tableSafe.bootstrapTable({
+                    //gau请求地址,此处数据为本地加载
+                    url: "",
+                    //请求方式
+                    method: 'get',
+                    cache: false,
+                    // height: 400,
+                    striped: true,
+                    pagination: true,
+                    pageSize: 10,
+                    pageNumber:1,
+                    pageList: [10, 20, 50, 100, 200, 500],
+                    sidePagination:'client',
+                    search: true,
+                    showColumns: true,
+                    showRefresh: false,
+                    showExport: false,
+                    exportTypes: ['csv','txt','xml'],
+                    search: true,
+                    clickToSelect: true,
+                    columns:
+                        [
+                            {field:"site",title:"检测站点",align:"center",valign:"middle",sortable:"true"},
+
+                            {
+                                field:"value",
+                                title:"关键词",
+                                align:"center",
+                                valign:"middle",
+                                sortable:"true",
+                                formatter:function(value,row,index){
+                                    var keyword=0;
+                                    for(var i=0;i<value.length;i++){
+                                        if(value[i].type=="keyword"){
+                                            keyword=keyword+1;
+                                        }
+                                    }
+                                    return keyword;
+                                }
+                            },
+                            {
+                                field:"value",
+                                title:"挂马",
+                                align:"center",
+                                valign:"middle",
+                                sortable:"true",
+                                formatter:function(value,row,index){
+                                    var malscan=0;
+                                    for(var i=0;i<value.length;i++){
+                                        if(value[i].type=="malscan"){
+                                            malscan=malscan+1;
+                                        }
+                                    }
+                                    return malscan;
+                                }
+                            },
+                            {
+                                field:"value",
+                                title:"内容变更",
+                                align:"center",
+                                valign:"middle",
+                                sortable:"true",
+                                formatter:function(value,row,index){
+                                    var CSRF=0;
+                                    for(var i=0;i<value.length;i++){
+                                        if(value[i].type=="CSRF"){
+                                            CSRF=CSRF+1;
+                                        }
+                                    }
+                                    return CSRF;
+                                }
+                            },
+                            {
+                                field:"value",
+                                title:"Web应用",
+                                align:"center",
+                                valign:"middle",
+                                sortable:"true",
+                                formatter:function(value,row,index){
+                                    var sql=0;
+                                    for(var i=0;i<value.length;i++){
+                                        if(value[i].type=="sql"){
+                                            sql=sql+1;
+                                        }
+                                    }
+                                    return sql;
+                                }
+                            },
+                            {
+                                field:"value",
+                                title:"统计",
+                                align:"center",
+                                valign:"middle",
+                                sortable:"true",
+                                formatter:function(value,row,index){
+                                    var statistics=0;
+                                    for(var i=0;i<value.length;i++){
+                                        if(value[i].type=="statistics"){
+                                            statistics=statistics+1;
+                                        }
+                                    }
+                                    return statistics;
+                                }
+                            },
+                            {
+                                field:"value",
+                                title:"暗链",
+                                align:"center",
+                                valign:"middle",
+                                sortable:"true",
+                                formatter:function(value,row,index){
+                                    var black_links=0;
+                                    for(var i=0;i<value.length;i++){
+                                        if(value[i].type=="black_links"){
+                                            black_links=black_links+1;
+                                        }
+                                    }
+                                    return black_links;
+                                }
+                            },
+                            {
+                                field:"value",
+                                title:"内容泄露",
+                                align:"center",
+                                valign:"middle",
+                                sortable:"true",
+                                formatter:function(value,row,index){
+                                    var info_leak=0;
+                                    for(var i=0;i<value.length;i++){
+                                        if(value[i].type=="info_leak"){
+                                            info_leak=info_leak+1;
+                                        }
+                                    }
+                                    return info_leak;
+                                }
+                            },
+                            {
+                                field:"value",
+                                title:"文件泄露",
+                                align:"center",
+                                valign:"middle",
+                                sortable:"true",
+                                formatter:function(value,row,index){
+                                    var file_leak=0;
+                                    for(var i=0;i<value.length;i++){
+                                        if(value[i].type=="file_leak"){
+                                            file_leak=file_leak+1;
+                                        }
+                                    }
+                                    return file_leak;
+                                }
+                            },
+                            {field:"endAt",title:"结束检测时间",align:"center",valign:"middle",sortable:"true"},
+                            {
+                                title:"操作",
+                                field:"Button",
+                                events:"operateEvents",
+                                formatter:"AddFunctionAlty"
+                            }
+                        ],
+                    data:contentData,
+                    onLoadSuccess: function(res) { //可不写
+                        //加载成功时
+                        console.log(res);
+                    },
+                    onLoadError: function(statusCode) {
+                        return "加载失败了"
+                    },
+                    formatLoadingMessage: function() {
+                        //正在加载
+                        return "拼命加载中...";
+                    },
+                    formatNoMatches: function() {
+                        //没有匹配的结果
+                        return '无符合条件的记录';
+                    }
+                })
+			}
 		//创建按钮并给按钮添加事件
 		function AddFunctionAlty(value,row,index){
 			return [
@@ -869,6 +1136,33 @@
 				alert("查看报表详情");
 			}
 		}
+         function taskItemDetail(data){
+			    var abilityData=[];
+			    var contentData=[];
+			    var weaknessData=[];
+			    var siteinfoData=[];
+			    for(var i=0;i<data.length;i++){
+			        if(data[i].moduleType=="availability"){
+                        abilityData.push(data[i]);
+					}
+					if(data[i].moduleType=="content"){
+                        contentData.push(data[i]);
+					}
+					if(data[i].moduleType=="weakness"){
+                        weaknessData.push(data[i]);
+					}
+                    if(data[i].moduleType=="siteinfo"){
+                        siteinfoData.push(data[i]);
+                    }
+				}
+             abilityTable(abilityData);
+             leakTable(weaknessData);
+			 safetyTable(contentData);
+			 //概述表传入的data
+			 // var summaryData=[{"checkItem":"可用性","startAt":"2018-10-6","startEnd":"2018-10-9"},{"checkItem":"安全事件"},{"checkItem":"漏洞"}]
+
+		 }
+		//
 		</script>
 	</body>
 

@@ -426,7 +426,7 @@
 							<!-- small box -->
 							<div class="small-box bg-aqua">
 								<div class="inner">
-									<h3>150<sup style="font-size: 20px">次</sup></h3>
+									<h3><span>150</span><sup style="font-size: 20px">次</sup></h3>
 
 									<p>下发任务次数</p>
 								</div>
@@ -441,7 +441,7 @@
 							<!-- small box -->
 							<div class="small-box bg-green">
 								<div class="inner">
-									<h3>53<sup style="font-size: 20px">个</sup></h3>
+									<h3><span>53</span><sup style="font-size: 20px">个</sup></h3>
 
 									<p>检测网站个数</p>
 								</div>
@@ -456,7 +456,7 @@
 							<!-- small box -->
 							<div class="small-box bg-yellow">
 								<div class="inner">
-									<h3>44<sup style="font-size: 20px">个</sup></h3>
+									<h3><span>44</span><sup style="font-size: 20px">个</sup></h3>
 
 									<p>发现漏洞个数</p>
 								</div>
@@ -471,7 +471,7 @@
 							<!-- small box -->
 							<div class="small-box bg-red">
 								<div class="inner">
-									<h3>65<sup style="font-size: 20px">min</sup></h3>
+									<h3><span>65</span><sup style="font-size: 20px">min</sup></h3>
 
 									<p>平均检索时间</p>
 								</div>
@@ -556,35 +556,35 @@
 										<div class="info">
 											<p class="title">网站风险值排名</p>
 											<ul class="rank-list">
-												<li class="clearfix"><img src="/static/image/canteen-top1.png">
+												<li class="clearfix top1"><img src="/static/image/canteen-top1.png">
 													<div class="center">
 														<div class="site-name">http://testphp.vulnweb.com</div>
 													</div>
-													<div class="progress">
+													<div class="progress" style="display: none;">
 														<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
 															<span class="sr-only">40% 完成</span>
 														</div>
-													</div><span>68</span>
+													</div><span class="score">68</span>
 												</li>
-													<li class="clearfix"><img src="/static/image/canteen-top1.png">
+													<li class="clearfix top2"><img src="/static/image/canteen-top2.png">
 													<div class="center">
 														<div class="site-name">http://testphp.vulnweb.com</div>
 													</div>
-													<div class="progress">
+													<div class="progress"  style="display: none;">
 														<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
 															<span class="sr-only">40% 完成</span>
 														</div>
-													</div><span>65</span>
+													</div><span class="score">65</span>
 												</li>
-													<li class="clearfix"><img src="/static/image/canteen-top1.png">
+													<li class="clearfix top3"><img src="/static/image/canteen-top3.png">
 													<div class="center">
 														<div class="site-name">http://testphp.vulnweb.com</div>
 													</div>
-													<div class="progress">
+													<div class="progress" style="display: none;">
 														<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
 															<span class="sr-only">40% 完成</span>
 														</div>
-													</div><span>60</span>
+													</div><span class="score">60</span>
 												</li>
 											</ul>
 										</div>
@@ -597,36 +597,40 @@
 										<div class="bug-faq-left">
 											<div class="info">
 											<p class="title">高危漏洞类型排名</p>
-											<ul class="rank-list">
-												<li class="clearfix"><img src="/static/image/canteen-top1.png">
-													<div class="center">
-														<div class="site-name">暗链</div>
-													</div>
-													<div class="progress">
-														<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
-															<span class="sr-only">40% 完成</span>
+											<ul class="bug-rank-list">
+												<li class="clearfix">
+													<img src="/static/image/canteen-top1.png">
+													<div class="bug-rank-list-center">
+														<div class="site-name bug-name">暗链</div>
+														<div class="progress">
+															<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
+																<span class="sr-only">40% 完成</span>
+															</div>
 														</div>
-													</div><span>68</span>
+													</div>
+													<span class="count">68</span>
 												</li>
-													<li class="clearfix"><img src="/static/image/canteen-top1.png">
-													<div class="center">
-														<div class="site-name">挂马</div>
-													</div>
-													<div class="progress">
-														<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
-															<span class="sr-only">40% 完成</span>
+													<li class="clearfix"><img src="/static/image/canteen-top2.png">
+														<div class="bug-rank-list-center">
+															<div class="site-name bug-name">暗链</div>
+															<div class="progress">
+																<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
+																	<span class="sr-only">40% 完成</span>
+																</div>
+															</div>
 														</div>
-													</div><span>65</span>
+														<span class="count">65</span>
 												</li>
-													<li class="clearfix"><img src="/static/image/canteen-top1.png">
-													<div class="center">
-														<div class="site-name">sql注入</div>
-													</div>
-													<div class="progress">
-														<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
-															<span class="sr-only">40% 完成</span>
+													<li class="clearfix"><img src="/static/image/canteen-top3.png">
+														<div class="bug-rank-list-center">
+															<div class="site-name bug-name">暗链</div>
+															<div class="progress">
+																<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
+																	<span class="sr-only">40% 完成</span>
+																</div>
+															</div>
 														</div>
-													</div><span>60</span>
+														<span class="count">60</span>
 												</li>
 											</ul>
 										</div>
@@ -913,24 +917,8 @@
 		<script src="/static/js/common.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			$(function() {
-
-
-//				$.ajax({
-//					type:"post",
-//					url:"http://localhost/login/loginIndex",
-//					async:true,
-//					data:{"account":"CWQ","password":"1"},
-//					dataType:"json",
-//					success:function(data){
-//						console.log(data);
-//					}
-//				});
-				//resize ehcarts
-//				var bugTypeChart4='';
-//				
-//				$("。bug-type-left li").on('click',function(){
-//					alert('hello');
-//				})
+                judgeCookie();
+                getIndexData();
 				var temAlert = $(".temporary-task-total .pop-alert-content");
 				var temCover = $(".temporary-task-total .cover");
 				var temPop = $(".temporary-task-total .pop-alert");
@@ -1579,7 +1567,7 @@
 			}
 			siteFaqChart();
 			//漏洞风险分布
-			function bugFaqChart() {
+			function bugFaqChart(data) {
 
 				var myChart = echarts.init(document.getElementById('bug-faq-chart2'));
 				//ehcarts重构
@@ -1590,18 +1578,18 @@
 
 				// 总和
 				var total = {
-					value: '24,652',
+					value: data.bugCounts,
 					name: '共检测漏洞数'
 				}
 
 				var originalData = [{
-					value: 55,
+					value: data.higBugs,
 					name: '高危'
 				}, {
-					value: 70,
+					value: data.middleBugs,
 					name: '中危'
 				}, {
-					value: 25,
+					value: data.lowBugs,
 					name: "低危"
 				}];
 
@@ -1688,7 +1676,7 @@
 				myChart.setOption(option);
 
 			}
-			bugFaqChart();//漏洞类型风险分布图的图2
+			// bugFaqChart();//漏洞类型风险分布图的图2
 			function bugTypeChart4() {
 				var bugTypeChart4 = echarts.init(document.getElementById('bug-type-chart4'));
 				var option = '';
@@ -1846,6 +1834,51 @@
 				bugTypeChart4.setOption(option);
 			}
 			bugTypeChart4();
+
+			//获取首页展示数据
+            function getIndexData(){
+                $.ajax({
+                    type:"post",
+                    url:"/perform/performData",
+                    xhrFields: {withCredentials: true},
+                    data:{},
+                    dataType: "json",
+                    async:true,
+                    success:function(data){
+                        console.log(data);
+                        showIop(data);
+                    }
+                });
+            }
+
+            function showIop(data){
+                $(".bg-aqua .inner span").html(data.taskCounts);
+                $(".bg-green .inner span").html(data.webCounts);
+                $(".bg-yellow .inner span").html(data.bugCounts);
+                $(".bg-red .inner span").html(data.avgUseTime);
+                //网站风险分布
+                for(var i=0;i<data.topURL.length;i++){
+                    $("#site-faq .rank-list li").eq(i).find('.site-name').html(data.topURL[i].url);
+                    $("#site-faq .rank-list li").eq(i).find('.score').html(data.topURL[i].score);
+                }
+				//漏洞风险分布
+				//高危漏洞类型排名
+				for(var i=0;i<data.topBug.length;i++){
+				    var bugName=data.topBug[i];
+				    for(var j in bugName){
+				        var rate=bugName[j]/data.bugCounts;
+				        rate=rate.toFixed(2)*100;
+                        $(".bug-rank-list li").eq(i).find('.bug-name').html(j);
+                        $(".bug-rank-list li").eq(i).find('.count').html(bugName[j]);
+                        $(".bug-rank-list li").eq(i).find('.progress-bar').css('width',rate+'%');
+					}
+
+				}
+				//漏洞风险分布图
+                bugFaqChart(data);
+
+
+			}
 		</script>
 	</body>
 </html>

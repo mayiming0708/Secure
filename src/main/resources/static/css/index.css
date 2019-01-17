@@ -352,14 +352,10 @@ ul.rank-list{
 	padding-left: 0;
 }
 .rank-list li img{
-	float: left;
     width: 18px;
     margin-right: 5px;
     margin-left: 2px;
-}
-.rank-list li .center{
 	float: left;
-    width: 75%;
 }
 .rank-list li .progress{
 	width: 76%;
@@ -368,12 +364,6 @@ ul.rank-list{
     /* margin-left: 1px; */
     display: inline-block;
     float: left;
-}
-.rank-list li span{
-	margin-top: -8px;
-    /* vertical-align: middle; */
-    float: left;
-    color: steelblue;
 }
 .site-faq-right{
 	width: 50%;
@@ -399,15 +389,9 @@ ul.rank-list{
 ul.rank-list{
 	padding-left: 0;
 }
-.rank-list li img{
-	float: left;
-    width: 18px;
-    margin-right: 5px;
-    margin-left: 2px;
-}
+
 .rank-list li .center{
-	float: left;
-    width: 75%;
+	display: inline-block;
 }
 .rank-list li .progress{
 	width: 76%;
@@ -418,9 +402,7 @@ ul.rank-list{
     float: left;
 }
 .rank-list li span{
-	margin-top: -8px;
-    /* vertical-align: middle; */
-    float: left;
+	display: inline-block;
     color: steelblue;
 }
 .bug-faq-right{
@@ -722,4 +704,72 @@ button.close{
 	white-space: initial !important;
 	margin: 0 auto !important;
 	padding: 5px 0 !important;
+}
+#safety .panel-heading{
+	background-color: #6bbae8;
+	color: #fff;
+}
+#site-name{
+	width: 100%;
+	height: 36px;
+	line-height: 36px;
+}
+.site-name.bug-name{
+	text-align: center;
+}
+#site-faq .site-faq-left{
+	width: 50%;
+}
+#site-faq .site-faq-left .rank-list{
+	width: 97%;
+	margin: 0 auto;
+}
+#site-faq .site-faq-left .rank-list li{
+	height: 40px;
+}
+#site-faq .site-faq-left .rank-list li .score{
+	margin-top: 0;
+	margin-left: 5px;
+}
+#bug-faq ul.rank-list{
+	width: 97%;
+	margin: 0 auto;
+}
+#bug-faq .rank-list li .progress{
+	width: 73%;
+}
+#site-faq .site-faq-left .info{
+	width: auto;
+}
+#site-faq .site-faq-left .rank-list{
+	width: 100%;
+}
+#site-faq .rank-list{
+	padding: 0 20px;
+}
+.bug-rank-list{
+	padding-left: 0;
+	padding: 0 10px;
+	box-sizing: border-box;
+}
+.bug-rank-list img{
+	width: 6%;
+	float: left;
+	vertical-align: middle;
+	margin-top: 8px;
+}
+.bug-rank-list-center{
+	width: 84%;
+	float: left;
+	margin-left: 2%;
+}
+.bug-rank-list-center .count{
+	display: inline-block;
+	float: left;
+	vertical-align: middle;
+	margin-top: 5px;
+}
+.bug-rank-list-center .progress{
+	height: 8px;
+	border-radius: 5px;
 }
