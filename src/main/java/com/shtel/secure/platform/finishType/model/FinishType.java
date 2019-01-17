@@ -10,6 +10,7 @@ public class FinishType {
 
     private String virtualGroupId;
     private String url;
+    private Integer state;
     private Integer siteinfo;
     private Integer availability;
     private Integer blackLinks;
@@ -51,6 +52,14 @@ public class FinishType {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
     }
 
     public Integer getSiteinfo() {
