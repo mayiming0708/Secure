@@ -463,7 +463,7 @@
 									<div class="panel-heading">
 										任务列表
 										<div class="pull-right">
-											<button type="button" id="addBtn" class="btn btn-success btn-xs btnAll">新 增任务</button>
+											<button type="button" id="addBtn" class="btn btn-success btn-xs btnAll">新增下发任务</button>
 										</div>
 									</div>
 									<div class="panel-body">
@@ -535,17 +535,32 @@
 			$(function(){
                 judgeCookie();
 				siteCheck();
+				//点击增加任务按钮 跳转到下发任务页面
+				$("#addBtn").click(function(){
+				    window.location.href='taskprogress';
+				});
+				//点击查询按钮
+				$("#queryBtn").click(function(){
+				    var url=$("#site-name").val();
+                    siteCheck(url);
+				});
+				//点击重置按钮
+				$("#resetBtn").click(function(){
+                    $("#site-name").val('');
+                    var url=$("#site-name").val();
+                    siteCheck(url);
+				})
 			})
 			//网站表初始化
-			function siteCheck(){
+			function siteCheck(url){
 				tableSite.bootstrapTable('destroy');
 				tableSite.bootstrapTable({
                     url: "/perform/webListPage",
                     method:"post",
                     dataType:"json",
-                    contentType: "application/x-www-form-urlencoded",
+                    // contentType: "application/x-www-form-urlencoded",
 					//是否显示行间隔色
-					toolbar: '#toolbar', //工具按钮用哪个容器
+					// toolbar: '#toolbar', //工具按钮用哪个容器
 					striped: true, //是否显示行间隔色
 					cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
 					pagination: true, //是否显示分页（*）
@@ -556,24 +571,34 @@
 					pageNumber: 1, //初始化加载第一页，默认第一页
 					pageSize: 10, //每页的记录行数（*）
 					pageList: [10, 25, 50, 100], //可供选择的每页的行数（*）
-					search: true, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
-					strictSearch: true,
+					// search: true, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+					// strictSearch: true,
 					showColumns: true, //是否显示所有的列
 					showRefresh: true, //是否显示刷新按钮
 					minimumCountColumns: 2, //最少允许的列数
 					clickToSelect: true, //是否启用点击选中行
 					//          height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
 					uniqueId: "ID", //每一行的唯一标识，一般为主键列
-					showToggle: true, //是否显示详细视图和列表视图的切换按钮
-					cardView: false, //是否显示详细视图
+					// showToggle: true, //是否显示详细视图和列表视图的切换按钮
+					// cardView: false, //是否显示详细视图
 					detailView: false,
                     queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的
-                        return {//这里的params是table提供的
-                            currentPage: params.offset/params.limit+1,
-                            pageSize: params.limit,//找多少条
-                            userId:userId,
-                            // isPeriod:0
-                        };
+                       if(url==''){
+                           return {//这里的params是table提供的
+                               currentPage: params.offset/params.limit+1,
+                               pageSize: params.limit,//找多少条
+                               userId:userId,
+                               // isPeriod:0
+                           };
+					   }else{
+                           return {//这里的params是table提供的
+                               currentPage: params.offset/params.limit+1,
+                               pageSize: params.limit,//找多少条
+                               userId:userId,
+                               url:url
+                           };
+					   }
+
                     },
 					//表头
 						columns: [{
@@ -582,25 +607,6 @@
 						//	    		checkbox: true, //checkbox
 						align: 'center', //对其方式
 						valign: 'middle' //对其方式
-					}, {
-						title: '风险值',
-						field: 'score',
-						align: 'center',
-						valign: 'middle',
-						formatter:function(value,row,index){
-							if(value>66&&value<=100){
-							    return '<div><i class="fa fa-warning" style="color: red;margin-right: 5px"></i>'+value+'</div>'
-							}
-							if(value>33&value<=66){
-							    return '<div><i class="fa fa-warning" style="color: #5f9ea0;margin-right: 5px"></i>'+value+'</div>'
-							}
-							if(value>0&&value<=33){
-                                return '<div><i class="fa fa-warning" style="color: #228b22;margin-right: 5px"></i>'+value+'</div>'
-							}
-							if(value==0){
-                                return '<div><i class="fa fa-chevron-circle-down" style="color: #228b22;margin-right: 5px"></i>'+value+'</div>'
-							}
-						}
 					}, {
 						title: '暗链',
 						field: 'blackLinks',
@@ -723,18 +729,6 @@
                                 }
                             }
 					},{
-			    		title:"任务ID",
-			    		field:"virtualGroupId",
-			    		align: 'center',
-						valign: 'middle',
-                            formatter:function(value,row,index){
-                                if(value==-1){
-                                    return '--';
-                                }else{
-                                    return value;
-                                }
-                            }
-			    	},{
 			    		title:"操作",
 			    		field:"Button",
 			    		events:"operateEvents",
