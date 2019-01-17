@@ -42,6 +42,7 @@ public interface ResultEventMapper extends Mapper<ResultEvent> {
             "\tws_result_event.task_id as taskId,\n" +
             "\tws_result_event.group_id as groupId,\n" +
             "\tws_result_event.site_id as siteId,\n" +
+            "\tws_result_event.module_type as moduleType,\n" +
             "\tws_result_event.site,\n" +
             "\tws_result_event.end_at as endAt\n" +
             "FROM\n" +
