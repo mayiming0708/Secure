@@ -5,6 +5,7 @@ import com.shtel.secure.platform.perfom.model.Perform;
 import com.shtel.secure.platform.perfom.model.PerformReq;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
@@ -103,4 +104,7 @@ public interface PerformMapper extends Mapper<Task> {
 
     @Select("SELECT url,Max(score) score FROM ws_finish_type GROUP BY url ORDER BY score DESC")
     List<PerformReq> getTopUrl();
+
+    @Update("update ws_task set status = -1 where virtual_group_id = #{virtual_group_id} ")
+    int deleteTask(String virtual_group_id);
 }

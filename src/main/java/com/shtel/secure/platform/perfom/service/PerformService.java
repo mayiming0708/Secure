@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.shtel.secure.platform.issue.model.Task;
 import com.shtel.secure.platform.issue.model.mapper.TaskMapper;
+import com.shtel.secure.platform.issue.service.IssueService;
 import com.shtel.secure.platform.perfom.model.PageBean;
 import com.shtel.secure.platform.perfom.model.Perform;
 import com.shtel.secure.platform.perfom.model.PerformReq;
@@ -214,6 +215,19 @@ public class PerformService {
         }
         response.put("topURL", topURL);
         return response;
+    }
+
+    /**
+     * <p>根据virtual_group_id，逻辑删除记录</p>
+     *
+     * @param virtual_group_id
+     * @return
+     */
+    public JSONObject deleteRecord(String virtual_group_id ){
+        int rows=performMapper.deleteTask(virtual_group_id);
+        if (rows>0)
+            return IssueService.Response("删除任务成功",0,new JSONObject());
+        return IssueService.Response("删除任务失败",100,new JSONObject());
     }
 
 }
