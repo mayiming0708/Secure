@@ -106,6 +106,7 @@ public class ReceiveAction {
                 finishType.setRiskMiddleCount(0);
                 finishType.setRiskLowCount(0);
                 finishType.setRiskUrlCount(0);
+                finishType.setState(0);
                 finishType.setScore(0);
                 finishTypeService.insertFinishType(finishType);
             } else {

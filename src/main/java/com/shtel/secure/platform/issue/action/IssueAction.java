@@ -62,6 +62,7 @@ public class IssueAction {
                 finishType.setRiskMiddleCount(0);
                 finishType.setRiskHighCount(0);
                 finishType.setScore(0);
+                finishType.setState(0);
                 finishTypeService.insertFinishType(finishType);
             }
         }
@@ -101,6 +102,7 @@ public class IssueAction {
                 finishType.setRiskMiddleCount(0);
                 finishType.setRiskHighCount(0);
                 finishType.setScore(0);
+                finishType.setState(0);
                 finishTypeService.insertFinishType(finishType);
             }
         }

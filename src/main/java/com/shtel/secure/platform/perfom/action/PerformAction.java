@@ -27,33 +27,38 @@ public class PerformAction {
     private PerformService performService;
 
     @PostMapping("/taskList")
-    public JSONObject taskList(@RequestParam("userId") String userId){
+    public JSONObject taskList(@RequestParam("userId") String userId) {
         return performService.selectTaskByUserId(userId);
     }
 
     @PostMapping("/urlList")
-    public JSONObject taskList(@RequestParam("userId") String userId,@RequestParam("isPeriod") Integer isPeriod){
+    public JSONObject taskList(@RequestParam("userId") String userId, @RequestParam("isPeriod") Integer isPeriod) {
         return performService.selectWebDetail(userId);
     }
 
     @PostMapping("/webListPage")
-    public JSONObject webListPage(@RequestBody PerformReq performReq){
+    public JSONObject webListPage(@RequestBody PerformReq performReq) {
         return performService.selectWebPage(performReq);
     }
 
     @PostMapping("/taskListPage")
     public JSONObject taskListPage(@RequestBody PerformReq performReq) throws ParseException {
-        if(performReq.getCreateTime()!=null){
-            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
-            SimpleDateFormat simpleDateFormat1=new SimpleDateFormat("yyyy-MM-dd");
-            Date date=simpleDateFormat.parse(performReq.getCreateTime());
+        if (performReq.getCreateTime() != null) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = simpleDateFormat.parse(performReq.getCreateTime());
             performReq.setCreateTime(simpleDateFormat1.format(date));
         }
         return performService.selectTaskPage(performReq);
     }
 
     @PostMapping("/performData")
-    public JSONObject performData(){
+    public JSONObject performData() {
         return performService.getPerformData();
+    }
+
+    @GetMapping("/deleteTask")
+    public JSONObject deleteTask(@RequestParam("virtualGroupId")String virtual_group_id){
+        return performService.deleteRecord(virtual_group_id);
     }
 }
