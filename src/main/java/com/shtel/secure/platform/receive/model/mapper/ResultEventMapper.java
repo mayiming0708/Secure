@@ -44,7 +44,8 @@ public interface ResultEventMapper extends Mapper<ResultEvent> {
             "\tws_result_event.site_id as siteId,\n" +
             "\tws_result_event.module_type as moduleType,\n" +
             "\tws_result_event.site,\n" +
-            "\tws_result_event.end_at as endAt\n" +
+            "\tws_result_event.end_at as endAt,\n" +
+            "\tws_result_event.report_url as reportUrl\n" +
             "FROM\n" +
             "\tws_result_event LEFT JOIN ws_task on ws_task.virtual_group_id = ws_result_event.virtual_group_id\n" +
             "WHERE\n" +
