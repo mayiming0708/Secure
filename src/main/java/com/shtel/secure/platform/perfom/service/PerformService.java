@@ -224,10 +224,14 @@ public class PerformService {
      * @return
      */
     public JSONObject deleteRecord(String virtual_group_id ){
+        logger.info("删除任务");
         int rows=performMapper.deleteTask(virtual_group_id);
-        if (rows>0)
-            return IssueService.Response("删除任务成功",0,new JSONObject());
-        return IssueService.Response("删除任务失败",100,new JSONObject());
+        int rows2=performMapper.deleteURL(virtual_group_id);
+        if (rows==0)
+            return IssueService.Response("删除Task任务失败",100,new JSONObject());
+        if (rows2==0)
+            return IssueService.Response("删除URL任务失败",100,new JSONObject());
+        return IssueService.Response("删除任务成功",0,new JSONObject());
     }
 
 }

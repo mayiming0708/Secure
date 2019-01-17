@@ -45,7 +45,7 @@ public interface PerformMapper extends Mapper<Task> {
             "LEFT JOIN\n" +
             "ws_finish_type b\n" +
             "ON \n" +
-            "a.virtual_group_id=b.virtual_group_id\n" +
+            "a.virtual_group_id=b.virtual_group_id\n where state=0" +
             "order by a.create_time desc")
     List<Perform> selectWebDetail(@Param("userId") String userId);
 
@@ -56,7 +56,7 @@ public interface PerformMapper extends Mapper<Task> {
             "LEFT JOIN\n" +
             "ws_finish_type b\n" +
             "ON \n" +
-            "a.virtual_group_id=b.virtual_group_id  \n" +
+            "a.virtual_group_id=b.virtual_group_id where state=0  \n" +
             "order by a.create_time ")
     int countWebDetail(@Param("userId") String userId);
 
@@ -69,7 +69,7 @@ public interface PerformMapper extends Mapper<Task> {
     @Select("SELECT SUM(siteinfo) siteinfoCount,SUM(availability) availabilityCount," +
             "SUM(risk_high_count) riskHighCount,SUM(risk_middle_count) riskMiddleCount," +
             "SUM(risk_low_count) riskLowCount,COUNT(DISTINCT(url)) urlCount" +
-            " FROM ws_finish_type;")
+            " FROM ws_finish_type where state=0;")
     PerformReq countWebAndBugCounts();
 
     @Select("SELECT CEIL(AVG(b.time)/60) " +
@@ -99,12 +99,15 @@ public interface PerformMapper extends Mapper<Task> {
             "if(sum(keyword) is null ,0,SUM(keyword)) keyword,\n" +
             "if(sum(csrf) is null ,0,SUM(csrf)) csrf,\n" +
             "if(sum(form_crack) is null,0,SUM(form_crack)) formCrack\n" +
-            "FROM ws_finish_type ")
+            "FROM ws_finish_type where state=0")
     PerformReq getBugCount();
 
-    @Select("SELECT url,Max(score) score FROM ws_finish_type GROUP BY url ORDER BY score DESC")
+    @Select("SELECT url,Max(score) score FROM ws_finish_type  where state=0 GROUP BY url ORDER BY score DESC")
     List<PerformReq> getTopUrl();
 
     @Update("update ws_task set status = -1 where virtual_group_id = #{virtual_group_id} ")
     int deleteTask(String virtual_group_id);
+
+    @Update("update ws_finish_type set state = -1 where virtual_group_id = #{virtual_group_id} ")
+    int deleteURL(String virtual_group_id);
 }
