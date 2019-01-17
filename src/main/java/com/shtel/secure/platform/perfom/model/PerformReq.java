@@ -23,8 +23,15 @@ public class PerformReq {
     private int infoLeak;
     private int cgi;
     private int formCrack;
+    private int keyword;
+    private int csrf;
     private String url;
     private int score;
+    private int userId;
+    private String isPeriod;
+    private String createTime;
+    private int currentPage;
+    private int pageSize;
 
     public int getRiskHighCount() {
         return riskHighCount;
@@ -176,5 +183,61 @@ public class PerformReq {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getIsPeriod() {
+        return isPeriod;
+    }
+
+    public void setIsPeriod(String isPeriod) {
+        this.isPeriod = isPeriod;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public int getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(int keyword) {
+        this.keyword = keyword;
+    }
+
+    public int getCsrf() {
+        return csrf;
+    }
+
+    public void setCsrf(int csrf) {
+        this.csrf = csrf;
     }
 }
