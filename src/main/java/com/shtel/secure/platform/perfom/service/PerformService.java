@@ -131,9 +131,10 @@ public class PerformService {
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("userId", performReq.getUserId());
         criteria.andEqualTo("status", 0);
-        if(performReq.getCreateTime()!=null)
-            criteria.andLike("createTime",performReq.getCreateTime()+"%");
-        if(performReq.getIsPeriod()!=null)
+        criteria.andEqualTo("isSuccess", 1);
+        if (performReq.getCreateTime() != null)
+            criteria.andLike("createTime", performReq.getCreateTime() + "%");
+        if (performReq.getIsPeriod() != null)
             criteria.andEqualTo("isPeriod", performReq.getIsPeriod());
         example.setOrderByClause("create_time DESC");
         List<Task> tasks = taskMapper.selectByExample(example);
@@ -184,13 +185,13 @@ public class PerformService {
             }
         });
         Collections.reverse(mapList);
-        for(Map.Entry<String, Integer> mapping:mapList) {
-            JSONObject jsonObject=new JSONObject();
-            jsonObject.put(mapping.getKey(),mapping.getValue());
-            if("CSRF跨站请求伪造漏洞".equals(mapping.getKey())||"关键词".equals(mapping.getKey())){
-                jsonObject.put("level","middle");
-            }else{
-                jsonObject.put("level","high");
+        for (Map.Entry<String, Integer> mapping : mapList) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put(mapping.getKey(), mapping.getValue());
+            if ("CSRF跨站请求伪造漏洞".equals(mapping.getKey()) || "关键词".equals(mapping.getKey())) {
+                jsonObject.put("level", "middle");
+            } else {
+                jsonObject.put("level", "high");
             }
             bugTop.add(jsonObject);
         }
@@ -204,7 +205,7 @@ public class PerformService {
         response.put("siteinfoCount", siteinfoCount);
         response.put("bugCounts", bugCounts);
         response.put("topBug", bugTop);
-        response.put("avgUseTime",useTime);
+        response.put("avgUseTime", useTime);
         List<PerformReq> urlTop = performMapper.getTopUrl();
         JSONArray topURL = new JSONArray();
         for (PerformReq performReq1 : urlTop) {
@@ -223,15 +224,15 @@ public class PerformService {
      * @param virtual_group_id
      * @return
      */
-    public JSONObject deleteRecord(String virtual_group_id ){
+    public JSONObject deleteRecord(String virtual_group_id) {
         logger.info("删除任务");
-        int rows=performMapper.deleteTask(virtual_group_id);
-        int rows2=performMapper.deleteURL(virtual_group_id);
-        if (rows==0)
-            return IssueService.Response("删除Task任务失败",100,new JSONObject());
-        if (rows2==0)
-            return IssueService.Response("删除URL任务失败",100,new JSONObject());
-        return IssueService.Response("删除任务成功",0,new JSONObject());
+        int rows = performMapper.deleteTask(virtual_group_id);
+        int rows2 = performMapper.deleteURL(virtual_group_id);
+        if (rows == 0)
+            return IssueService.Response("删除Task任务失败", 100, new JSONObject());
+        if (rows2 == 0)
+            return IssueService.Response("删除URL任务失败", 100, new JSONObject());
+        return IssueService.Response("删除任务成功", 0, new JSONObject());
     }
 
 }
