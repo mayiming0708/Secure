@@ -74,7 +74,7 @@ public interface PerformMapper extends Mapper<Task> {
     @Select("SELECT CEIL(AVG(b.time)/60) " +
             "FROM " +
             "(select SUM(UNIX_TIMESTAMP(end_at)-UNIX_TIMESTAMP(start_at)) time,virtual_group_id FROM ws_result_event GROUP BY virtual_group_id) b;")
-    PerformReq getAvgWebTime();
+    int getAvgWebTime();
 
     @Select("SELECT \n" +
             "name_en nameEn,\n" +

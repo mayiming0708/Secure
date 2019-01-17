@@ -154,7 +154,7 @@ public class PerformService {
         int availabilityCount = perform.getAvailabilityCount();
         int siteinfoCount = perform.getSiteinfoCount();
         int bugCounts = higBugs + middleBugs + lowBugs;
-        int useTime = perform.getAvgTime();
+        int useTime = performMapper.getAvgWebTime();
         PerformReq performReq = performMapper.getBugCount();
         Map<String, Integer> map = new HashMap<>();
         map.put("暗链", performReq.getBlackLinks());
