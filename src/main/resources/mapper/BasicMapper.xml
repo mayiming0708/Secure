@@ -34,8 +34,8 @@
                  and create_time>#{isPeriod}
              </if>
 			) a
-        LEFT JOIN
-        (select * from ws_finish_type WHERE url LIKE LIKE CONCAT('%',#{name},'%')) b
+        JOIN
+        (select * from ws_finish_type WHERE url LIKE CONCAT('%',#{url},'%')) b
         ON
 		a.virtual_group_id=b.virtual_group_id
         order by a.create_time
@@ -53,8 +53,8 @@
                 and create_time>#{isPeriod}
             </if>
             ) a
-            LEFT JOIN
-            (select * from ws_finish_type WHERE url LIKE LIKE CONCAT('%',#{name},'%')) b
+           JOIN
+            (select * from ws_finish_type WHERE url LIKE CONCAT('%',#{url},'%')) b
             ON
             a.virtual_group_id=b.virtual_group_id
             order by a.create_time
