@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shtel.secure.platform.perfom.model.mapper.BasicMapper">
+    <select id="selectWebDetail" parameterType="com.shtel.secure.platform.perfom.model.PerformReq" resultType="com.shtel.secure.platform.perfom.model.Perform">
+       SELECT
+			a.virtual_group_id virtualGroupId,
+			b.url,
+			IF(b.siteinfo is null,-1,b.siteinfo) siteinfo,
+			IF(b.availability is null,-1,b.availability) availability,
+			IF(b.black_links is null,-1,b.black_links) blackLinks,
+			IF(b.sql_injection is null,-1,b.sql_injection) sqlInjection,
+			IF(b.keyword is null,-1,b.keyword) keyword,
+			IF(b.xss is null,-1,b.xss) xss,
+			IF(b.webvul is null,-1,b.webvul) webvul,
+			IF(b.info_leak is null,-1,b.info_leak) infoLeak,
+			IF(b.cgi is null,-1,b.cgi) cgi,
+			IF(b.csrf is null,-1,b.csrf) csrf,
+			IF(b.form_crack is null,-1,b.form_crack) formCrack,
+			b.risk_url_count riskUrlCount,
+			b.risk_info_count riskInfoCount,
+			b.risk_high_count riskHighCount,
+			b.risk_middle_count riskMiddleCount,
+			b.risk_low_count riskLowCount,
+			b.score,
+			a.create_time createTime,
+			IF(a.finish_rate = 1,a.update_time,NOW()) endTime,
+			a.finish_rate finishRate
+        FROM
+			(SELECT virtual_group_id,create_time,finish_rate,update_time FROM ws_task WHERE user_id=#{userId} and is_success= 1 and status=0
+            <if test="isPeriod != null">
+                and is_period=#{isPeriod}
+             </if>
+             <if test="createTime != null">
+                 and create_time>#{isPeriod}
+             </if>
+			) a
+        LEFT JOIN
+        (select * from ws_finish_type WHERE url LIKE LIKE CONCAT('%',#{name},'%')) b
+        ON
+		a.virtual_group_id=b.virtual_group_id
+        order by a.create_time
+        desc
+    </select>
+    <select id="countWebDetail" parameterType="com.shtel.secure.platform.perfom.model.PerformReq" resultType="int">
+            SELECT
+              count(a.virtual_group_id)
+            FROM
+            (SELECT virtual_group_id,create_time,finish_rate,update_time FROM ws_task WHERE user_id=#{userId} and is_success= 1 and status=0
+            <if test="isPeriod != null">
+                and is_period=#{isPeriod}
+            </if>
+            <if test="createTime != null">
+                and create_time>#{isPeriod}
+            </if>
+            ) a
+            LEFT JOIN
+            (select * from ws_finish_type WHERE url LIKE LIKE CONCAT('%',#{name},'%')) b
+            ON
+            a.virtual_group_id=b.virtual_group_id
+            order by a.create_time
+            desc
+    </select>
+</mapper>

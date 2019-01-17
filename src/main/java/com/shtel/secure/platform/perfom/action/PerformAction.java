@@ -1,14 +1,16 @@
 package com.shtel.secure.platform.perfom.action;
 
 import com.alibaba.fastjson.JSONObject;
+import com.shtel.secure.platform.perfom.model.PerformReq;
 import com.shtel.secure.platform.perfom.service.PerformService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 /**
@@ -35,13 +37,19 @@ public class PerformAction {
     }
 
     @PostMapping("/webListPage")
-    public JSONObject webListPage(@RequestParam("userId") String userId,@RequestParam("currentPage") Integer currentPage,@RequestParam("pageSize") int pageSize){
-        return performService.selectWebPage(currentPage,pageSize,userId);
+    public JSONObject webListPage(@RequestBody PerformReq performReq){
+        return performService.selectWebPage(performReq);
     }
 
     @PostMapping("/taskListPage")
-    public JSONObject taskListPage(@RequestParam("userId") String userId,@RequestParam("currentPage") Integer currentPage,@RequestParam("pageSize") int pageSize){
-        return performService.selectTaskPage(currentPage,pageSize,userId);
+    public JSONObject taskListPage(@RequestBody PerformReq performReq) throws ParseException {
+        if(performReq.getCreateTime()!=null){
+            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat simpleDateFormat1=new SimpleDateFormat("yyyy-MM-dd");
+            Date date=simpleDateFormat.parse(performReq.getCreateTime());
+            performReq.setCreateTime(simpleDateFormat1.format(date));
+        }
+        return performService.selectTaskPage(performReq);
     }
 
     @PostMapping("/performData")

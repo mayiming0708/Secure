@@ -9,6 +9,7 @@ import com.shtel.secure.platform.issue.model.mapper.TaskMapper;
 import com.shtel.secure.platform.perfom.model.PageBean;
 import com.shtel.secure.platform.perfom.model.Perform;
 import com.shtel.secure.platform.perfom.model.PerformReq;
+import com.shtel.secure.platform.perfom.model.mapper.BasicMapper;
 import com.shtel.secure.platform.perfom.model.mapper.PerformMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,6 +32,8 @@ public class PerformService {
     private TaskMapper taskMapper;
     @Autowired
     private PerformMapper performMapper;
+    @Autowired
+    private BasicMapper basicMapper;
 
     /**
      * <p>根据用户Id查询所有任务</p>
@@ -96,17 +99,16 @@ public class PerformService {
     /**
      * <p>根据用户id是否周期查询站点列表（分页）</p>
      *
-     * @param currentPage
-     * @param pageSize
-     * @param userId
+     * @param performReq
      * @return
      */
-    public JSONObject selectWebPage(int currentPage, int pageSize, String userId) {
+    public JSONObject selectWebPage(PerformReq performReq) {
+        logger.info("根据用户id是否周期查询站点列表（分页）");
         //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
-        PageHelper.startPage(currentPage, pageSize);
-        List<Perform> performs = performMapper.selectWebDetail(userId);
-        int counts = performMapper.countWebDetail(userId);
-        PageBean<Perform> pageData = new PageBean<>(currentPage, pageSize, counts);
+        PageHelper.startPage(performReq.getCurrentPage(), performReq.getPageSize());
+        List<Perform> performs = basicMapper.selectWebDetail(performReq);
+        int counts = basicMapper.countWebDetail(performReq);
+        PageBean<Perform> pageData = new PageBean<>(performReq.getCurrentPage(), performReq.getPageSize(), counts);
         pageData.setItems(performs);
         JSONObject response = new JSONObject();
         response.put("total", counts);
@@ -117,21 +119,25 @@ public class PerformService {
     /**
      * <p>根据用户Id查询所有任务(分页)</p>
      *
-     * @param currentPage
-     * @param pageSize
-     * @param userId
+     * @param performReq
      * @return
      */
-    public JSONObject selectTaskPage(int currentPage, int pageSize, String userId) {
+    public JSONObject selectTaskPage(PerformReq performReq) {
+        logger.info("根据用户Id查询所有任务(分页)");
         //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
-        PageHelper.startPage(currentPage, pageSize);
+        PageHelper.startPage(performReq.getCurrentPage(), performReq.getPageSize());
         Example example = new Example(Task.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("userId", userId);
+        criteria.andEqualTo("userId", performReq.getUserId());
+        criteria.andEqualTo("status", 0);
+        if(performReq.getCreateTime()!=null)
+            criteria.andLike("createTime",performReq.getCreateTime()+"%");
+        if(performReq.getIsPeriod()!=null)
+            criteria.andEqualTo("isPeriod", performReq.getIsPeriod());
         example.setOrderByClause("create_time DESC");
         List<Task> tasks = taskMapper.selectByExample(example);
         int counts = taskMapper.selectCountByExample(example);
-        PageBean<Task> pageData = new PageBean<>(currentPage, pageSize, counts);
+        PageBean<Task> pageData = new PageBean<>(performReq.getCurrentPage(), performReq.getPageSize(), counts);
         pageData.setItems(tasks);
         JSONObject response = new JSONObject();
         response.put("total", counts);
@@ -145,6 +151,7 @@ public class PerformService {
      * @return
      */
     public JSONObject getPerformData() {
+        logger.info("获取展示页所需数据");
         int taskCounts = performMapper.countTask();
         PerformReq perform = performMapper.countWebAndBugCounts();
         int webCounts = perform.getUrlCount();
@@ -163,6 +170,8 @@ public class PerformService {
         map.put("XSS跨站脚本漏洞", performReq.getXss());
         map.put("应用漏洞", performReq.getWebvul());
         map.put("信息泄露", performReq.getInfoLeak());
+        map.put("关键词", performReq.getKeyword());
+        map.put("CSRF跨站请求伪造漏洞", performReq.getCgi());
         map.put("CGI漏洞", performReq.getCgi());
         map.put("表单破解漏洞", performReq.getFormCrack());
         JSONArray bugTop = new JSONArray();
@@ -177,6 +186,11 @@ public class PerformService {
         for(Map.Entry<String, Integer> mapping:mapList) {
             JSONObject jsonObject=new JSONObject();
             jsonObject.put(mapping.getKey(),mapping.getValue());
+            if("CSRF跨站请求伪造漏洞".equals(mapping.getKey())||"关键词".equals(mapping.getKey())){
+                jsonObject.put("level","middle");
+            }else{
+                jsonObject.put("level","high");
+            }
             bugTop.add(jsonObject);
         }
         JSONObject response = new JSONObject();

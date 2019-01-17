@@ -95,6 +95,8 @@ public interface PerformMapper extends Mapper<Task> {
             "if(sum(webvul) is NULL,0,SUM(webvul)) webvul,\n" +
             "if(sum(info_leak) is null,0,sum(info_leak)) infoLeak,\n" +
             "if(sum(cgi) is null ,0,SUM(cgi)) cgi,\n" +
+            "if(sum(keyword) is null ,0,SUM(keyword)) keyword,\n" +
+            "if(sum(csrf) is null ,0,SUM(csrf)) csrf,\n" +
             "if(sum(form_crack) is null,0,SUM(form_crack)) formCrack\n" +
             "FROM ws_finish_type ")
     PerformReq getBugCount();
