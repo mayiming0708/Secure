@@ -5,7 +5,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.shtel.secure.platform.enumType.model.EnumType;
 import com.shtel.secure.platform.finishType.model.FinishType;
 import com.shtel.secure.platform.finishType.service.FinishTypeService;
+import com.shtel.secure.platform.issue.model.Task;
 import com.shtel.secure.platform.issue.service.IssueService;
+import com.shtel.secure.platform.login.model.User;
+import com.shtel.secure.platform.login.service.UserService;
 import com.shtel.secure.platform.receive.model.ResultEvent;
 import com.shtel.secure.platform.receive.service.ResultEventService;
 import com.shtel.secure.platform.risk.model.Risk;
@@ -15,6 +18,7 @@ import com.shtel.secure.platform.type.model.Type;
 import com.shtel.secure.platform.type.service.TypeService;
 import com.shtel.secure.utils.ResultUtil;
 import io.swagger.annotations.*;
+import net.bytebuddy.asm.Advice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +54,8 @@ public class ReceiveAction {
     private RiskService riskService;
     @Autowired
     private IssueService issueService;
+    @Autowired
+    private UserService userService;
 
 
     /**
@@ -168,76 +174,76 @@ public class ReceiveAction {
 
                     switch (jsonObject.getString("type")) {
                         case "siteinfo":
-                            if(finishType.getSiteinfo()==null){
+                            if (finishType.getSiteinfo() == null) {
                                 finishType.setSiteinfo(0);
                             }
-                            finishType.setSiteinfo(finishType.getSiteinfo()+1);
+                            finishType.setSiteinfo(finishType.getSiteinfo() + 1);
                             break;
                         case "availability":
                             if (finishType.getAvailability() == null) {
                                 finishType.setAvailability(0);
                             }
-                            finishType.setAvailability(finishType.getAvailability()+1);
+                            finishType.setAvailability(finishType.getAvailability() + 1);
                             break;
                         case "blackLinks":
                             if (finishType.getBlackLinks() == null) {
                                 finishType.setBlackLinks(0);
                             }
-                            finishType.setBlackLinks(finishType.getBlackLinks()+1);
+                            finishType.setBlackLinks(finishType.getBlackLinks() + 1);
                             break;
                         case "malscan":
                             if (finishType.getMalscan() == null) {
                                 finishType.setMalscan(0);
                             }
-                            finishType.setMalscan(finishType.getMalscan()+1);
+                            finishType.setMalscan(finishType.getMalscan() + 1);
                             break;
                         case "keyword":
                             if (finishType.getKeyword() == null) {
                                 finishType.setKeyword(0);
                             }
-                            finishType.setKeyword(finishType.getKeyword()+1);
+                            finishType.setKeyword(finishType.getKeyword() + 1);
                             break;
                         case "sql":
                             if (finishType.getSqlInjection() == null) {
                                 finishType.setSqlInjection(0);
                             }
-                            finishType.setSqlInjection(finishType.getSqlInjection()+1);
+                            finishType.setSqlInjection(finishType.getSqlInjection() + 1);
                             break;
                         case "xss":
                             if (finishType.getXss() == null) {
                                 finishType.setXss(0);
                             }
-                            finishType.setXss(finishType.getXss()+1);
+                            finishType.setXss(finishType.getXss() + 1);
                             break;
                         case "webvul":
                             if (finishType.getWebvul() == null) {
                                 finishType.setWebvul(0);
                             }
-                            finishType.setWebvul(finishType.getWebvul()+1);
+                            finishType.setWebvul(finishType.getWebvul() + 1);
                             break;
                         case "infoLeak":
                             if (finishType.getInfoLeak() == null) {
                                 finishType.setInfoLeak(0);
                             }
-                            finishType.setInfoLeak(finishType.getInfoLeak()+1);
+                            finishType.setInfoLeak(finishType.getInfoLeak() + 1);
                             break;
                         case "cgi":
                             if (finishType.getCgi() == null) {
                                 finishType.setCgi(0);
                             }
-                            finishType.setCgi(finishType.getCgi()+1);
+                            finishType.setCgi(finishType.getCgi() + 1);
                             break;
                         case "csrf":
                             if (finishType.getCsrf() == null) {
                                 finishType.setCsrf(0);
                             }
-                            finishType.setCsrf(finishType.getCsrf()+1);
+                            finishType.setCsrf(finishType.getCsrf() + 1);
                             break;
                         case "formCrack":
                             if (finishType.getFormCrack() == null) {
                                 finishType.setFormCrack(0);
                             }
-                            finishType.setFormCrack(finishType.getFormCrack()+1);
+                            finishType.setFormCrack(finishType.getFormCrack() + 1);
                             break;
                     }
                     resultValues.add(jsonObject);
@@ -264,6 +270,12 @@ public class ReceiveAction {
             finishTypeService.updateFinishType(finishType);
 
             issueService.updateFinishRate(oneJsonObject.getString("virtual_group_id"));
+
+            Task task = issueService.getUserByVirtualGroupId(oneJsonObject.getString("virtual_group_id"));
+            if (task.getFinishRate() == 1.00) {
+                User user = userService.getUserById(task.getUserId());
+
+            }
         } catch (Exception e) {
             logger.info("|回调接口接收数据失败：" + e);
         }

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.shtel.secure.platform.issue.model.Task;
 import com.shtel.secure.platform.issue.model.mapper.TaskMapper;
+import com.shtel.secure.platform.login.model.User;
 import com.shtel.secure.utils.HttpUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -298,5 +299,11 @@ public class IssueService {
         task.setUserId(Integer.parseInt(userId));
     }
 
+    public Task getUserByVirtualGroupId(String virtualGroupId) {
+        Example example = new Example(Task.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("virtualGroupId", virtualGroupId);
+        return taskMapper.selectOneByExample(example);
+    }
 
 }
