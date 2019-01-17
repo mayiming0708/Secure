@@ -587,68 +587,160 @@
 						field: 'score',
 						align: 'center',
 						valign: 'middle',
+						formatter:function(value,row,index){
+							if(value>66&&value<=100){
+							    return '<div><i class="fa fa-warning" style="color: red;margin-right: 5px"></i>'+value+'</div>'
+							}
+							if(value>33&value<=66){
+							    return '<div><i class="fa fa-warning" style="color: #5f9ea0;margin-right: 5px"></i>'+value+'</div>'
+							}
+							if(value>0&&value<=33){
+                                return '<div><i class="fa fa-warning" style="color: #228b22;margin-right: 5px"></i>'+value+'</div>'
+							}
+							if(value==0){
+                                return '<div><i class="fa fa-chevron-circle-down" style="color: #228b22;margin-right: 5px"></i>'+value+'</div>'
+							}
+						}
 					}, {
 						title: '暗链',
 						field: 'blackLinks',
 						align: 'center',
-						valign: 'middle'
+						valign: 'middle',
+						formatter:function(value,row,index){
+						    if(value==-1){
+						        return '--';
+							}else{
+						        return value;
+							}
+						}
 					}, {
 						title: '站点信息',
 						field: 'siteinfo',
 						align: 'center',
-						valign: 'middle'
+						valign: 'middle',
+                            formatter:function(value,row,index){
+                                if(value==-1){
+                                    return '--';
+                                }else{
+                                    return value;
+                                }
+                            }
+
 					}, {
 						title: '关键词',
 						field: 'keyword',
 						align: 'center',
-						valign: 'middle'
+						valign: 'middle',
+                            formatter:function(value,row,index){
+                                if(value==-1){
+                                    return '--';
+                                }else{
+                                    return value;
+                                }
+                            }
 					}, {
 						title: 'SQL注入漏洞',
 						field: 'sqlInjection',
 						align: 'center',
-						valign: 'middle'
+						valign: 'middle',
+                            formatter:function(value,row,index){
+                                if(value==-1){
+                                    return '--';
+                                }else{
+                                    return value;
+                                }
+                            }
 					}, {
 						title: 'XSS跨站脚本漏洞',
 						field: 'xss',
 						align: 'center',
 						valign: 'middle',
+                            formatter:function(value,row,index){
+                                if(value==-1){
+                                    return '--';
+                                }else{
+                                    return value;
+                                }
+                            }
 					}, {
 						title: '应用漏洞',
 						field: 'webvul',
 						align: 'center',
-						valign: 'middle'
+						valign: 'middle',
+                            formatter:function(value,row,index){
+                                if(value==-1){
+                                    return '--';
+                                }else{
+                                    return value;
+                                }
+                            }
 					}, {
 						title: '信息泄露',
 						field: 'infoLeak',
 						align: 'center',
-						valign: 'middle'
+						valign: 'middle',
+                            formatter:function(value,row,index){
+                                if(value==-1){
+                                    return '--';
+                                }else{
+                                    return value;
+                                }
+                            }
 					}, {
 						title: 'CGI漏洞',
 						field: 'cgi',
 						align: 'center',
-						valign: 'middle'
+						valign: 'middle',
+                            formatter:function(value,row,index){
+                                if(value==-1){
+                                    return '--';
+                                }else{
+                                    return value;
+                                }
+                            }
 					}, {
 						title: 'CSRF跨站请求伪造漏洞',
 						field: 'csrf',
 						align: 'center',
-						valign: 'middle'
+						valign: 'middle',
+                            formatter:function(value,row,index){
+                                if(value==-1){
+                                    return '--';
+                                }else{
+                                    return value;
+                                }
+                            }
 					}, {
 						title: '表单破解漏洞',
 						field: 'formCrack',
 						align: 'center',
-						valign: 'middle'
+						valign: 'middle',
+                            formatter:function(value,row,index){
+                                if(value==-1){
+                                    return '--';
+                                }else{
+                                    return value;
+                                }
+                            }
 					},{
 			    		title:"任务ID",
 			    		field:"virtualGroupId",
 			    		align: 'center',
-						valign: 'middle'
+						valign: 'middle',
+                            formatter:function(value,row,index){
+                                if(value==-1){
+                                    return '--';
+                                }else{
+                                    return value;
+                                }
+                            }
 			    	},{
 			    		title:"操作",
 			    		field:"Button",
 			    		events:"operateEvents",
 			    		formatter:"AddFunctionAlty",
 			    		align: 'center',
-						valign: 'middle'
+						valign: 'middle',
 			    	}],
 					onLoadSuccess: function(res) { //可不写
 						//加载成功时

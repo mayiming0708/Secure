@@ -542,10 +542,10 @@
 								<!-- Tabs within a box -->
 								<ul class="nav nav-tabs pull-right">
 									<li class="active">
-										<a href="#site-faq" data-toggle="tab">网站风险分布</a>
+										<a href="#site-faq" data-toggle="tab" class="sitetab">网站风险分布</a>
 									</li>
 									<li>
-										<a href="#bug-faq" data-toggle="tab">漏洞风险分布</a>
+										<a href="#bug-faq" data-toggle="tab" class="leaktab">漏洞风险分布</a>
 									</li>
 									<!--<li class="pull-left header"><i class="fa fa-inbox"></i> 下发临时任务</li>-->
 								</ul>
@@ -658,7 +658,7 @@
 									<div class="chart tab-pane active bug-type-chart2" id="bug-type-chart2" style="position: relative; height: 400px;">
 										
 									</div>
-									<div class="chart tab-pane bug-type-chart4" id="bug-type-chart4" style="position: relative; height: 400px;">
+									<div class="chart tab-pane bug-type-chart4" id="bug-type-chart4" style="position: relative; height: 400px;width: 700px;">
 										
 									</div>
 								</div>
@@ -916,17 +916,18 @@
 		<script src="/static/js/echarts.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/static/js/common.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
+            var temAlert = $(".temporary-task-total .pop-alert-content");
+            var temCover = $(".temporary-task-total .cover");
+            var temPop = $(".temporary-task-total .pop-alert");
+            var temBtn = $(".temporary-task-total button");
+            var temTitle = $(".temporary-task-total  .pop-alert .title");
+            var taskType= $(".temporary-task-total select");
+            //漏洞风险分布图表
+			var bugfaq=echarts.init(document.getElementById('bug-faq-chart2'));
+
 			$(function() {
                 judgeCookie();
                 getIndexData();
-				var temAlert = $(".temporary-task-total .pop-alert-content");
-				var temCover = $(".temporary-task-total .cover");
-				var temPop = $(".temporary-task-total .pop-alert");
-				var temBtn = $(".temporary-task-total button");
-				var temTitle = $(".temporary-task-total  .pop-alert .title");
-				var taskType= $(".temporary-task-total select");
-			
-
 				//下发临时任务检测项
 				$(".choose-item li").click(function() {
 					if($(this).hasClass('active')) {
@@ -996,10 +997,6 @@
 					temPop.hide();
 				});
 				//传给后台的值
-				var json = {
-
-				}
-
 				//下发周期任务的时间选择器
 				$(".date-picker").datepicker({
 					language: "zh-CN",
@@ -1052,80 +1049,15 @@
 						},
 					}
 				});
-				//结果报告的饼图
-//				function resultChart() {
-//					var myChart = echarts.init(document.getElementById('result-chart'));
-//
-//					var option = {
-//						tooltip: {
-//							trigger: 'item',
-//							formatter: "{a} <br/>{b} : {c} ({d}%)"
-//						},
-//						series: [{
-//							name: '库存情况',
-//							type: 'pie',
-//							radius: '68%',
-//							center: ['50%', '50%'],
-//							clockwise: false,
-//							data: [{
-//								value: 45,
-//								name: '高危'
-//							}, {
-//								value: 25,
-//								name: '中危'
-//							}, {
-//								value: 15,
-//								name: '低危'
-//							}, {
-//								value: 8,
-//								name: '信息'
-//							}],
-//							label: {
-//								normal: {
-//									textStyle: {
-//										color: '#000',
-//										fontSize: 14,
-//									}
-//								}
-//							},
-//							labelLine: {
-//								normal: {
-//									show: true,
-//									color: '#000'
-//								}
-//							},
-//							itemStyle: {
-//								normal: {
-//									borderWidth: 4,
-//									borderColor: '#ffffff',
-//								},
-//								emphasis: {
-//									borderWidth: 0,
-//									shadowBlur: 10,
-//									shadowOffsetX: 0,
-//									shadowColor: 'rgba(0, 0, 0, 0.5)'
-//								}
-//							}
-//						}],
-//						color: [
-//							'#00acee',
-//							'#52cdd5',
-//							'#79d9f1',
-//							'#a7e7ff',
-//							'#c8efff'
-//						],
-//						backgroundColor: '#fff'
-//					};
-//					myChart.setOption(option);
-//				}
-//				resultChart();
-			});
+                //echarts图形添加屏幕自适应
+                window.addEventListener("resize", function () {
+                    bugfaq.resize();
+                });
+                $(".temporary-task-total .leaktab").click(function(){
+                    bugFaqChart();
+				})
+		});
 
-			//创建有操作按钮的dataTable
-//			$("#tableFour").DataTable({
-//
-//			});
-//			
 			//网站风险分布
 			function checkSite() {
 				var myChart = echarts.init(document.getElementById('check-site-chart'));
@@ -1566,10 +1498,11 @@
 					myChart.setOption(option);
 			}
 			siteFaqChart();
-			//漏洞风险分布
-			function bugFaqChart(data) {
 
-				var myChart = echarts.init(document.getElementById('bug-faq-chart2'));
+			//漏洞风险分布
+			function bugFaqChart() {
+
+				// var myChart = echarts.init(document.getElementById('bug-faq-chart2'));
 				//ehcarts重构
 
 				var colorList = [
@@ -1578,18 +1511,18 @@
 
 				// 总和
 				var total = {
-					value: data.bugCounts,
+					value: 792,
 					name: '共检测漏洞数'
 				}
 
 				var originalData = [{
-					value: data.higBugs,
+					value: 341,
 					name: '高危'
 				}, {
-					value: data.middleBugs,
+					value: 346,
 					name: '中危'
 				}, {
-					value: data.lowBugs,
+					value: 105,
 					name: "低危"
 				}];
 
@@ -1673,8 +1606,10 @@
 						data: originalData
 					}]
 				};
-				myChart.setOption(option);
-
+                bugfaq.clear();
+                bugfaq.setOption(option);
+                bugfaq.resize();
+                window.onresize = bugfaq.resize;
 			}
 			// bugFaqChart();//漏洞类型风险分布图的图2
 			function bugTypeChart4() {
@@ -1874,11 +1809,13 @@
 					}
 
 				}
+				setCookie('bugFaqChart',data);
 				//漏洞风险分布图
-                bugFaqChart(data);
+                // bugFaqChart(data);
 
 
 			}
+
 		</script>
 	</body>
 </html>

@@ -444,9 +444,9 @@
 							<div class="form-group col-sm-3 task-type-progress">
 								<label for="name">任务类型:<p class="prompt"></p></label>
 								<select name="task-type-choose">
-									<option value="">--请选择--</option>
-									<option value="临时任务">临时任务</option>
-									<option value="周期任务">周期任务</option>
+									<option value="2">--请选择--</option>
+									<option value="0">临时任务</option>
+									<option value="1">周期任务</option>
 								</select>
 							</div>
 							<div class="form-group col-sm-3 task-time">
@@ -629,7 +629,6 @@
     var table = $("#dtTable");
     //获取到cookie值
     var userId=getCookie("userId");
-    console.log(userId);
     var temAlert = $("#taskAddModal .pop-alert-content");
     var temCover = $("#taskAddModal .cover");
     var temPop = $("#taskAddModal .pop-alert");
@@ -639,7 +638,7 @@
     var checkbox=$("#taskAddModal .checkbox");
     $(function(){
         judgeCookie();
-        urlList();
+        // urlList();
         // taskList();
         result();
         //时间选择器
@@ -651,7 +650,7 @@
         });
 
         //table表格初始化
-        tableInit();
+        tableInit(2,'');
         table.bootstrapTable('hideLoading');
 
         $("#all").click(function(){
@@ -743,18 +742,32 @@
         $(window).resize(function() {
             //防止表头与表格不对齐
             table.bootstrapTable('resetView');
-        });//获取下发任务数据
+        });
+		//列表查询 获取到需要查询的参数
+		$("#queryBtn").click(function(){
+            var type=$(".task-type-progress select").val();
+			var time=$("#datepicker").val();
+            tableInit(type,time);
+		})
+		//点重置按钮 重置条件
+		// $("#resetBtn").click(function(){
+        //     var type=$(".task-type-progress select").val();
+        //     var time=$("#datepicker").val();
+		//
+        //     tableInit(2,'');
+		// })
+
 
     })
 
-    function tableInit() {
+    function tableInit(type,time) {
 
         table.bootstrapTable('destroy');
         table.bootstrapTable({
             url: "/perform/taskListPage",
 			method:"post",
 			dataType:"json",
-            contentType: "application/x-www-form-urlencoded",
+            // contentType: "application/x-www-form-urlencoded",
             //table高度：如果没有设置，表格自动根据记录条数觉得表格高度
             //	    	height: '582',
             //是否显示行间隔色
@@ -781,11 +794,40 @@
             cardView: false,                    //是否显示详细视图
             detailView: false,
             queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的
-                return {//这里的params是table提供的
-                    currentPage: params.offset/params.limit+1,
-                    pageSize: params.limit,//找多少条
-					userId:userId
-                };
+               if(type!=2&&time!=''){
+                   return {//这里的params是table提供的
+                       currentPage: params.offset/params.limit+1,
+                       pageSize: params.limit,//找多少条
+                       userId:userId,
+						isPeriod:type,
+					   createTime:time
+                   };
+			   }
+			   if(type!=2&&(time=='')){
+                   return {//这里的params是table提供的
+                       currentPage: params.offset/params.limit+1,
+                       pageSize: params.limit,//找多少条
+                       userId:userId,
+                       isPeriod:type,
+                   };
+			   }
+			   if(type==2&&(time=='')){
+
+                   return {
+                       currentPage: params.offset/params.limit+1,
+                       pageSize: params.limit,//找多少条
+                       userId:userId,
+                   };
+			   }
+			   if(type==2&&(time!='')){
+                   return {//这里的params是table提供的
+                       currentPage: params.offset/params.limit+1,
+                       pageSize: params.limit,//找多少条
+                       userId:userId,
+                       createTime:time,
+                   };
+			   }
+
             },
             //表头
             columns: [{
@@ -980,19 +1022,19 @@
         });
 	}
 	//调用url列表
-	function urlList(){
-        $.ajax({
-            type:"post",
-            url:"/perform/urlList",
-            xhrFields: {withCredentials: true},
-            data:{"userId":userId,"isPeriod":"0"},
-            dataType: "json",
-            async:true,
-            success:function(data){
-                console.log(data);
-            }
-        });
-	}
+	// function urlList(){
+    //     $.ajax({
+    //         type:"post",
+    //         url:"/perform/urlList",
+    //         xhrFields: {withCredentials: true},
+    //         data:{"userId":userId,"isPeriod":"0"},
+    //         dataType: "json",
+    //         async:true,
+    //         success:function(data){
+    //             console.log(data);
+    //         }
+    //     });
+	// }
 
 	//调用结果
 	function result(){
