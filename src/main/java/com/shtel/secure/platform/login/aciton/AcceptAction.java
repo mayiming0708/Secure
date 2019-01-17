@@ -25,20 +25,24 @@ public class AcceptAction {
         request.getRequestDispatcher("/static/html/login.html").forward(request,response);
     }
     @GetMapping("/ws/newIndex")
-    public void taskprogress(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void newIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/static/html/newIndex.html").forward(request,response);
     }
     @GetMapping("/ws/taskprogress")
-    public void taskdetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void taskprogress(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/static/html/taskprogress.html").forward(request,response);
     }
     @GetMapping("/ws/taskdetail")
-    public void sitemonitor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void taskdetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/static/html/taskdetail.html").forward(request,response);
     }
     @GetMapping("/ws/sitemonitor")
-    public void sitedetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void sitemonitor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/static/html/sitemonitor.html").forward(request,response);
+    }
+    @GetMapping("/ws/sitedetail")
+    public void sitedetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/static/html/sitedetail.html").forward(request,response);
     }
 
     public void acceptData(HttpServletRequest request, HttpServletResponse response, @RequestParam("parameter") String parameter) {
