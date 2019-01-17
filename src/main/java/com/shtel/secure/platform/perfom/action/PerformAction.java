@@ -44,7 +44,7 @@ public class PerformAction {
     @PostMapping("/taskListPage")
     public JSONObject taskListPage(@RequestBody PerformReq performReq) throws ParseException {
         if (performReq.getCreateTime() != null) {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
             SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
             Date date = simpleDateFormat.parse(performReq.getCreateTime());
             performReq.setCreateTime(simpleDateFormat1.format(date));
