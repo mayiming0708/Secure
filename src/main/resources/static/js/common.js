@@ -1,10 +1,7 @@
 //页面获取用户cookie值
 $(function(){
-    //进入页面判断cookie是否存在
-    judgeCookie();
     //取出cookie中用户名
     var username=getCookie("username");
-    console.log(username);
     $(".user.user-menu .hidden-xs").html(username);
     //点击登出时 调用登出接口
     $(".user-footer .btn-flat").click(function(){

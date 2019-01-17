@@ -65,13 +65,13 @@
 					<form method="post" name="loginForm" action="">
 						<p class="title">登录</p>
 						<div class="form-group">
-							<label for=""><i class="iconfont icon-user user"></i></label>
+							<label for="username"><i class="iconfont icon-user user"></i></label>
 							<input class="form-control" id="username" maxlength="20" name="username" type="text" placeholder="请输入用户名">
 							<span class="clear"><i class="iconfont icon-guanbi"></i></span>
 							<input id="loginposition" name="loginposition" type="hidden" value="1">
 						</div>
 						<div class="form-group">
-							<label for=""><i class="iconfont icon-password"></i></label>
+							<label for="password"><i class="iconfont icon-password"></i></label>
 							<i class="password"></i>
 							<input class="form-control" id="password" name="password" maxlength="20" type="password" onkeydown="" autocomplete="off" placeholder="请输入密码">
 							<span class="clear"><i class="iconfont icon-guanbi"></i></span>
@@ -107,12 +107,13 @@
 		<div class="copyRight">
 			<!-- 2016 上海理想信息产业（集团）有限公司  版权所有-->中国电信股份有限公司上海公司</div>
 	</body>
-	<script src="/static/js/common.js" type="text/javascript" charset="utf-8"></script>
+
 	<!--<script src="js/verifyCode.js" type="text/javascript"></script>-->
 	<!--<script src="js/shortcutfunc.js" type="text/javascript"></script>-->
 	<!--<script src="js/validate.js" type="text/javascript"></script>-->
 	<!--<script src="js/cookie.js" type="text/javascript"></script>-->
 	<script src="/static/js/jquery-3.3.1.min.js"></script>
+	<script src="/static/js/common.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		$(function(){
 			var user=$("#user");
@@ -153,8 +154,11 @@
 						async:true,
 						success:function(data){
 							if(data.code==0){
-								window.location.href="newIndex";
-								setCookie("username",u_name);
+                                setCookie("username",u_name);
+								var userId=data.content.USERID;
+								console.log(userId);
+                                setCookie("userId",userId);
+                                window.location.href="newIndex";
 							}else{
 								$('.errormessege').html(data.message);
 							}

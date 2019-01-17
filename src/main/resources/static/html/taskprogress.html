@@ -444,9 +444,9 @@
 							<div class="form-group col-sm-3 task-type-progress">
 								<label for="name">任务类型:<p class="prompt"></p></label>
 								<select name="task-type-choose">
-									<option value="">--请选择--</option>
-									<option value="临时任务">临时任务</option>
-									<option value="周期任务">周期任务</option>
+									<option value="2">--请选择--</option>
+									<option value="0">临时任务</option>
+									<option value="1">周期任务</option>
 								</select>
 							</div>
 							<div class="form-group col-sm-3 task-time">
@@ -628,8 +628,7 @@
 <script type="text/javascript">
     var table = $("#dtTable");
     //获取到cookie值
-    var username=getCookie("username");
-    console.log(username);
+    var userId=getCookie("userId");
     var temAlert = $("#taskAddModal .pop-alert-content");
     var temCover = $("#taskAddModal .cover");
     var temPop = $("#taskAddModal .pop-alert");
@@ -638,6 +637,10 @@
     var checkItem=$(".checkbox li input");
     var checkbox=$("#taskAddModal .checkbox");
     $(function(){
+        judgeCookie();
+        // urlList();
+        // taskList();
+        result();
         //时间选择器
         $("#datepicker").datepicker({
             language: "zh-CN",
@@ -647,14 +650,13 @@
         });
 
         //table表格初始化
-        tableInit();
+        tableInit(2,'');
         table.bootstrapTable('hideLoading');
 
         $("#all").click(function(){
             var checkbox=$(this).parent().parent().parent().parent();
             if($(this).prop('checked')){
                 checkbox.find('input').prop('checked','checked');
-//							$("#xss").prop('checked','checked');
             }else{
                 checkbox.find('input').prop('checked',false);
 			}
@@ -666,7 +668,6 @@
                 $("#all").prop('checked',false);
             }
         })
-        //有一个不选中 全部也不选中
 
         //新增任务
         $("#addBtn").click(function() {
@@ -740,19 +741,33 @@
 
         $(window).resize(function() {
             //防止表头与表格不对齐
-            $table.bootstrapTable('resetView');
-        });//获取下发任务数据
+            table.bootstrapTable('resetView');
+        });
+		//列表查询 获取到需要查询的参数
+		$("#queryBtn").click(function(){
+            var type=$(".task-type-progress select").val();
+			var time=$("#datepicker").val();
+            tableInit(type,time);
+		})
+		//点重置按钮 重置条件
+		// $("#resetBtn").click(function(){
+        //     var type=$(".task-type-progress select").val();
+        //     var time=$("#datepicker").val();
+		//
+        //     tableInit(2,'');
+		// })
+
 
     })
 
-    function tableInit() {
+    function tableInit(type,time) {
 
         table.bootstrapTable('destroy');
         table.bootstrapTable({
-            //请求地址,此处数据为本地加载
-            url: "/static/json/taskprogress.json",
-            //请求方式
-            method: "GET",
+            url: "/perform/taskListPage",
+			method:"post",
+			dataType:"json",
+            // contentType: "application/x-www-form-urlencoded",
             //table高度：如果没有设置，表格自动根据记录条数觉得表格高度
             //	    	height: '582',
             //是否显示行间隔色
@@ -778,33 +793,98 @@
             showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
             cardView: false,                    //是否显示详细视图
             detailView: false,
+            queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的
+               if(type!=2&&time!=''){
+                   return {//这里的params是table提供的
+                       currentPage: params.offset/params.limit+1,
+                       pageSize: params.limit,//找多少条
+                       userId:userId,
+						isPeriod:type,
+					   createTime:time
+                   };
+			   }
+			   if(type!=2&&(time=='')){
+                   return {//这里的params是table提供的
+                       currentPage: params.offset/params.limit+1,
+                       pageSize: params.limit,//找多少条
+                       userId:userId,
+                       isPeriod:type,
+                   };
+			   }
+			   if(type==2&&(time=='')){
+
+                   return {
+                       currentPage: params.offset/params.limit+1,
+                       pageSize: params.limit,//找多少条
+                       userId:userId,
+                   };
+			   }
+			   if(type==2&&(time!='')){
+                   return {//这里的params是table提供的
+                       currentPage: params.offset/params.limit+1,
+                       pageSize: params.limit,//找多少条
+                       userId:userId,
+                       createTime:time,
+                   };
+			   }
+
+            },
             //表头
             columns: [{
                 title: '任务ID',
-                field: 'groupId', //id
+                field: 'virtualGroupId', //id
                 //	    		checkbox: true, //checkbox
                 align: 'center', //对其方式
                 valign: 'middle' //对其方式
             }
                 , {
                     title: '任务类型',
-                    field: 'taskType',
+                    field: 'isPeriod',
                     align: 'center',
                     valign: 'middle',
+                    formatter:function(value,row,index){
+                        if(value==0){
+                            return "临时任务"
+                        }else{
+                            return "周期任务"
+                        }
+                    }
                 }, {
-                    title: '下发任务时间',
-                    field: 'taskTime',
-                    align: 'center',
-                    valign: 'middle'
-                }
-                , {
-                    title: '检测网站',
-                    field: 'site',
+                    title: '下发时间',
+                    field: 'createTime',
                     align: 'center',
                     valign: 'middle'
                 }, {
                     title: '检测进度',
-                    field: 'progress',
+                    field: 'finishRate',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter:function(value,row,index){
+                        var percent=value*100+'%';
+                        console.log(percent);
+                        if(row.isPeriod==0){
+                            return '<div class="total" style="position:relative">\n' +
+                                '\t<div class="value" style="color:#000;">'+percent+'</div>\n' +
+                                '\t<div class="progress" style="height:8px;border-radius: 5px;background-color: #ddd">\n' +
+                                '\t<div class="progress-bar progress-bar-success" role="progressbar"\n' +
+                                '\t\t aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"\n' +
+                                '\t\t style="width:'+percent+';">\n' +
+                                '\t\t<span class="sr-only">90% 完成（成功）</span>\n' +
+                                '\t</div>\n' +
+                                '\t\n' +
+                                '</div>\n' +
+                                '\t\n' +
+                                '</div>';
+                        }
+                        else{
+                            return "--";
+                        }
+
+                    }
+                }
+                , {
+                    title: '检测网站',
+                    field: 'urls',
                     align: 'center',
                     valign: 'middle'
                 },{
@@ -921,10 +1001,55 @@
             //				window.location.href="newIndex.html";
         },
         "click #detailBtn": function(e, value, row, index) {
-            window.location.href = "taskdetail";
+            // var taskId=row.virtualGroupId;
+            window.location.href = "taskdetail?id="+row.virtualGroupId;
+            // setCookie(taskId,taskId);
         }
     }
+	//调用任务列表接口
+	function taskList(){
+        $.ajax({
+            type:"post",
+            url:"/perform/taskList",
+            xhrFields: {withCredentials: true},
+			data:{"userId":userId},
+            dataType: "json",
+            async:true,
+			success:function(data){
+				// console.log(data);
 
+			}
+        });
+	}
+	//调用url列表
+	// function urlList(){
+    //     $.ajax({
+    //         type:"post",
+    //         url:"/perform/urlList",
+    //         xhrFields: {withCredentials: true},
+    //         data:{"userId":userId,"isPeriod":"0"},
+    //         dataType: "json",
+    //         async:true,
+    //         success:function(data){
+    //             console.log(data);
+    //         }
+    //     });
+	// }
+
+	//调用结果
+	function result(){
+        $.ajax({
+            type:"get",
+            url:"/service/resultEvents?virtualGroupId="+"5c372e0f43b909018fbfad51"+"&url="+"http://testphp.vulnweb.com",
+            xhrFields: {withCredentials: true},
+            // data:{"virtualGroupId":"5c372e0f43b909018fbfad51","url":"http://testphp.vulnweb.com"},
+            dataType: "json",
+            async:true,
+            success:function(data){
+                console.log(data);
+            }
+        });
+	}
 
 </script>
 </body>
