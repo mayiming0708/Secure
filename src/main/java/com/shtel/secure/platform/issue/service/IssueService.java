@@ -16,6 +16,7 @@ import tk.mybatis.mapper.entity.Example;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -306,4 +307,10 @@ public class IssueService {
         return taskMapper.selectOneByExample(example);
     }
 
+    public List<Task> getTasksByUserId(Integer userId) {
+        Example example = new Example(Task.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("userId", userId);
+        return taskMapper.selectByExample(example);
+    }
 }

@@ -1,7 +1,10 @@
 package com.shtel.secure.platform.receive.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.shtel.secure.platform.enumType.model.EnumType;
 import com.shtel.secure.platform.finishType.model.FinishType;
+import com.shtel.secure.platform.issue.model.Task;
+import com.shtel.secure.platform.issue.service.IssueService;
 import com.shtel.secure.platform.receive.model.ResultEvent;
 import com.shtel.secure.platform.receive.model.Temp;
 import com.shtel.secure.platform.receive.model.mapper.ResultEventMapper;
@@ -15,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,6 +30,8 @@ public class ResultEventService {
 
     @Autowired
     private ResultEventMapper resultEventMapper;
+    @Autowired
+    private IssueService issueService;
 
     @Value("${email.account}")
     private String accout;
@@ -67,6 +73,24 @@ public class ResultEventService {
             criteria.andEqualTo("site", url);
         }
         return resultEventMapper.selectByExample(example);
+    }
+
+    public List<ResultEvent> getResultEventsByUserIdAndUrl(Integer userId, String url) {
+//        List<Task> tasks = issueService.getTasksByUserId(userId);
+//        List<ResultEvent> resultEvents = new ArrayList<>();
+//
+//        for (Task task : tasks) {
+//            Example example = new Example(ResultEvent.class);
+//            Example.Criteria criteria = example.createCriteria();
+//            criteria.andEqualTo("virtualGroupId", task.getVirtualGroupId());
+//            criteria.andEqualTo("site", url);
+//            List<ResultEvent> list = resultEventMapper.selectByExample(example);
+//            for (ResultEvent resultEvent : list) {
+//                resultEvents.add(resultEvent);
+//            }
+//        }
+//        return resultEvents;
+        return resultEventMapper.getResultEventsByUserIdAndUrl(userId, url);
     }
 
 
