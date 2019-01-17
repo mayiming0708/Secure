@@ -734,6 +734,10 @@
         temBtn.click(function() {
             temCover.hide();
             temPop.hide();
+            var type=$(".task-type-progress select").val();
+            var time=$("#datepicker").val();
+            // table.bootstrapTable('destroy');
+            tableInit(type,time);
         });
         $("#taskAddModal .close").click(function(){
             $("#taskAddModal").hide();
@@ -750,12 +754,12 @@
             tableInit(type,time);
 		})
 		//点重置按钮 重置条件
-		// $("#resetBtn").click(function(){
-        //     var type=$(".task-type-progress select").val();
-        //     var time=$("#datepicker").val();
-		//
-        //     tableInit(2,'');
-		// })
+		$("#resetBtn").click(function(){
+            $(".task-type-progress select").val(2);
+           $("#datepicker").val('');
+
+            tableInit(2,'');
+		})
 
 
     })
@@ -771,7 +775,7 @@
             //table高度：如果没有设置，表格自动根据记录条数觉得表格高度
             //	    	height: '582',
             //是否显示行间隔色
-            toolbar: '#toolbar',                //工具按钮用哪个容器
+            // toolbar: '#toolbar',                //工具按钮用哪个容器
             striped: true,                      //是否显示行间隔色
             cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
             pagination: true,                   //是否显示分页（*）
@@ -782,16 +786,16 @@
             pageNumber:1,                       //初始化加载第一页，默认第一页
             pageSize: 10,                       //每页的记录行数（*）
             pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
-            search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
-            strictSearch: true,
+            // search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+            // strictSearch: true,
             showColumns: true,                  //是否显示所有的列
-            showRefresh: true,                  //是否显示刷新按钮
+			showRefresh: true,                  //是否显示刷新按钮
             minimumCountColumns: 2,             //最少允许的列数
             clickToSelect: true,                //是否启用点击选中行
             //          height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
             uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
-            showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
-            cardView: false,                    //是否显示详细视图
+            // showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+            // cardView: false,                    //是否显示详细视图
             detailView: false,
             queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的
                if(type!=2&&time!=''){
@@ -896,7 +900,7 @@
             ],
             onLoadSuccess: function(res) { //可不写
                 //加载成功时
-                 console.log(res);
+                //  console.log(res);
             },
             onLoadError: function(statusCode) {
                 return "加载失败了"
@@ -949,6 +953,7 @@
                         temCover.show();
                         temPop.show();
 					}
+
                 }
             });
 		}else{
@@ -996,9 +1001,11 @@
     }
     window.operateEvents = {
         "click #deleteBtn": function(e, value, row, index) {
-            alert('hello');
-            console.log(row.groupId);
-            //				window.location.href="newIndex.html";
+
+            console.log(row.virtualGroupId);
+			//调用删除任务接口
+			taskDelete(row.virtualGroupId);
+
         },
         "click #detailBtn": function(e, value, row, index) {
             // var taskId=row.virtualGroupId;
@@ -1050,7 +1057,23 @@
             }
         });
 	}
-
+	//调用删除接口
+	function taskDelete(id){
+            $.ajax({
+                type:"get",
+                url:"/perform/deleteTask",
+                xhrFields: {withCredentials: true},
+                data:{"virtualGroupId":id},
+                dataType: "json",
+                async:true,
+                success:function(data){
+                    var type=$(".task-type-progress select").val();
+                    var time=$("#datepicker").val();
+                    // table.bootstrapTable('destroy');
+                    tableInit(type,time);
+                }
+            });
+	}
 </script>
 </body>
 </html>
