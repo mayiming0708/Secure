@@ -23,6 +23,7 @@ public class User {
     private String password;
     private Date createTime;
     private Date updateTime;
+    private String email;
 
     public Integer getId() {
         return id;
@@ -62,5 +63,13 @@ public class User {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

@@ -274,7 +274,6 @@ public class ReceiveAction {
             Task task = issueService.getUserByVirtualGroupId(oneJsonObject.getString("virtual_group_id"));
             if (task.getFinishRate() == 1.00) {
                 User user = userService.getUserById(task.getUserId());
-
             }
         } catch (Exception e) {
             logger.info("|回调接口接收数据失败：" + e);
