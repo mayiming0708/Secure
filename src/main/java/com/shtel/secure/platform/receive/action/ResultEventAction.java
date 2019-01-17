@@ -83,4 +83,14 @@ public class ResultEventAction {
     public List<ResultEvent> resultEventByGroupAndUrl(@RequestParam String virtualGroupId, @RequestParam(required = false) String url) {
         return resultEventService.getResultEventsByGroupAndUrl(virtualGroupId, url);
     }
+
+    @ApiOperation(value = "根据userId与url返回resultEvent结果", tags = "任务结果查询")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "userId", value = "用户ID", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "url", value = "url", required = true, dataType = "String")
+    })
+    @RequestMapping(value = "/user/resultEvents", method = RequestMethod.GET)
+    public List<ResultEvent> resultEventByUserIdAndUrl(@RequestParam Integer userId, @RequestParam(required = false) String url) {
+        return resultEventService.getResultEventsByUserIdAndUrl(userId, url);
+    }
 }
