@@ -3,9 +3,10 @@ package com.shtel.secure.platform.enumType.model;
 public enum EnumType {
 
     SUCCESS(0, "操作成功"),
-    UNAUTH(401,"登陆未授权"),
-    LOGINFAIL(100,"登陆失败"),
-    QUIT(200,"退出登录");
+    UNAUTH(401, "登陆未授权"),
+    LOGINFAIL(100, "登陆失败"),
+    QUIT(200, "退出登录"),
+    EMAIL_ERROR(300, "邮件发送失败");
 
     private int key;
     private String value;

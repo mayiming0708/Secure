@@ -16,6 +16,7 @@ import com.shtel.secure.platform.risk.service.RiskService;
 import com.shtel.secure.platform.riskLevel.service.RiskLevelService;
 import com.shtel.secure.platform.type.model.Type;
 import com.shtel.secure.platform.type.service.TypeService;
+import com.shtel.secure.utils.EmailUtil;
 import com.shtel.secure.utils.ResultUtil;
 import io.swagger.annotations.*;
 import net.bytebuddy.asm.Advice;
@@ -274,11 +275,11 @@ public class ReceiveAction {
             Task task = issueService.getUserByVirtualGroupId(oneJsonObject.getString("virtual_group_id"));
             if (task.getFinishRate() == 1.00) {
                 User user = userService.getUserById(task.getUserId());
+                resultEventService.sendFinishMail(user.getEmail());
             }
         } catch (Exception e) {
             logger.info("|回调接口接收数据失败：" + e);
         }
-
 
         resultEventService.insert(parameter);
 

@@ -1,13 +1,17 @@
 package com.shtel.secure.platform.receive.service;
 
+import com.shtel.secure.platform.enumType.model.EnumType;
 import com.shtel.secure.platform.finishType.model.FinishType;
 import com.shtel.secure.platform.receive.model.ResultEvent;
 import com.shtel.secure.platform.receive.model.Temp;
 import com.shtel.secure.platform.receive.model.mapper.ResultEventMapper;
 import com.shtel.secure.platform.receive.model.mapper.TempMapper;
+import com.shtel.secure.utils.EmailUtil;
+import com.shtel.secure.utils.ResultUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
@@ -22,6 +26,11 @@ public class ResultEventService {
 
     @Autowired
     private ResultEventMapper resultEventMapper;
+
+    @Value("${email.account}")
+    private String accout;
+    @Value("${email.password}")
+    private String password;
 
     public int insert(String value) {
         Temp temp = new Temp();
@@ -76,5 +85,15 @@ public class ResultEventService {
             score = 100;
         }
         return score;
+    }
+
+
+    public String sendFinishMail(String receiveAddress) {
+        try {
+            EmailUtil.sendMail(accout, password, accout, receiveAddress, "您下发的任务已完成，请登录网站查看", "网站监测任务已完成");
+            return ResultUtil.Result(EnumType.SUCCESS);
+        } catch (Exception e) {
+            return ResultUtil.Result(EnumType.EMAIL_ERROR);
+        }
     }
 }
