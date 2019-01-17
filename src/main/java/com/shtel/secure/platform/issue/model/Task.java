@@ -37,7 +37,7 @@ public class Task {
     private Integer isSuccess;
     private Integer formCrack;
     private String message;
-    private float finishRate;
+    private Double finishRate;
     private Date createTime;
     private Date updateTime;
     private Integer status;
@@ -194,11 +194,11 @@ public class Task {
         this.message = message;
     }
 
-    public float getFinishRate() {
+    public Double getFinishRate() {
         return finishRate;
     }
 
-    public void setFinishRate(float finishRate) {
+    public void setFinishRate(Double finishRate) {
         this.finishRate = finishRate;
     }
 
