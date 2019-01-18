@@ -32,3 +32,7 @@ spring:
 server:
   port: 80
 
+#sql语句输出
+#mybatis:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
