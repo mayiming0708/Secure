@@ -11,19 +11,20 @@ public class FinishType {
     private String virtualGroupId;
     private String url;
     private Integer state = 0;
-    private Integer siteinfo;
-    private Integer availability;
-    private Integer blackLinks;
-    private Integer malscan;
-    private Integer keyword;
-    private Integer sqlInjection;
-    private Integer xss;
-    private Integer webvul;
-    private Integer infoLeak;
-    private Integer cgi;
-    private Integer csrf;
-    private Integer formCrack;
+    private Integer siteinfo = 0;
+    private Integer availability = 0;
+    private Integer blackLinks = 0;
+    private Integer malscan = 0;
+    private Integer keyword = 0;
+    private Integer sqlInjection = 0;
+    private Integer xss = 0;
+    private Integer webvul = 0;
+    private Integer infoLeak = 0;
+    private Integer cgi = 0;
+    private Integer csrf = 0;
+    private Integer formCrack = 0;
     private Integer riskUrlCount = 0;
+    private Integer contentUrlCount = 0;
     private Integer riskInfoCount = 0;
     private Integer riskHighCount = 0;
     private Integer riskMiddleCount = 0;
@@ -204,5 +205,32 @@ public class FinishType {
 
     public void setScore(Integer score) {
         this.score = score;
+    }
+
+    public Integer getContentUrlCount() {
+        return contentUrlCount;
+    }
+
+    public void setContentUrlCount(Integer contentUrlCount) {
+        this.contentUrlCount = contentUrlCount;
+    }
+
+    public void setZero() {
+        this.setBlackLinks(0);
+        this.setMalscan(0);
+        this.setKeyword(0);
+        this.setSqlInjection(0);
+        this.setXss(0);
+        this.setWebvul(0);
+        this.setInfoLeak(0);
+        this.setCgi(0);
+        this.setCsrf(0);
+        this.setFormCrack(0);
+        this.setRiskUrlCount(0);
+        this.setRiskInfoCount(0);
+        this.setRiskHighCount(0);
+        this.setRiskMiddleCount(0);
+        this.setRiskLowCount(0);
+        this.setScore(0);
     }
 }

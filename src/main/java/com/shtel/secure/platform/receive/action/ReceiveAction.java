@@ -116,11 +116,16 @@ public class ReceiveAction {
                 finishType = tmp;
             }
 
-            Integer riskHighCount = finishType.getRiskHighCount();
-            Integer riskMiddleCount = finishType.getRiskMiddleCount();
-            Integer riskLowCount = finishType.getRiskLowCount();
-            Integer riskInfoCount = finishType.getRiskInfoCount();
-            Integer riskUrlCount = finishType.getRiskUrlCount();
+
+            if ("weakness".equals(moduleType)) {
+                finishType.setZero();
+            } else if ("content".equals(moduleType)) {
+                finishType.setContentUrlCount(0);
+            } else if ("siteinfo".equals(moduleType)) {
+                finishType.setSiteinfo(0);
+            } else if ("availability".equals(moduleType)) {
+                finishType.setAvailability(0);
+            }
 
             Integer highLevel = riskLevelService.getRiskLevel("high").getLevel();
             Integer middleLevel = riskLevelService.getRiskLevel("middle").getLevel();
@@ -151,14 +156,19 @@ public class ReceiveAction {
                     if (riskLevel == null) {
                         if (type == null) {
                             Integer total = jsonObject.getJSONObject("value").getInteger("total");
-                            if (total != null)
-                                riskUrlCount += total;
+                            if (total != null) {
+                                if ("weakness".equals(moduleType)) {
+                                    finishType.setRiskUrlCount(finishType.getRiskUrlCount() + total);
+                                } else if ("content".equals(moduleType)) {
+                                    finishType.setContentUrlCount(finishType.getContentUrlCount() + total);
+                                }
+                            }
                         } else {
                             Risk risk = riskService.getRisk(type.getRiskLevelId());
                             if (risk == null) {
                                 Integer total = jsonObject.getJSONObject("value").getInteger("total");
                                 if (total != null)
-                                    riskUrlCount += total;
+                                    finishType.setRiskUrlCount(finishType.getRiskUrlCount() + total);
                             } else {
                                 riskLevel = risk.getLevel();
                             }
@@ -167,160 +177,124 @@ public class ReceiveAction {
                     }
                     if (riskLevel != null) {
                         if (riskLevel >= highLevel) {
-                            riskHighCount++;
+                            finishType.setRiskHighCount(finishType.getRiskHighCount() + 1);
                             jsonObject.put("risk_level", highLevel);
                         } else if (riskLevel >= middleLevel) {
-                            riskMiddleCount++;
+                            finishType.setRiskMiddleCount(finishType.getRiskMiddleCount() + 1);
                             jsonObject.put("risk_level", middleLevel);
                         } else if (riskLevel >= lowLevel) {
-                            riskLowCount++;
+                            finishType.setRiskLowCount(finishType.getRiskLowCount() + 1);
                             jsonObject.put("risk_level", lowLevel);
                         } else if (riskLevel >= infoLevel) {
-                            riskInfoCount++;
+                            finishType.setRiskInfoCount(finishType.getRiskInfoCount() + 1);
                             jsonObject.put("risk_level", infoLevel);
                         }
                     }
 
                     switch (jsonObject.getString("type")) {
                         case "siteinfo":
-                            if (finishType.getSiteinfo() == null) {
-                                finishType.setSiteinfo(0);
-                            }
                             finishType.setSiteinfo(finishType.getSiteinfo() + 1);
                             break;
                         case "availability":
-                            if (finishType.getAvailability() == null) {
-                                finishType.setAvailability(0);
-                            }
                             finishType.setAvailability(finishType.getAvailability() + 1);
                             break;
                         case "blackLinks":
-                            if (finishType.getBlackLinks() == null) {
-                                finishType.setBlackLinks(0);
-                            }
                             if (riskLevel >= highLevel) {
-                                resultLevelCount.setBlackLinksHigh(resultLevelCount.getBlackLinksHigh()+1);
+                                resultLevelCount.setBlackLinksHigh(resultLevelCount.getBlackLinksHigh() + 1);
                             } else if (riskLevel >= middleLevel) {
-                                resultLevelCount.setBlackLinksMiddle(resultLevelCount.getBlackLinksMiddle()+1);
+                                resultLevelCount.setBlackLinksMiddle(resultLevelCount.getBlackLinksMiddle() + 1);
                             } else if (riskLevel >= lowLevel) {
-                                resultLevelCount.setBlackLinksLow(resultLevelCount.getBlackLinksLow()+1);
+                                resultLevelCount.setBlackLinksLow(resultLevelCount.getBlackLinksLow() + 1);
                             }
                             finishType.setBlackLinks(finishType.getBlackLinks() + 1);
                             break;
                         case "malscan":
-                            if (finishType.getMalscan() == null) {
-                                finishType.setMalscan(0);
-                            }
                             if (riskLevel >= highLevel) {
-                                resultLevelCount.setMalscanHigh(resultLevelCount.getBlackLinksHigh()+1);
+                                resultLevelCount.setMalscanHigh(resultLevelCount.getBlackLinksHigh() + 1);
                             } else if (riskLevel >= middleLevel) {
-                                resultLevelCount.setMalscanMiddle(resultLevelCount.getBlackLinksMiddle()+1);
+                                resultLevelCount.setMalscanMiddle(resultLevelCount.getBlackLinksMiddle() + 1);
                             } else if (riskLevel >= lowLevel) {
-                                resultLevelCount.setMalscanLow(resultLevelCount.getBlackLinksLow()+1);
+                                resultLevelCount.setMalscanLow(resultLevelCount.getBlackLinksLow() + 1);
                             }
                             finishType.setMalscan(finishType.getMalscan() + 1);
                             break;
                         case "keyword":
-                            if (finishType.getKeyword() == null) {
-                                finishType.setKeyword(0);
-                            }
                             if (riskLevel >= highLevel) {
-                                resultLevelCount.setBlackLinksHigh(resultLevelCount.getBlackLinksHigh()+1);
+                                resultLevelCount.setBlackLinksHigh(resultLevelCount.getBlackLinksHigh() + 1);
                             } else if (riskLevel >= middleLevel) {
-                                resultLevelCount.setBlackLinksHigh(resultLevelCount.getBlackLinksMiddle()+1);
+                                resultLevelCount.setBlackLinksHigh(resultLevelCount.getBlackLinksMiddle() + 1);
                             } else if (riskLevel >= lowLevel) {
-                                resultLevelCount.setBlackLinksHigh(resultLevelCount.getBlackLinksLow()+1);
+                                resultLevelCount.setBlackLinksHigh(resultLevelCount.getBlackLinksLow() + 1);
                             }
                             finishType.setKeyword(finishType.getKeyword() + 1);
                             break;
                         case "sql":
-                            if (finishType.getSqlInjection() == null) {
-                                finishType.setSqlInjection(0);
-                            }
                             if (riskLevel >= highLevel) {
-                                resultLevelCount.setSqlInjectionHigh(resultLevelCount.getSqlInjectionHigh()+1);
+                                resultLevelCount.setSqlInjectionHigh(resultLevelCount.getSqlInjectionHigh() + 1);
                             } else if (riskLevel >= middleLevel) {
-                                resultLevelCount.setSqlInjectionMiddle(resultLevelCount.getSqlInjectionMiddle()+1);
+                                resultLevelCount.setSqlInjectionMiddle(resultLevelCount.getSqlInjectionMiddle() + 1);
                             } else if (riskLevel >= lowLevel) {
-                                resultLevelCount.setSqlInjectionLow(resultLevelCount.getSqlInjectionLow()+1);
+                                resultLevelCount.setSqlInjectionLow(resultLevelCount.getSqlInjectionLow() + 1);
                             }
                             finishType.setSqlInjection(finishType.getSqlInjection() + 1);
                             break;
                         case "xss":
-                            if (finishType.getXss() == null) {
-                                finishType.setXss(0);
-                            }
                             if (riskLevel >= highLevel) {
-                                resultLevelCount.setXssHigh(resultLevelCount.getXssHigh()+1);
+                                resultLevelCount.setXssHigh(resultLevelCount.getXssHigh() + 1);
                             } else if (riskLevel >= middleLevel) {
-                                resultLevelCount.setXssMiddle(resultLevelCount.getXssMiddle()+1);
+                                resultLevelCount.setXssMiddle(resultLevelCount.getXssMiddle() + 1);
                             } else if (riskLevel >= lowLevel) {
-                                resultLevelCount.setXssLow(resultLevelCount.getXssLow()+1);
+                                resultLevelCount.setXssLow(resultLevelCount.getXssLow() + 1);
                             }
                             finishType.setXss(finishType.getXss() + 1);
                             break;
                         case "webvul":
-                            if (finishType.getWebvul() == null) {
-                                finishType.setWebvul(0);
-                            }
                             if (riskLevel >= highLevel) {
-                                resultLevelCount.setWebvulHigh(resultLevelCount.getWebvulHigh()+1);
+                                resultLevelCount.setWebvulHigh(resultLevelCount.getWebvulHigh() + 1);
                             } else if (riskLevel >= middleLevel) {
-                                resultLevelCount.setWebvulMiddle(resultLevelCount.getWebvulMiddle()+1);
+                                resultLevelCount.setWebvulMiddle(resultLevelCount.getWebvulMiddle() + 1);
                             } else if (riskLevel >= lowLevel) {
-                                resultLevelCount.setWebvulLow(resultLevelCount.getWebvulLow()+1);
+                                resultLevelCount.setWebvulLow(resultLevelCount.getWebvulLow() + 1);
                             }
                             finishType.setWebvul(finishType.getWebvul() + 1);
                             break;
                         case "infoLeak":
-                            if (finishType.getInfoLeak() == null) {
-                                finishType.setInfoLeak(0);
-                            }
                             if (riskLevel >= highLevel) {
-                                resultLevelCount.setInfoLeakHigh(resultLevelCount.getInfoLeakHigh()+1);
+                                resultLevelCount.setInfoLeakHigh(resultLevelCount.getInfoLeakHigh() + 1);
                             } else if (riskLevel >= middleLevel) {
-                                resultLevelCount.setInfoLeakMiddle(resultLevelCount.getInfoLeakMiddle()+1);
+                                resultLevelCount.setInfoLeakMiddle(resultLevelCount.getInfoLeakMiddle() + 1);
                             } else if (riskLevel >= lowLevel) {
-                                resultLevelCount.setInfoLeakLow(resultLevelCount.getInfoLeakLow()+1);
+                                resultLevelCount.setInfoLeakLow(resultLevelCount.getInfoLeakLow() + 1);
                             }
                             finishType.setInfoLeak(finishType.getInfoLeak() + 1);
                             break;
                         case "cgi":
-                            if (finishType.getCgi() == null) {
-                                finishType.setCgi(0);
-                            }
                             if (riskLevel >= highLevel) {
-                                resultLevelCount.setCgiHigh(resultLevelCount.getCgiHigh()+1);
+                                resultLevelCount.setCgiHigh(resultLevelCount.getCgiHigh() + 1);
                             } else if (riskLevel >= middleLevel) {
-                                resultLevelCount.setCgiMiddle(resultLevelCount.getCgiMiddle()+1);
+                                resultLevelCount.setCgiMiddle(resultLevelCount.getCgiMiddle() + 1);
                             } else if (riskLevel >= lowLevel) {
-                                resultLevelCount.setCgiLow(resultLevelCount.getCgiLow()+1);
+                                resultLevelCount.setCgiLow(resultLevelCount.getCgiLow() + 1);
                             }
                             finishType.setCgi(finishType.getCgi() + 1);
                             break;
                         case "csrf":
-                            if (finishType.getCsrf() == null) {
-                                finishType.setCsrf(0);
-                            }
                             if (riskLevel >= highLevel) {
-                                resultLevelCount.setCsrfHigh(resultLevelCount.getCsrfHigh()+1);
+                                resultLevelCount.setCsrfHigh(resultLevelCount.getCsrfHigh() + 1);
                             } else if (riskLevel >= middleLevel) {
-                                resultLevelCount.setCsrfMiddle(resultLevelCount.getCsrfMiddle()+1);
+                                resultLevelCount.setCsrfMiddle(resultLevelCount.getCsrfMiddle() + 1);
                             } else if (riskLevel >= lowLevel) {
-                                resultLevelCount.setCsrfLow(resultLevelCount.getCsrfLow()+1);
+                                resultLevelCount.setCsrfLow(resultLevelCount.getCsrfLow() + 1);
                             }
                             finishType.setCsrf(finishType.getCsrf() + 1);
                             break;
                         case "formCrack":
-                            if (finishType.getFormCrack() == null) {
-                                finishType.setFormCrack(0);
-                            }
                             if (riskLevel >= highLevel) {
-                                resultLevelCount.setFormCrackHigh(resultLevelCount.getFormCrackHigh()+1);
+                                resultLevelCount.setFormCrackHigh(resultLevelCount.getFormCrackHigh() + 1);
                             } else if (riskLevel >= middleLevel) {
-                                resultLevelCount.setFormCrackMiddle(resultLevelCount.getFormCrackMiddle()+1);
+                                resultLevelCount.setFormCrackMiddle(resultLevelCount.getFormCrackMiddle() + 1);
                             } else if (riskLevel >= lowLevel) {
-                                resultLevelCount.setFormCrackLow(resultLevelCount.getFormCrackLow()+1);
+                                resultLevelCount.setFormCrackLow(resultLevelCount.getFormCrackLow() + 1);
                             }
                             finishType.setFormCrack(finishType.getFormCrack() + 1);
                             break;
@@ -336,16 +310,11 @@ public class ReceiveAction {
 
             resultEvent.setValue(resultValues.toJSONString());
 
-            //存储任务对应的危险数量
-            finishType.setRiskHighCount(riskHighCount);
-            finishType.setRiskMiddleCount(riskMiddleCount);
-            finishType.setRiskLowCount(riskLowCount);
-            finishType.setRiskInfoCount(riskInfoCount);
-            finishType.setRiskUrlCount(riskUrlCount);
             finishType.setScore(resultEventService.calculationScore(finishType));
 
             //插入一条结果记录
             resultEventService.resultEventInsert(resultEvent);
+
             //更新finishtype记录
             finishTypeService.updateFinishType(finishType);
 
