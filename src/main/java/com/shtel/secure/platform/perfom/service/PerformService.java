@@ -256,6 +256,7 @@ public class PerformService {
         response.put("formCrack",0);
         response.put("keyword",0);
         response.put("csrf",0);
+        response.put("xss",0);
         for (PerformReq performReq:list){
             response.put("riskHighCount",response.getInteger("riskHighCount")+performReq.getRiskHighCount());
             response.put("riskMiddleCount",response.getInteger("riskMiddleCount")+performReq.getRiskMiddleCount());
@@ -269,6 +270,7 @@ public class PerformService {
             response.put("formCrack",response.getInteger("formCrack")+performReq.getFormCrack());
             response.put("keyword",response.getInteger("keyword")+performReq.getKeyword());
             response.put("csrf",response.getInteger("csrf")+performReq.getCsrf());
+            response.put("xss",response.getInteger("xss")+performReq.getXss());
         }
         response.put("data",list);
         return response;
