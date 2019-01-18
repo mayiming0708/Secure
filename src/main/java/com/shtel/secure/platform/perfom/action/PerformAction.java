@@ -54,8 +54,8 @@ public class PerformAction {
     }
 
     @PostMapping("/performData")
-    public JSONObject performData() {
-        return performService.getPerformData();
+    public JSONObject performData(@RequestParam("userId")Integer userId) {
+        return performService.getPerformData(userId);
     }
 
     @GetMapping("/deleteTask")

@@ -8,8 +8,10 @@ import com.shtel.secure.platform.issue.model.mapper.TaskMapper;
 import com.shtel.secure.platform.issue.service.IssueService;
 import com.shtel.secure.platform.perfom.model.PageBean;
 import com.shtel.secure.platform.perfom.model.Perform;
+import com.shtel.secure.platform.perfom.model.PerformLevelCount;
 import com.shtel.secure.platform.perfom.model.PerformReq;
 import com.shtel.secure.platform.perfom.model.mapper.BasicMapper;
+import com.shtel.secure.platform.perfom.model.mapper.PerformLevelCountMapper;
 import com.shtel.secure.platform.perfom.model.mapper.PerformMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,6 +36,8 @@ public class PerformService {
     private PerformMapper performMapper;
     @Autowired
     private BasicMapper basicMapper;
+    @Autowired
+    private PerformLevelCountMapper performLevelCountMapper;
 
     /**
      * <p>根据用户Id查询所有任务</p>
@@ -151,10 +155,13 @@ public class PerformService {
      *
      * @return
      */
-    public JSONObject getPerformData() {
+    public JSONObject getPerformData(Integer userId) {
         logger.info("获取展示页所需数据");
         int taskCounts = performMapper.countTask();
         PerformReq perform = performMapper.countWebAndBugCounts();
+        PerformLevelCount performLevelCount=new PerformLevelCount();
+        performLevelCount.setUserId(userId);
+        performLevelCount=performLevelCountMapper.selectOne(performLevelCount);
         int webCounts = perform.getUrlCount();
         int higBugs = perform.getRiskHighCount();
         int middleBugs = perform.getRiskMiddleCount();
@@ -205,6 +212,7 @@ public class PerformService {
         response.put("bugCounts", bugCounts);
         response.put("topBug", bugTop);
         response.put("avgUseTime", useTime);
+        response.put("levelRecord",performLevelCount);
         List<PerformReq> urlTop = performMapper.getTopUrl();
         JSONArray topURL = new JSONArray();
         for (PerformReq performReq1 : urlTop) {
