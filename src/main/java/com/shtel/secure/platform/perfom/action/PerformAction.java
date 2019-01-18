@@ -64,7 +64,7 @@ public class PerformAction {
     }
 
     @PostMapping("/getWebetailDesc")
-    public List<PerformReq> getWebetailDesc(@RequestParam("url")String url){
+    public JSONObject getWebetailDesc(@RequestParam("url")String url){
         return performService.getWebDetailListDESC(url);
     }
 }

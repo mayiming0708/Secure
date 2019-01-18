@@ -240,9 +240,38 @@ public class PerformService {
      * @param url
      * @return
      */
-    public List<PerformReq> getWebDetailListDESC(String url){
+    public JSONObject getWebDetailListDESC(String url){
         logger.info("站点信息时间排序列表");
-        return basicMapper.getWebDetailListDESC(url);
+        List<PerformReq> list= basicMapper.getWebDetailListDESC(url);
+        JSONObject response=new JSONObject();
+        response.put("riskHighCount",0);
+        response.put("riskMiddleCount",0);
+        response.put("riskLowCount",0);
+        response.put("blackLinks",0);
+        response.put("malscan",0);
+        response.put("sqlInjection",0);
+        response.put("webvul",0);
+        response.put("infoLeak",0);
+        response.put("cgi",0);
+        response.put("formCrack",0);
+        response.put("keyword",0);
+        response.put("csrf",0);
+        for (PerformReq performReq:list){
+            response.put("riskHighCount",response.getInteger("riskHighCount")+performReq.getRiskHighCount());
+            response.put("riskMiddleCount",response.getInteger("riskMiddleCount")+performReq.getRiskMiddleCount());
+            response.put("riskLowCount",response.getInteger("riskLowCount")+performReq.getRiskLowCount());
+            response.put("blackLinks",response.getInteger("blackLinks")+performReq.getBlackLinks());
+            response.put("malscan",response.getInteger("malscan")+performReq.getMalscan());
+            response.put("sqlInjection",response.getInteger("sqlInjection")+performReq.getSqlInjection());
+            response.put("webvul",response.getInteger("webvul")+performReq.getRiskHighCount());
+            response.put("infoLeak",response.getInteger("infoLeak")+performReq.getRiskHighCount());
+            response.put("cgi",response.getInteger("cgi")+performReq.getCgi());
+            response.put("formCrack",response.getInteger("formCrack")+performReq.getFormCrack());
+            response.put("keyword",response.getInteger("keyword")+performReq.getKeyword());
+            response.put("csrf",response.getInteger("csrf")+performReq.getCsrf());
+        }
+        response.put("data",list);
+        return response;
     }
 
 }
