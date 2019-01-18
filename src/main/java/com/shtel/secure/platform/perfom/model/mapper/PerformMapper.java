@@ -63,19 +63,24 @@ public interface PerformMapper extends Mapper<Task> {
     @Select("SELECT " +
             "COUNT(virtual_group_id)" +
             " FROM " +
-            "ws_task")
-    int countTask();
+            "ws_task where user_id=#{userId}")
+    int countTask(Integer userId);
 
-    @Select("SELECT SUM(siteinfo) siteinfoCount,SUM(availability) availabilityCount," +
-            "SUM(risk_high_count) riskHighCount,SUM(risk_middle_count) riskMiddleCount," +
-            "SUM(risk_low_count) riskLowCount,COUNT(DISTINCT(url)) urlCount" +
-            " FROM ws_finish_type where state=0;")
-    PerformReq countWebAndBugCounts();
+    @Select("SELECT SUM(a.siteinfo) siteinfoCount,SUM(a.availability) availabilityCount,SUM(a.risk_high_count) riskHighCount,SUM(a.risk_middle_count) riskMiddleCount,SUM(a.risk_low_count) riskLowCount,COUNT(DISTINCT(a.url)) urlCount FROM (SELECT * FROM ws_finish_type WHERE virtual_group_id IN (SELECT \n" +
+            "\tvirtual_group_id\n" +
+            "FROM \n" +
+            "\tws_task \n" +
+            "WHERE user_id=#{userId} AND status=0)) a")
+    PerformReq countWebAndBugCounts(Integer userId);
 
-    @Select("SELECT CEIL(AVG(b.time)/60) " +
-            "FROM " +
-            "(select SUM(UNIX_TIMESTAMP(end_at)-UNIX_TIMESTAMP(start_at)) time,virtual_group_id FROM ws_result_event GROUP BY virtual_group_id) b;")
-    int getAvgWebTime();
+    @Select("SELECT if(CEIL(AVG(b.time)/60) is null,0,CEIL(AVG(b.time)/60)) FROM (select SUM(UNIX_TIMESTAMP(end_at)-UNIX_TIMESTAMP(start_at)) time,virtual_group_id FROM ws_result_event \n" +
+            "WHERE virtual_group_id IN\n" +
+            "(SELECT \n" +
+            "\tvirtual_group_id\n" +
+            "FROM \n" +
+            "\tws_task \n" +
+            "WHERE user_id=#{userId} AND status=0)  GROUP BY virtual_group_id) b")
+    int getAvgWebTime(Integer userId);
 
     @Select("SELECT \n" +
             "name_en nameEn,\n" +
@@ -89,21 +94,30 @@ public interface PerformMapper extends Mapper<Task> {
     List<PerformReq> getCNENname();
 
     @Select("SELECT \n" +
-            "if(sum(black_links) is null,0,sum(black_links)) blackLinks,\n" +
-            "if(sum(malscan) is null,0,sum(malscan)) malscan,\n" +
-            "if(sum(sql_injection) is null,0,sum(sql_injection)) sqlInjection,\n" +
-            "if(sum(xss) is null,0,SUM(xss)) xss,\n" +
-            "if(sum(webvul) is NULL,0,SUM(webvul)) webvul,\n" +
-            "if(sum(info_leak) is null,0,sum(info_leak)) infoLeak,\n" +
-            "if(sum(cgi) is null ,0,SUM(cgi)) cgi,\n" +
-            "if(sum(keyword) is null ,0,SUM(keyword)) keyword,\n" +
-            "if(sum(csrf) is null ,0,SUM(csrf)) csrf,\n" +
-            "if(sum(form_crack) is null,0,SUM(form_crack)) formCrack\n" +
-            "FROM ws_finish_type where state=0")
-    PerformReq getBugCount();
+            "            if(sum(a.black_links) is null,0,sum(a.black_links)) blackLinks,\n" +
+            "            if(sum(a.malscan) is null,0,sum(a.malscan)) malscan,\n" +
+            "            if(sum(a.sql_injection) is null,0,sum(a.sql_injection)) sqlInjection,\n" +
+            "            if(sum(a.webvul) is NULL,0,SUM(a.webvul)) webvul,\n" +
+            "            if(sum(a.info_leak) is null,0,sum(a.info_leak)) infoLeak,\n" +
+            "            if(sum(a.cgi) is null ,0,SUM(a.cgi)) cgi,\n" +
+            "\t\t\t\t\t\tif(sum(a.xss) is null ,0,SUM(a.xss)) xss,\n" +
+            "            if(sum(a.keyword) is null ,0,SUM(a.keyword)) keyword,\n" +
+            "            if(sum(a.csrf) is null ,0,SUM(a.csrf)) csrf,\n" +
+            "            if(sum(a.form_crack) is null,0,SUM(a.form_crack)) formCrack\n" +
+            "            FROM (SELECT * FROM ws_finish_type WHERE virtual_group_id IN (SELECT \n" +
+            "                       virtual_group_id FROM\n" +
+            "           ws_task\n" +
+            "           WHERE user_id=#{userId} AND status=0)) a")
+    PerformReq getBugCount(Integer userId);
 
-    @Select("SELECT url,Max(score) score FROM ws_finish_type  where state=0 GROUP BY url ORDER BY score DESC")
-    List<PerformReq> getTopUrl();
+    @Select("SELECT url,Max(score),virtual_group_id, score FROM ws_finish_type  where state=0 AND virtual_group_id\n" +
+            "IN (SELECT \n" +
+            "\tvirtual_group_id\n" +
+            "FROM \n" +
+            "\tws_task \n" +
+            "WHERE user_id=#{userId} AND status=0)\n" +
+            "GROUP BY url ORDER BY score")
+    List<PerformReq> getTopUrl(Integer userId);
 
     @Update("update ws_task set status = -1 where virtual_group_id = #{virtual_group_id} ")
     int deleteTask(String virtual_group_id);

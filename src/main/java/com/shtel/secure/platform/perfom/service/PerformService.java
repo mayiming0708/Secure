@@ -157,8 +157,8 @@ public class PerformService {
      */
     public JSONObject getPerformData(Integer userId) {
         logger.info("获取展示页所需数据");
-        int taskCounts = performMapper.countTask();
-        PerformReq perform = performMapper.countWebAndBugCounts();
+        int taskCounts = performMapper.countTask(userId);
+        PerformReq perform = performMapper.countWebAndBugCounts(userId);
         PerformLevelCount performLevelCount=new PerformLevelCount();
         performLevelCount.setUserId(userId);
         performLevelCount=performLevelCountMapper.selectOne(performLevelCount);
@@ -169,8 +169,8 @@ public class PerformService {
         int availabilityCount = perform.getAvailabilityCount();
         int siteinfoCount = perform.getSiteinfoCount();
         int bugCounts = higBugs + middleBugs + lowBugs;
-        int useTime = performMapper.getAvgWebTime();
-        PerformReq performReq = performMapper.getBugCount();
+        int useTime = performMapper.getAvgWebTime(userId);
+        PerformReq performReq = performMapper.getBugCount(userId);
         Map<String, Integer> map = new HashMap<>();
         map.put("暗链", performReq.getBlackLinks());
         map.put("挂马", performReq.getMalscan());
@@ -213,7 +213,7 @@ public class PerformService {
         response.put("topBug", bugTop);
         response.put("avgUseTime", useTime);
         response.put("levelRecord",performLevelCount);
-        List<PerformReq> urlTop = performMapper.getTopUrl();
+        List<PerformReq> urlTop = performMapper.getTopUrl(userId);
         JSONArray topURL = new JSONArray();
         for (PerformReq performReq1 : urlTop) {
             JSONObject jsonObject = new JSONObject();
