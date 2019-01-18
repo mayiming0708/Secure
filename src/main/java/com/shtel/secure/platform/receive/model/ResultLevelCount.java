@@ -7,39 +7,39 @@ import javax.persistence.Table;
 public class ResultLevelCount {
     @Id
     private Integer userId;
-    
-    private Integer blackLinksLow;
-    private Integer malscanLow;
-    private Integer keywordLow;
-    private Integer sqlInjectionLow;
-    private Integer xssLow;
-    private Integer webvulLow;
-    private Integer infoLeakLow;
-    private Integer cgiLow;
-    private Integer csrfLow;
-    private Integer formCrackLow;
 
-    private Integer blackLinksMiddle;
-    private Integer malscanMiddle;
-    private Integer keywordMiddle;
-    private Integer sqlInjectionMiddle;
-    private Integer xssMiddle;
-    private Integer webvulMiddle;
-    private Integer infoLeakMiddle;
-    private Integer cgiMiddle;
-    private Integer csrfMiddle;
-    private Integer formCrackMiddle;
+    private Integer blackLinksLow = 0;
+    private Integer malscanLow = 0;
+    private Integer keywordLow = 0;
+    private Integer sqlInjectionLow = 0;
+    private Integer xssLow = 0;
+    private Integer webvulLow = 0;
+    private Integer infoLeakLow = 0;
+    private Integer cgiLow = 0;
+    private Integer csrfLow = 0;
+    private Integer formCrackLow = 0;
 
-    private Integer blackLinksHigh;
-    private Integer malscanHigh;
-    private Integer keywordHigh;
-    private Integer sqlInjectionHigh;
-    private Integer xssHigh;
-    private Integer webvulHigh;
-    private Integer infoLeakHigh;
-    private Integer cgiHigh;
-    private Integer csrfHigh;
-    private Integer formCrackHigh;
+    private Integer blackLinksMiddle = 0;
+    private Integer malscanMiddle = 0;
+    private Integer keywordMiddle = 0;
+    private Integer sqlInjectionMiddle = 0;
+    private Integer xssMiddle = 0;
+    private Integer webvulMiddle = 0;
+    private Integer infoLeakMiddle = 0;
+    private Integer cgiMiddle = 0;
+    private Integer csrfMiddle = 0;
+    private Integer formCrackMiddle = 0;
+
+    private Integer blackLinksHigh = 0;
+    private Integer malscanHigh = 0;
+    private Integer keywordHigh = 0;
+    private Integer sqlInjectionHigh = 0;
+    private Integer xssHigh = 0;
+    private Integer webvulHigh = 0;
+    private Integer infoLeakHigh = 0;
+    private Integer cgiHigh = 0;
+    private Integer csrfHigh = 0;
+    private Integer formCrackHigh = 0;
 
     public Integer getUserId() {
         return userId;

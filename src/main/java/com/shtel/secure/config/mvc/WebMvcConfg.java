@@ -19,7 +19,8 @@ public class WebMvcConfg implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/index", "/login/**", "/api/**", "/jsp/**", "/ws/index", "/static/**", "/websock-server/**", "/swagger-ui.html", "/error", "/sock/**", "/service/**", "/webjars/**", "/swagger-resources/**");
+                .excludePathPatterns("/index", "/login/**", "/api/**", "/jsp/**", "/ws/index", "/static/**", "/websock-server/**", "/swagger-ui.html", "/error", "/sock/**", "/webjars/**", "/swagger-resources/**")
+        .excludePathPatterns("/perform/**", "/service/**");
     }
 
     @Override

@@ -10,7 +10,7 @@ public class FinishType {
 
     private String virtualGroupId;
     private String url;
-    private Integer state;
+    private Integer state = 0;
     private Integer siteinfo;
     private Integer availability;
     private Integer blackLinks;
@@ -23,12 +23,12 @@ public class FinishType {
     private Integer cgi;
     private Integer csrf;
     private Integer formCrack;
-    private Integer riskUrlCount;
-    private Integer riskInfoCount;
-    private Integer riskHighCount;
-    private Integer riskMiddleCount;
-    private Integer riskLowCount;
-    private Integer score;
+    private Integer riskUrlCount = 0;
+    private Integer riskInfoCount = 0;
+    private Integer riskHighCount = 0;
+    private Integer riskMiddleCount = 0;
+    private Integer riskLowCount = 0;
+    private Integer score = 0;
 
     public Integer getId() {
         return id;

@@ -111,13 +111,6 @@ public class ReceiveAction {
             finishType.setUrl(oneJsonObject.getString("site"));
             FinishType tmp = finishTypeService.getFinishTypeByGourpIdAndUrl(finishType.getVirtualGroupId(), finishType.getUrl());
             if (tmp == null) {
-                finishType.setRiskInfoCount(0);
-                finishType.setRiskHighCount(0);
-                finishType.setRiskMiddleCount(0);
-                finishType.setRiskLowCount(0);
-                finishType.setRiskUrlCount(0);
-                finishType.setState(0);
-                finishType.setScore(0);
                 finishTypeService.insertFinishType(finishType);
             } else {
                 finishType = tmp;
@@ -146,36 +139,6 @@ public class ReceiveAction {
             if (resultLevelCount == null) {
                 resultLevelCount = new ResultLevelCount();
                 resultLevelCount.setUserId(user.getId());
-                resultLevelCount.setBlackLinksLow(0);
-                resultLevelCount.setMalscanLow(0);
-                resultLevelCount.setKeywordLow(0);
-                resultLevelCount.setSqlInjectionLow(0);
-                resultLevelCount.setXssLow(0);
-                resultLevelCount.setWebvulLow(0);
-                resultLevelCount.setInfoLeakLow(0);
-                resultLevelCount.setCgiLow(0);
-                resultLevelCount.setCsrfLow(0);
-                resultLevelCount.setFormCrackLow(0);
-                resultLevelCount.setBlackLinksMiddle(0);
-                resultLevelCount.setMalscanMiddle(0);
-                resultLevelCount.setKeywordMiddle(0);
-                resultLevelCount.setSqlInjectionMiddle(0);
-                resultLevelCount.setXssMiddle(0);
-                resultLevelCount.setWebvulMiddle(0);
-                resultLevelCount.setInfoLeakMiddle(0);
-                resultLevelCount.setCgiMiddle(0);
-                resultLevelCount.setCsrfMiddle(0);
-                resultLevelCount.setFormCrackMiddle(0);
-                resultLevelCount.setBlackLinksHigh(0);
-                resultLevelCount.setMalscanHigh(0);
-                resultLevelCount.setKeywordHigh(0);
-                resultLevelCount.setSqlInjectionHigh(0);
-                resultLevelCount.setXssHigh(0);
-                resultLevelCount.setWebvulHigh(0);
-                resultLevelCount.setInfoLeakHigh(0);
-                resultLevelCount.setCgiHigh(0);
-                resultLevelCount.setCsrfHigh(0);
-                resultLevelCount.setFormCrackHigh(0);
                 resultEventService.insertResultLevelCount(resultLevelCount);
             }
             //解析values
