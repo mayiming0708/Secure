@@ -50,6 +50,8 @@ public interface ResultEventMapper extends Mapper<ResultEvent> {
             "\tws_result_event LEFT JOIN ws_task on ws_task.virtual_group_id = ws_result_event.virtual_group_id\n" +
             "WHERE\n" +
             "\tws_task.user_id = #{userId} \n" +
-            "\tAND ws_result_event.site = #{site}")
+            "\tAND ws_result_event.site = #{site}" +
+            "ORDER BY\n" +
+            "\tws_result_event.receive_time DESC\n")
     List<ResultEvent> getResultEventsByUserIdAndUrl(@Param("userId") Integer userId, @Param("site") String site);
 }

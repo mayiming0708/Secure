@@ -72,6 +72,7 @@ public class ResultEventService {
         if (url != null && !"".equals(url)) {
             criteria.andEqualTo("site", url);
         }
+        example.setOrderByClause("ws_result_event.receive_time DESC");
         return resultEventMapper.selectByExample(example);
     }
 
