@@ -1,13 +1,16 @@
 package com.shtel.secure.platform.receive.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.shtel.secure.platform.enumType.model.EnumType;
 import com.shtel.secure.platform.finishType.model.FinishType;
 import com.shtel.secure.platform.issue.model.Task;
 import com.shtel.secure.platform.issue.service.IssueService;
 import com.shtel.secure.platform.receive.model.ResultEvent;
+import com.shtel.secure.platform.receive.model.ResultLevelCount;
 import com.shtel.secure.platform.receive.model.Temp;
 import com.shtel.secure.platform.receive.model.mapper.ResultEventMapper;
+import com.shtel.secure.platform.receive.model.mapper.ResultLevelCountMapper;
 import com.shtel.secure.platform.receive.model.mapper.TempMapper;
 import com.shtel.secure.utils.EmailUtil;
 import com.shtel.secure.utils.ResultUtil;
@@ -18,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.xml.transform.Result;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +34,9 @@ public class ResultEventService {
 
     @Autowired
     private ResultEventMapper resultEventMapper;
+
     @Autowired
-    private IssueService issueService;
+    private ResultLevelCountMapper resultLevelCountMapper;
 
     @Value("${email.account}")
     private String accout;
@@ -120,5 +125,17 @@ public class ResultEventService {
         } catch (Exception e) {
             return ResultUtil.Result(EnumType.EMAIL_ERROR);
         }
+    }
+
+    public int insertResultLevelCount(ResultLevelCount resultLevelCount) {
+        return resultLevelCountMapper.insert(resultLevelCount);
+    }
+
+    public ResultLevelCount getResultLevelCountByUserId(Integer userId) {
+        return resultLevelCountMapper.selectByPrimaryKey(userId);
+    }
+
+    public int updateResultLevelCount(ResultLevelCount resultLevelCount) {
+        return resultLevelCountMapper.updateByPrimaryKeySelective(resultLevelCount);
     }
 }
