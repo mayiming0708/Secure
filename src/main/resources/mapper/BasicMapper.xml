@@ -65,4 +65,33 @@
            group by
            b.url) c
     </select>
+    <select id="getWebDetailListDESC" parameterType="java.lang.String" resultType="com.shtel.secure.platform.perfom.model.PerformReq">
+       SELECT
+            b.url url,
+            if(b.black_links is null,0,b.black_links) blackLinks,
+            if(b.malscan is null,0,b.malscan) malscan,
+            if(b.sql_injection is null,0,b.sql_injection) sqlInjection,
+            if(b.xss is null,0,b.xss) xss,
+            if(b.webvul is NULL,0,b.webvul) webvul,
+            if(b.info_leak is null,0,b.info_leak) infoLeak,
+            if(b.cgi is null ,0,b.cgi) cgi,
+            if(b.form_crack is null,0,b.form_crack) formCrack,
+            if(b.keyword is null,0,b.csrf) csrf,
+            if(b.keyword is null,0,b.keyword) keyword,
+            b.risk_high_count riskHighCount,
+            b.risk_middle_count riskMiddleCount,
+            b.risk_low_count riskLowCount,
+            a.finish_rate finishRate,
+            b.score score,
+            a.create_time createTime
+        FROM
+            (SELECT * FROM ws_finish_type WHERE url=#{url} AND state=0) b
+        JOIN
+            ws_task a
+        ON
+            a.virtual_group_id =b.virtual_group_id
+        ORDER BY
+            a.create_time
+        DESC
+    </select>
 </mapper>

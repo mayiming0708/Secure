@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -60,5 +61,10 @@ public class PerformAction {
     @GetMapping("/deleteTask")
     public JSONObject deleteTask(@RequestParam("virtualGroupId")String virtual_group_id){
         return performService.deleteRecord(virtual_group_id);
+    }
+
+    @PostMapping("/getWebetailDesc")
+    public JSONObject getWebetailDesc(@RequestParam("url")String url){
+        return performService.getWebDetailListDESC(url);
     }
 }

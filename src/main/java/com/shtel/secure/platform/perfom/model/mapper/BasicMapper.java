@@ -15,4 +15,6 @@ public interface BasicMapper {
     List<Perform> selectWebDetail(PerformReq performReq);
 
     int countWebDetail(PerformReq performReq);
+
+    List<PerformReq> getWebDetailListDESC(String url);
 }
