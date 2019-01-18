@@ -82,20 +82,6 @@ public class ResultEventService {
     }
 
     public List<ResultEvent> getResultEventsByUserIdAndUrl(Integer userId, String url) {
-//        List<Task> tasks = issueService.getTasksByUserId(userId);
-//        List<ResultEvent> resultEvents = new ArrayList<>();
-//
-//        for (Task task : tasks) {
-//            Example example = new Example(ResultEvent.class);
-//            Example.Criteria criteria = example.createCriteria();
-//            criteria.andEqualTo("virtualGroupId", task.getVirtualGroupId());
-//            criteria.andEqualTo("site", url);
-//            List<ResultEvent> list = resultEventMapper.selectByExample(example);
-//            for (ResultEvent resultEvent : list) {
-//                resultEvents.add(resultEvent);
-//            }
-//        }
-//        return resultEvents;
         return resultEventMapper.getResultEventsByUserIdAndUrl(userId, url);
     }
 
