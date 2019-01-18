@@ -1,6 +1,5 @@
 package com.shtel.secure.platform.perfom.service;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
@@ -233,6 +232,17 @@ public class PerformService {
         if (rows2 == 0)
             return IssueService.Response("删除URL任务失败", 100, new JSONObject());
         return IssueService.Response("删除任务成功", 0, new JSONObject());
+    }
+
+    /**
+     * <p>站点信息时间排序列表</p>
+     *
+     * @param url
+     * @return
+     */
+    public List<PerformReq> getWebDetailListDESC(String url){
+        logger.info("站点信息时间排序列表");
+        return basicMapper.getWebDetailListDESC(url);
     }
 
 }
