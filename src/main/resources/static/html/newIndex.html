@@ -471,7 +471,7 @@
 							<!-- small box -->
 							<div class="small-box bg-red">
 								<div class="inner">
-									<h3><span>65</span><sup style="font-size: 20px">min</sup></h3>
+									<h3><span>65</span><sup style="font-size: 20px">s</sup></h3>
 
 									<p>平均检索时间</p>
 								</div>
@@ -1054,7 +1054,6 @@
                     bugfaq.resize();
                 });
                 $(".temporary-task-total .leaktab").click(function(){
-                    bugFaqChart();
 				})
 		});
 
@@ -1301,7 +1300,7 @@
 
 			}
 			bugTypeChart2();//网站漏洞类型占比
-			function bugTypeChart3() {
+			function bugTypeChart3(chart3Data,bugTotal) {
 				var myChart = echarts.init(document.getElementById('bug-type-chart3'));
 				var colorList = [
 					'#66c5d7', '#11c88c', '#989cff', '#ffa55d', '#9c7de1', '#5d9eff', '#ffdb5d', '#ee82ed', '#8fca5f', '#b995f5'
@@ -1309,39 +1308,39 @@
 
 				// 总和
 				var total = {
-					value: '24,652',
+					value: bugTotal,
 					name: '共检测漏洞数'
 				}
 
 				var originalData = [{
-					value: 55,
+					value: chart3Data[6],
 					name: '暗链'
 				}, {
-					value: 70,
+					value: chart3Data[9],
 					name: '挂马'
 				}, {
-					value: 25,
+					value: chart3Data[8],
 					name: "关键词"
 				}, {
-					value: 25,
+					value: chart3Data[1],
 					name: "SQL注入漏洞"
 				}, {
-					value: 25,
+					value: chart3Data[2],
 					name: "XSS跨站脚本漏洞"
 				}, {
-					value: 25,
+					value: chart3Data[0],
 					name: "应用漏洞"
 				}, {
-					value: 25,
+					value: chart3Data[5],
 					name: "信息泄露"
 				}, {
-					value: 25,
+					value: chart3Data[4],
 					name: "CGI漏洞"
 				}, {
-					value: 25,
+					value: chart3Data[7],
 					name: "CSRF跨站请求伪造漏洞"
 				}, {
-					value: 25,
+					value: chart3Data[3],
 					name: "表单破解漏洞"
 				}];
 
@@ -1427,8 +1426,8 @@
 				};
 				myChart.setOption(option);
 			}
-			bugTypeChart3();//网站风险饼图
-			function siteFaqChart(){
+			// bugTypeChart3();//网站风险饼图
+			function siteFaqChart(highlevel,midlevel,lowlevel,safe){
 				var myChart = echarts.init(document.getElementById('site-faq-chart'));
 
 					var option = {
@@ -1447,16 +1446,16 @@
 							center: ['50%', '50%'],
 							clockwise: false,
 							data: [{
-								value: 45,
+								value: highlevel,
 								name: '高危'
 							}, {
-								value: 25,
+								value: midlevel,
 								name: '中危'
 							}, {
-								value: 15,
+								value: lowlevel,
 								name: '低危'
 							}, {
-								value: 8,
+								value: safe,
 								name: '信息'
 							}],
 							label: {
@@ -1497,10 +1496,10 @@
 					};
 					myChart.setOption(option);
 			}
-			siteFaqChart();
+			// siteFaqChart();
 
 			//漏洞风险分布
-			function bugFaqChart() {
+			function bugFaqChart(data) {
 
 				// var myChart = echarts.init(document.getElementById('bug-faq-chart2'));
 				//ehcarts重构
@@ -1511,18 +1510,18 @@
 
 				// 总和
 				var total = {
-					value: 792,
+					value: data.bugCounts,
 					name: '共检测漏洞数'
 				}
 
 				var originalData = [{
-					value: 341,
+					value: data.higBugs,
 					name: '高危'
 				}, {
-					value: 346,
+					value: data.middleBugs,
 					name: '中危'
 				}, {
-					value: 105,
+					value: data.lowBugs,
 					name: "低危"
 				}];
 
@@ -1787,6 +1786,13 @@
             }
 
             function showIop(data){
+                //网站风险分布
+				var highlevel=0;
+                var midlevel=0;
+                var lowlevel=0;
+                var safe=0;
+                var chart3Data=[];
+                var bugTotal=data.bugCounts;
                 $(".bg-aqua .inner span").html(data.taskCounts);
                 $(".bg-green .inner span").html(data.webCounts);
                 $(".bg-yellow .inner span").html(data.bugCounts);
@@ -1801,20 +1807,44 @@
 				for(var i=0;i<data.topBug.length;i++){
 				    var bugName=data.topBug[i];
 				    for(var j in bugName){
-				        var rate=bugName[j]/data.bugCounts;
-				        rate=rate.toFixed(2)*100;
-                        $(".bug-rank-list li").eq(i).find('.bug-name').html(j);
-                        $(".bug-rank-list li").eq(i).find('.count').html(bugName[j]);
-                        $(".bug-rank-list li").eq(i).find('.progress-bar').css('width',rate+'%');
+				        if(j!='level'){
+                            var rate=bugName[j]/data.bugCounts;
+                            rate=rate.toFixed(2)*100;
+                            $(".bug-rank-list li").eq(i).find('.bug-name').html(j);
+                            $(".bug-rank-list li").eq(i).find('.count').html(bugName[j]);
+                            $(".bug-rank-list li").eq(i).find('.progress-bar').css('width',rate+'%');
+                            chart3Data.push(bugName[j]);
+						}
+
 					}
 
 				}
+				//网站风险分布
+				for(var i=0;i<data.topURL.length;i++){
+
+					var score=data.topURL[i].score;
+					console.log(score);
+					if(score>66&&score<=100){
+                        highlevel=highlevel+1;
+					}
+                    if(score>33&&score<=66){
+                        midlevel=midlevel+1;
+                    }
+                    if(score>0&&score<=33){
+                        lowlevel=lowlevel+1;
+                    }
+                    if(score==0){
+                        safe=safe+1;
+					}
+				}
 				setCookie('bugFaqChart',data);
 				//漏洞风险分布图
-                // bugFaqChart(data);
-
-
-			}
+               	bugFaqChart(data);
+				//漏洞分布图
+                bugTypeChart3(chart3Data,bugTotal);
+				//网站风险图
+                siteFaqChart(highlevel,midlevel,lowlevel,safe);
+            }
 
 		</script>
 	</body>

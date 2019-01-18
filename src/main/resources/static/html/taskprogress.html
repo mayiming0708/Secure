@@ -19,6 +19,7 @@
    folder instead of downloading all of them to reduce the load. -->
 	<link rel="stylesheet" href="/static/css/_all-skins.css">
 	<!-- Morris chart -->
+	<link rel="stylesheet" href="/static/iconfont/iconfont2.css">
 	<!--<link rel="stylesheet" href="/static/css/morris.css">-->
 	<link rel="stylesheet" href="/static/css/daterangepicker.css">
 	<!-- bootstrap wysihtml5 - text editor -->
@@ -435,9 +436,9 @@
 		</div>
 		<div class="row">
 			<div class="col-lg-12 task-search">
-				<div class="panel panel-default">
+				<div class="panel panel-default task-search-top">
 					<div class="panel-heading">
-						下发任务查询
+						<i class="iconfont icon-sousuo"></i>下发任务查询
 					</div>
 					<div class="panel-body">
 						<div class="row">
@@ -463,9 +464,9 @@
 				</div>
 				<div class="row">
 					<div class="col-lg-12">
-						<div class="panel panel-default">
+						<div class="panel panel-default task-search-bottom">
 							<div class="panel-heading">
-								任务列表
+								<i class="iconfont icon-renwu"></i>任务列表
 								<div class="pull-right">
 									<button type="button" id="addBtn" class="btn btn-success btn-xs btnAll">新 增任务</button>
 								</div>
@@ -585,6 +586,12 @@
 			</div>
 		</div>
 
+	</div>
+	<div class="deletecover"></div>
+	<div class="delete-alert">
+		<div class="title"><i class="fa fa-warning"></i>确定删除此任务?</div>
+		<div class="cancel-delete">取消</div>
+		<div class="deleteTask">确定</div>
 	</div>
 	<footer class="main-footer">
 		<div class="pull-right hidden-xs">
@@ -890,7 +897,16 @@
                     title: '检测网站',
                     field: 'urls',
                     align: 'center',
-                    valign: 'middle'
+                    valign: 'middle',
+					// class:'W160',
+					formatter:function(value,row,index){
+                        var urlArr=value.split(',');
+                        var res=urlArr[0];
+                       for(var i=1;i<urlArr.length;i++){
+                           res=urlArr[0]+'<br>'+urlArr[i];
+					   }
+					   return '<div>'+res+'</div>';
+					}
                 },{
                     title:"操作",
                     field:"Button",
@@ -1001,10 +1017,18 @@
     }
     window.operateEvents = {
         "click #deleteBtn": function(e, value, row, index) {
-
-            console.log(row.virtualGroupId);
 			//调用删除任务接口
-			taskDelete(row.virtualGroupId);
+			$(".deletecover").show();
+			$(".delete-alert").show();
+			$(".deleteTask").click(function(){
+                $(".deletecover").hide();
+                $(".delete-alert").hide();
+                taskDelete(row.virtualGroupId);
+			});
+			$(".cancel-delete").click(function(){
+                $(".deletecover").hide();
+                $(".delete-alert").hide();
+			})
 
         },
         "click #detailBtn": function(e, value, row, index) {
@@ -1013,35 +1037,7 @@
             // setCookie(taskId,taskId);
         }
     }
-	//调用任务列表接口
-	function taskList(){
-        $.ajax({
-            type:"post",
-            url:"/perform/taskList",
-            xhrFields: {withCredentials: true},
-			data:{"userId":userId},
-            dataType: "json",
-            async:true,
-			success:function(data){
-				// console.log(data);
 
-			}
-        });
-	}
-	//调用url列表
-	// function urlList(){
-    //     $.ajax({
-    //         type:"post",
-    //         url:"/perform/urlList",
-    //         xhrFields: {withCredentials: true},
-    //         data:{"userId":userId,"isPeriod":"0"},
-    //         dataType: "json",
-    //         async:true,
-    //         success:function(data){
-    //             console.log(data);
-    //         }
-    //     });
-	// }
 
 	//调用结果
 	function result(){

@@ -21,6 +21,7 @@
 		<!-- Morris chart -->
 		<!--<link rel="stylesheet" href="/static/css/morris.css">-->
 		<link rel="stylesheet" href="/static/css/daterangepicker.css">
+		<link rel="stylesheet" href="/static/iconfont/iconfont2.css">
 		<!-- bootstrap wysihtml5 - text editor -->
 		<link rel="stylesheet" href="/static/css/bootstrap3-wysihtml5.min.css">
 		<link rel="stylesheet" type="text/css" href="/static/css/dataTables.bootstrap.min.css" />
@@ -437,7 +438,7 @@
 					<div class="col-lg-12 task-search">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								监测网站查询
+								<i class="iconfont icon-sousuo"></i>监测网站查询
 							</div>
 							<div class="panel-body">
 								<div class="row">
@@ -461,7 +462,7 @@
 							<div class="col-lg-12">
 								<div class="panel panel-default">
 									<div class="panel-heading">
-										任务列表
+										<i class="iconfont icon-wangzhan"></i>网站列表
 										<div class="pull-right">
 											<button type="button" id="addBtn" class="btn btn-success btn-xs btnAll">新增下发任务</button>
 										</div>
@@ -608,8 +609,8 @@
 						align: 'center', //对其方式
 						valign: 'middle' //对其方式
 					}, {
-						title: '暗链',
-						field: 'blackLinks',
+						title: '站点信息',
+						field: 'siteinfo',
 						align: 'center',
 						valign: 'middle',
 						formatter:function(value,row,index){
@@ -620,8 +621,20 @@
 							}
 						}
 					}, {
-						title: '站点信息',
-						field: 'siteinfo',
+                            title: '可用性',
+                            field: 'availability',
+                            align: 'center',
+                            valign: 'middle',
+                            formatter:function(value,row,index){
+                                if(value==-1){
+                                    return '--';
+                                }else{
+                                    return value;
+                                }
+                            }
+                        }, {
+						title: '暗链',
+						field: 'blackLinks',
 						align: 'center',
 						valign: 'middle',
                             formatter:function(value,row,index){
@@ -661,6 +674,7 @@
 						field: 'xss',
 						align: 'center',
 						valign: 'middle',
+                            class:'W80',
                             formatter:function(value,row,index){
                                 if(value==-1){
                                     return '--';
@@ -709,18 +723,21 @@
 						field: 'csrf',
 						align: 'center',
 						valign: 'middle',
+                            class:'W80',
                             formatter:function(value,row,index){
                                 if(value==-1){
                                     return '--';
                                 }else{
                                     return value;
                                 }
-                            }
+                            },
+
 					}, {
 						title: '表单破解漏洞',
 						field: 'formCrack',
 						align: 'center',
 						valign: 'middle',
+                            class:'W80',
                             formatter:function(value,row,index){
                                 if(value==-1){
                                     return '--';
