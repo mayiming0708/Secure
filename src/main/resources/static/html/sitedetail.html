@@ -26,6 +26,8 @@
 		<link rel="stylesheet" type="text/css" href="/static/css/dataTables.bootstrap.min.css" />
 		<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-table.css" />
 		<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-select.min.css" />
+		<link rel="stylesheet" href="/static/iconfont/iconfont2.css">
+
 		<!-- Google Font -->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 		<link rel="stylesheet" type="text/css" href="/static/css/index.css" />
@@ -96,8 +98,9 @@
 		</style>
 	</head>
 
-	<body class="hold-transition skin-blue sidebar-mini">
+	<body class="hold-transition skin-blue sidebar-mini" id="content">
 		<div class="wrapper">
+			<button id="btn-html2canvas">export PDF by using jspdf + html2canvas</button>
 			<div class="content-wrapper site-detail-total">
 				<div class="row">
 					<section class="col-lg-12 connectedSortable site-detail box">
@@ -127,7 +130,7 @@
 								</div>
 							</div>
 						</nav>
-						<div class="title">
+						<div class="title site-name-top">
 							<i class="fa fa-warning"></i>http://www.baidu.com
 						</div>
 						<div data-spy="scroll" data-target="#navbar-example" data-offset="0" >
@@ -141,22 +144,97 @@
                 						</button>
 									</div>
 								</div>
-								<div class="box-body border-radius-none site-summary-content" style="height: 430px;">
+								<div class="box-body border-radius-none site-summary-content" style="">
 									<div class="top">
-										<div class="top-left">风险值<span class="fengxian">67</span></div>
+										<div class="top-left">风险值<span class="fengxian"></span></div>
 										<div class="top-right">
-											共发现url<span class="fengxian">153</span>
+											共发现url<span class="fengxian"></span>
 										</div>
 									</div>
 									<div class="row center">
-										<section class="col-lg-4 connectedSortable site-summary-content-chart" id="site-summary-content-chart">
+										<section class="col-lg-6 connectedSortable site-summary-content-chart" id="site-summary-content-chart">
 
 										</section>
-										<section class="col-lg-8 connectedSortable site-summary-content-table">
-											<table class="table table-bordered table-striped table-condensed" id="site-summary-content-table">
+										<section class="col-lg-6 connectedSortable site-summary-content-table">
+											<div id="site-summary-content-table"></div>
+										</section>
+									</div>
+									<div class="row bottom">
+										<section class="col-lg-6 connectedSortable site-summary-content-chart" id="site-summary-bottom-time">
+											<div class="flow">
+												<div class="title">
+													网站检测时间轴
+												</div>
+												<div class="line"></div>
+												<ul class="detail">
+													<li class="up">
+														<div class="alert"><span><i class="fa fa-warning"></i><span class="error">高危</span></span><span class="leak">2个漏洞</span><span class="safe">无安全事件</span></div>
+														<span class="dot"></span>
+														<div class="time"></div>
+													</li>
+													<li class="down">
+														<div class="alert"><span><i class="fa fa-warning"></i><span class="error">高危</span></span><span class="leak">2个漏洞</span><span class="safe">无安全事件</span></div>
+														<span class="dot"></span>
+														<div  class="time"></div>
+													</li>
+													<li class="up">
+														<div class="alert"><span><i class="fa fa-warning"></i><span class="error">高危</span></span><span class="leak">2个漏洞</span><span class="safe">无安全事件</span></div>
+														<span class="dot"></span>
+														<div class="time"></div>
+													</li>
+													<li class="down">
+														<div class="alert"><span><i class="fa fa-warning"></i><span class="error">高危</span></span><span class="leak">2个漏洞</span><span class="safe">无安全事件</span></div>
+														<span class="dot"></span>
+														<div class="time"></div>
+													</li>
+													<li class="up">
+														<div class="alert"><span><i class="fa fa-warning"></i><span class="error">高危</span></span><span class="leak">2个漏洞</span><span class="safe">无安全事件</span></div>
+														<span class="dot"></span>
+														<div class="time"></div>
+													</li>
+												</ul>
+											</div>
+										</section>
+										<section class="col-lg-6 connectedSortable site-summary-bottom-table">
+											<table class="table table-bordered table-striped table-condensed" id="bugdetailTable">
+												<thead>
+												<tr>
+													<th>检测项</th>
+													<th>高危</th>
+													<th>中危</th>
+													<th>低危</th>
+													<th>结果</th>
+												</tr>
+												</thead>
+												<tbody>
 
+												</tbody>
 											</table>
 										</section>
+									</div>
+									<div class="row site-info">
+										<section class="col-lg-12 connectedSortable">
+											<div class="site-info-title">站点信息<i class="iconfont icon-xiala1"></i></div>
+											<div class="site-info-content">
+												<ul class="site-info-content-left">
+													<li><span>网站标题</span><span class="liOne">Home of Acuncetix Art</span></li>
+													<li><span>地理位置</span><span class="liTwo">--</span></li>
+													<li><span>IP地址</span><span class="liThree">176.28.50.165</span></li>
+													<li><span>ICP备案</span><span class="liFour">--</span></li>
+													<li><span>Alexa排名</span><span class="liFive">371978</span></li>
+													<li><span>Page Rank</span><span class="liSix">--</span></li>
+												</ul>
+												<ul class="site-info-content-right">
+													<li><span>网站域名</span><span class="liSven">testphp.vulnweb.com</span></li>
+													<li><span>操作系统</span><span class="liEig">--</span></li>
+													<li><span>脚本语言</span><span class="liNine">--</span></li>
+													<li><span>服务器技术</span><span class="liTen">nginx/1.14.1</span></li>
+													<li><span>域名到期</span><span class="liEle">2019年06月14日</span></li>
+													<li><span>数据库</span><span class="liTwl">MySQL</span></li>
+												</ul>
+											</div>
+										</section>
+
 									</div>
 								</div>
 							</div>
@@ -169,23 +247,11 @@
                 						</button>
 									</div>
 								</div>
-								<div class="box-body border-radius-none site-ablity-content" style="height: 430px;">
-									<div class="top">
-										<div class="top-left">风险值<span class="fengxian">67</span></div>
-										<div class="top-right">
-											共发现url<span class="fengxian">153</span>
-										</div>
+								<div class="box-body border-radius-none site-leak-content" style="height: 430px;">
+									<div class="title">
+										网站监控状态
 									</div>
-									<div class="row center">
-										<section class="col-lg-4 connectedSortable site-ablity-content-chart" id="site-ablity-content-chart">
-
-										</section>
-										<section class="col-lg-8 connectedSortable site-ablity-content-table">
-											<table class="table table-bordered table-striped table-condensed" id="site-ablity-content-table">
-
-											</table>
-										</section>
-									</div>
+									<div></div>
 								</div>
 							</div>
 							
@@ -199,22 +265,31 @@
 									</div>
 								</div>
 								<div class="box-body border-radius-none site-ablity-content" style="height: 430px;">
-									<div class="top">
-										<div class="top-left">风险值<span class="fengxian">67</span></div>
-										<div class="top-right">
-											共发现url<span class="fengxian">153</span>
-										</div>
-									</div>
-									<div class="row center">
-										<section class="col-lg-4 connectedSortable site-leak-content-chart" id="site-leak-content-chart">
+									<li class="p1">
+										<div class="title"></div>
+										<div class="content1"></div>
+									</li>
+									<li class="p2">
+										<div class="title"></div>
+										<div class="content1"></div>
+									</li>
+									<li class="p3">
+										<div class="title"></div>
+										<div class="content1"></div>
+									</li>
+									<li class="p4">
+										<div class="title"></div>
+										<div class="content1"></div>
+									</li>
+									<li class="p5">
+										<div class="title"></div>
+										<div class="content1"></div>
+									</li>
+									<li class="p6">
+										<div class="title"></div>
+										<div class="content1"></div>
+									</li>
 
-										</section>
-										<section class="col-lg-8 connectedSortable site-leak-content-table">
-											<table class="table table-bordered table-striped table-condensed" id="site-leak-content-table">
-
-											</table>
-										</section>
-									</div>
 								</div>
 							</div>
 
@@ -255,169 +330,625 @@
 		<script src="/static/js/bootstrap-table.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/static/js/bootstrap-table-zh-CN.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/static/js/bootstrap-select.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/js/cut/html2canvas.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/js/cut/jspdf.debug.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/js/cut/main.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/js/common.js" type="text/javascript" charset="utf-8"></script>
 		
 		<script type="text/javascript">
-			var summaryTable=$("#site-summary-content-table");
+			var jsonName={
+			    "xss":"XSS跨站脚本漏洞",
+				"black_links":"暗链",
+				"siteinfo":"站点信息",
+				"availability":"可用性",
+            	"malscan":"暗链",
+                "keyword":"关键词",
+                "sql":"sql注入",
+                "webvul":"应用漏洞",
+				"infoLeak":"信息泄露",
+				"cgi":"cgi",
+				"csrf":"CSRF跨站请求伪造漏洞",
+				"formCrack":"表单破解漏洞"
+
+			}
+			// var summaryTable=$("#site-summary-content-table");
+			var bottomTable=$("#site-summary-bottom-table");
+			var timeAxis=$("#site-summary-bottom-time .detail li");
+			var abilityData=[];
+			var site='';
+			var userId=getCookie('userId');
+			console.log(userId);
 			$(function(){
                 judgeCookie();
 				//综述中图表
-				resultChart();
+                // summaryChart();
 				//综述中表格
-				siteSummaryTable();
-			})
-			//综述中图表
-			function resultChart() {
-				var myChart = echarts.init(document.getElementById('site-summary-content-chart'));
-
-				var option = {
-					tooltip: {
-						trigger: 'item',
-						formatter: "{a} <br/>{b} : {c} ({d}%)"
-					},
-					legend:{
-						show:true,
-						right:0
-					},
-					grid:{
-						left:'10%',
-						top:'5%'
-					},
-					series: [{
-						name: '库存情况',
-						type: 'pie',
-						radius: '68%',
-						center: ['50%', '50%'],
-						clockwise: false,
-						data: [{
-							value: 45,
-							name: '高危'
-						}, {
-							value: 25,
-							name: '中危'
-						}, {
-							value: 15,
-							name: '低危'
-						}, {
-							value: 8,
-							name: '信息'
-						}],
-						label: {
-							normal: {
-								textStyle: {
-									color: '#000',
-									fontSize: 14,
-								}
-							}
-						},
-						labelLine: {
-							normal: {
-								show: true,
-								color: '#000'
-							}
-						},
-						itemStyle: {
-							normal: {
-								borderWidth: 4,
-								borderColor: '#ffffff',
-							},
-							emphasis: {
-								borderWidth: 0,
-								shadowBlur: 10,
-								shadowOffsetX: 0,
-								shadowColor: 'rgba(0, 0, 0, 0.5)'
-							}
-						}
-					}],
-					color: [
-						'#00acee',
-						'#52cdd5',
-						'#79d9f1',
-						'#a7e7ff',
-						'#c8efff'
-					],
-					backgroundColor: '#fff'
-				};
-				myChart.setOption(option);
-			}
-			//综述中table
-			function siteSummaryTable(){
-				summaryTable.bootstrapTable('destroy');
-				summaryTable.bootstrapTable({
-					//gau请求地址,此处数据为本地加载
-					url: "/static/json/siteSummary.json",
-					//请求方式
-					method: "GET",
-					//table高度：如果没有设置，表格自动根据记录条数觉得表格高度
-					//	    	height: '582',
-					//是否显示行间隔色
-					toolbar: '#toolbar', //工具按钮用哪个容器
-					striped: true, //是否显示行间隔色
-					cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-					pagination: true, //是否显示分页（*）
-					sortable: false, //是否启用排序
-					sortOrder: "asc", //排序方式
-					//          queryParams: oTableInit.queryParams,//传递参数（*）
-					sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
-					pageNumber: 1, //初始化加载第一页，默认第一页
-					pageSize: 10, //每页的记录行数（*）
-					pageList: [10, 25, 50, 100], //可供选择的每页的行数（*）
-					search: true, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
-					strictSearch: true,
-					showColumns: true, //是否显示所有的列
-					showRefresh: true, //是否显示刷新按钮
-					minimumCountColumns: 2, //最少允许的列数
-					clickToSelect: true, //是否启用点击选中行
-					//          height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
-					uniqueId: "ID", //每一行的唯一标识，一般为主键列
-					showToggle: true, //是否显示详细视图和列表视图的切换按钮
-					cardView: false, //是否显示详细视图
-					detailView: false,
-					//表头
-					columns: [{
-						title: '检测项',
-						field: 'checkItem', //id
-						//	    		checkbox: true, //checkbox
-						align: 'center', //对其方式
-						valign: 'middle' //对其方式
-					}, {
-						title: '高危',
-						field: 'highFaq',
-						align: 'center',
-						valign: 'middle',
-					}, {
-						title: '中危',
-						field: 'middleFaq',
-						align: 'center',
-						valign: 'middle'
-					}, {
-						title: '低危',
-						field: 'lowFaq',
-						align: 'center',
-						valign: 'middle'
-					}, {
-						title: '结果',
-						field: 'result',
-						align: 'center',
-						valign: 'middle'
-					}],
-					onLoadSuccess: function(res) { //可不写
-						//加载成功时
-						console.log(res);
-					},
-					onLoadError: function(statusCode) {
-						return "加载失败了"
-					},
-					formatLoadingMessage: function() {
-						//正在加载
-						return "拼命加载中...";
-					},
-					formatNoMatches: function() {
-						//没有匹配的结果
-						return '无符合条件的记录';
+				// siteSummaryTable();
+				//综述底部表格
+                summaryBottomTable();
+                //趋势图
+                // trend();
+				//获取到带过来的url
+                site=GetQueryString("url");
+                $(".site-name-top").html(site);
+                //获取到该网站的详细数据
+                getSiteDetailM();
+                getSiteDetailC();
+                //站点信息隐藏
+				$(".site-info-title i").click(function(){
+				    if($(".site-info-content").css('display')=='none'){
+                        $(".site-info-content").show();
+					}else{
+                        $(".site-info-content").hide();
 					}
 				})
+
+			});
+            function GetQueryString(name) {
+                var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);//search,查询？后面的参数，并匹配正则
+                if(r!=null)return  unescape(r[2]); return null;
+            }
+			//综述中table
+			// function siteSummaryTable(){
+			// 	summaryTable.bootstrapTable('destroy');
+			// 	summaryTable.bootstrapTable({
+			// 		//gau请求地址,此处数据为本地加载
+			// 		url: "/static/json/siteSummary.json",
+			// 		//请求方式
+			// 		method: "GET",
+			// 		//table高度：如果没有设置，表格自动根据记录条数觉得表格高度
+			// 		//	    	height: '582',
+			// 		//是否显示行间隔色
+			// 		// toolbar: '#toolbar', //工具按钮用哪个容器
+			// 		striped: true, //是否显示行间隔色
+			// 		cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+			// 		pagination: true, //是否显示分页（*）
+			// 		sortable: false, //是否启用排序
+			// 		sortOrder: "asc", //排序方式
+			// 		//          queryParams: oTableInit.queryParams,//传递参数（*）
+			// 		sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+			// 		pageNumber: 1, //初始化加载第一页，默认第一页
+			// 		pageSize: 10, //每页的记录行数（*）
+			// 		pageList: [10, 25, 50, 100], //可供选择的每页的行数（*）
+			// 		// search: true, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+			// 		strictSearch: true,
+			// 		showColumns: true, //是否显示所有的列
+			// 		showRefresh: true, //是否显示刷新按钮
+			// 		minimumCountColumns: 2, //最少允许的列数
+			// 		clickToSelect: true, //是否启用点击选中行
+			// 		//          height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+			// 		uniqueId: "ID", //每一行的唯一标识，一般为主键列
+			// 		// showToggle: true, //是否显示详细视图和列表视图的切换按钮
+			// 		// cardView: false, //是否显示详细视图
+			// 		// detailView: false,
+			// 		//表头
+			// 		columns: [{
+			// 			title: '检测项',
+			// 			field: 'checkItem', //id
+			// 			//	    		checkbox: true, //checkbox
+			// 			align: 'center', //对其方式
+			// 			valign: 'middle' //对其方式
+			// 		}, {
+			// 			title: '高危',
+			// 			field: 'highFaq',
+			// 			align: 'center',
+			// 			valign: 'middle',
+			// 		}, {
+			// 			title: '中危',
+			// 			field: 'middleFaq',
+			// 			align: 'center',
+			// 			valign: 'middle'
+			// 		}, {
+			// 			title: '低危',
+			// 			field: 'lowFaq',
+			// 			align: 'center',
+			// 			valign: 'middle'
+			// 		}, {
+			// 			title: '结果',
+			// 			field: 'result',
+			// 			align: 'center',
+			// 			valign: 'middle'
+			// 		}],
+			// 		onLoadSuccess: function(res) { //可不写
+			// 			//加载成功时
+			// 			// console.log(res);
+            //             summaryTable.bootstrapTable('mergeCells', {index: 1, field: 'checkItem', rowspan: 3});
+			// 		},
+			// 		onLoadError: function(statusCode) {
+			// 			return "加载失败了"
+			// 		},
+			// 		formatLoadingMessage: function() {
+			// 			//正在加载
+			// 			return "拼命加载中...";
+			// 		},
+			// 		formatNoMatches: function() {
+			// 			//没有匹配的结果
+			// 			return '无符合条件的记录';
+			// 		}
+			// 	})
+			// }
+			// //综述底部表格
+			function summaryBottomTable(){
+                var checkItemData=['暗链','挂马','关键词','SQL注入漏洞','XSS跨站脚本漏洞','应用漏洞','信息泄露','CGI漏洞',' CSRF跨站请求伪造漏洞',' 表单破解漏洞'];
+                bottomTable.bootstrapTable('destroy');
+                bottomTable.bootstrapTable({
+                    //gau请求地址,此处数据为本地加载
+                    url: "/service/user/resultEvents?userId="+userId+"&url="+site,
+                    //请求方式
+                    method: "GET",
+                    //table高度：如果没有设置，表格自动根据记录条数觉得表格高度
+                    //	    	height: '582',
+                    //是否显示行间隔色
+                    // toolbar: '#toolbar', //工具按钮用哪个容器
+                    striped: true, //是否显示行间隔色
+                    cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                    pagination: true, //是否显示分页（*）
+                    sortable: false, //是否启用排序
+                    sortOrder: "asc", //排序方式
+                    //          queryParams: oTableInit.queryParams,//传递参数（*）
+                    sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+                    pageNumber: 1, //初始化加载第一页，默认第一页
+                    pageSize: 10, //每页的记录行数（*）
+                    pageList: [10, 25, 50, 100], //可供选择的每页的行数（*）
+                    // search: true, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                    strictSearch: true,
+                    showColumns: true, //是否显示所有的列
+                    showRefresh: true, //是否显示刷新按钮
+                    minimumCountColumns: 2, //最少允许的列数
+                    clickToSelect: true, //是否启用点击选中行
+                    //          height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                    uniqueId: "ID", //每一行的唯一标识，一般为主键列
+                    // showToggle: true, //是否显示详细视图和列表视图的切换按钮
+                    // cardView: false, //是否显示详细视图
+                    // detailView: false,
+                    //表头
+                    columns: [
+                        {
+                        title: '检测项',
+                        field: 'checkItem', //id
+                        //	    		checkbox: true, //checkbox
+                        align: 'center', //对其方式
+                        valign: 'middle',//对其方式
+						formatter:function(value,row,index){
+							return checkItemData[index];
+						}
+                    }, {
+                        title: '高危',
+                        field: 'highFaq',
+                        align: 'center',
+                        valign: 'middle',
+                    }, {
+                        title: '中危',
+                        field: 'middleFaq',
+                        align: 'center',
+                        valign: 'middle'
+                    }, {
+                        title: '低危',
+                        field: 'lowFaq',
+                        align: 'center',
+                        valign: 'middle'
+                    }, {
+                        title: '结果',
+                        field: 'result',
+                        align: 'center',
+                        valign: 'middle'
+                    }],
+                    onLoadSuccess: function(res) { //可不写
+                        //加载成功时
+                        // console.log(res);
+                        bottomTable.bootstrapTable('mergeCells', {index: 0, field: 'checkType', rowspan: 3});
+                    },
+                    onLoadError: function(statusCode) {
+                        return "加载失败了"
+                    },
+                    formatLoadingMessage: function() {
+                        //正在加载
+                        return "拼命加载中...";
+                    },
+                    formatNoMatches: function() {
+                        //没有匹配的结果
+                        return '无符合条件的记录';
+                    }
+                })
+			}
+			//绘制综述中饼图
+			function summaryChart(data){
+                var myChart = echarts.init(document.getElementById('site-summary-content-chart'));
+               var option = {
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b}: {c} ({d}%)"
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        x: 'left',
+                        data:['暗链','挂马','关键词','SQL注入','XSS','应用漏洞','信息泄露','CGI漏洞','CSRF','表单破解']
+                    },
+                    series: [
+                        {
+                            name:'漏洞风险',
+                            type:'pie',
+                            selectedMode: 'single',
+                            radius: [0, '50%'],
+
+                            label: {
+                                normal: {
+                                    position: 'inner'
+                                }
+                            },
+                            labelLine: {
+                                normal: {
+                                    show: false
+                                }
+                            },
+                            data:[
+                                {value:data.riskHighCount, name:'高危', selected:true},
+                                {value:data.riskHighCount, name:'中危'},
+                                {value:data.riskLowCount, name:'低危'}
+                            ]
+                        },
+                        {
+                            name:'漏洞类型',
+                            type:'pie',
+                            radius: ['60%', '70%'],
+
+                            data:[
+                                {value:data.blackLinks, name:'暗链'},
+                                {value:data.malscan, name:'挂马'},
+                                {value:data.keyword, name:'关键词'},
+                                {value:data.sqlInjection, name:'SQL注入'},
+                                {value:data.xss, name:'XSS'},
+                                {value:data.webvul, name:'应用漏洞'},
+                                {value:data.infoLeak, name:'信息泄露'},
+                                {value:data.cgi, name:'CGI漏洞'},
+                                {value:data.csrf, name:'CSRF'},
+                                {value:data.formCrack, name:'表单破解'}
+                            ]
+                        }
+                    ]
+                };
+                myChart.setOption(option);
+			}
+			//绘制综述检测网站趋势图
+			function trend(data){
+                var timeData=[];
+                var high=[];
+                var middle=[];
+                var low=[];
+                var score=[];
+                var data=data['data'];
+                for(var i=0;i<data.length;i++){
+                    timeData.push(data[i].createTime);
+                    high.push(data[i].riskHighCount);
+                    middle.push(data[i].riskMiddleCount);
+                    low.push(data[i].riskLowCount);
+                    score.push(data[i].score);
+				}
+                var myChart = echarts.init(document.getElementById('site-summary-content-table'));
+                // var xData=['2018-09-01 10:20:30','2018-09-10 10:20:30','2018-09-20 10:20:30','2018-10-02 10:20:30','2018-10-03 10:20:30'];
+                var option = {
+                    // backgroundColor: "#344b58",
+                    "title": {
+                        "text": "网站监测趋势图",
+                        x: "4%",
+                        textStyle: {
+                            color: '#333',
+                            fontSize: '16',
+                        },
+                    },
+                    "tooltip": {
+                        "trigger": "axis",
+                        "axisPointer": {
+                            "type": "shadow",
+                            textStyle: {
+                                color: "#fff"
+                            }
+
+                        },
+                    },
+                    "grid": {
+                        "borderWidth": 0,
+                        "top": 110,
+                        "bottom": 95,
+                        textStyle: {
+                            color: "#fff"
+                        }
+                    },
+                    "legend": {
+                        x: '4%',
+                        top: '11%',
+                        textStyle: {
+                            color: '#90979c',
+                        },
+                        "data": ['高危', '中危', '低危']
+                    },
+
+
+                    "calculable": true,
+                    "xAxis": [{
+                        "type": "category",
+                        "axisLine": {
+                            lineStyle: {
+                                color: '#90979c'
+                            }
+                        },
+                        "splitLine": {
+                            "show": false
+                        },
+                        "axisTick": {
+                            "show": false
+                        },
+                        "splitArea": {
+                            "show": false
+                        },
+                        "axisLabel": {
+                            "interval": 0,
+                             rotate:30
+
+                        },
+                        "data": timeData,
+                    }],
+                    "yAxis": [{
+                        "type": "value",
+                        "splitLine": {
+                            "show": false
+                        },
+                        "axisLine": {
+                            lineStyle: {
+                                color: '#90979c'
+                            }
+                        },
+                        "axisTick": {
+                            "show": false
+                        },
+                        "axisLabel": {
+                            "interval": 0,
+
+                        },
+                        "splitArea": {
+                            "show": false
+                        },
+
+                    }],
+                    "dataZoom": [{
+                        "show": true,
+                        "height": 20,
+                        "xAxisIndex": [
+                            0
+                        ],
+                        bottom: 30,
+                        "start": 10,
+                        "end": 80,
+                        handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
+                        handleSize: '110%',
+                        handleStyle:{
+                            color:"#d3dee5",
+							// color:'red'
+                        },
+                        textStyle:{
+                            color:"#fff"},
+                        borderColor:"#90979c"
+
+
+                    }, {
+                        "type": "inside",
+                        "show": false,
+                        "height": 15,
+                        "start": 1,
+                        "end": 35
+                    }],
+                    "series": [{
+                        "name": "高危",
+                        "type": "bar",
+                        "stack": "总量",
+                        "barMaxWidth": 35,
+                        "barGap": "5%",
+                        "itemStyle": {
+                            "normal": {
+                                "color": "rgba(255,144,128,1)",
+                                "label": {
+                                    "show": false,
+                                    "textStyle": {
+                                        "color": "#fff"
+                                    },
+                                    "position": "insideTop",
+                                    formatter: function(p) {
+                                        return p.value > 0 ? (p.value) : '';
+                                    }
+                                }
+                            }
+                        },
+                        "data":high
+                    },
+
+                        {
+                            "name": "中危",
+                            "type": "bar",
+                            "stack": "总量",
+                            "itemStyle": {
+                                "normal": {
+                                    "color": "rgba(0,191,183,1)",
+                                    "barBorderRadius": 0,
+                                    "label": {
+                                        "show": false,
+                                        "position": "top",
+                                        formatter: function(p) {
+                                            return p.value > 0 ? (p.value) : '';
+                                        }
+                                    }
+                                }
+                            },
+                            "data": middle
+                        },
+
+                        {
+                            "name": "低危",
+                            "type": "bar",
+                            "stack": "总量",
+                            "itemStyle": {
+                                "normal": {
+                                    "color": "#6bbae8",
+                                    "barBorderRadius": 0,
+                                    "label": {
+                                        "show": false,
+                                        "position": "top",
+                                        formatter: function(p) {
+                                            return p.value > 0 ? (p.value) : '';
+                                        }
+                                    }
+                                }
+                            },
+                            "data": low
+                        },
+						{
+                            "name": "风险值",
+                            "type": "line",
+                            "stack": "总量",
+                            symbolSize:20,
+                            symbol:'circle',
+                            "itemStyle": {
+                                "normal": {
+                                    "color": "rgba(252,230,48,1)",
+                                    "barBorderRadius": 0,
+                                    "label": {
+                                        "show": true,
+                                        "position": "top",
+                                        formatter: function(p) {
+                                            return p.value > 0 ? (p.value) : '';
+                                        }
+                                    }
+                                }
+                            },
+                            "data":score
+                        },
+                    ]
+                }
+                myChart.setOption(option);
+			}
+			//获取到该网站数据
+			function getSiteDetailM(){
+                $.ajax({
+                    type:"get",
+                    url:"/service/user/resultEvents?userId="+userId+"&url="+site,
+                    // url:"/service/resultEvents?virtualGroupId="+taskId,
+                    xhrFields: {withCredentials: true},
+                    dataType: "json",
+                    async:true,
+                    success:function(data){
+                        var abilityData=[];
+                        var leakData=[];
+                        var siteinfo='';
+                        //填充站点信息
+                        var result=data['resultEvent'];
+                        for(var i=0;i<result.length;i++){
+                            if(result[i].moduleType=="availability"){
+                                if(abilityData.length<=4){
+                                    abilityData.push(result[i]);
+								}else{
+
+								}
+							}
+							if(result[i].moduleType=="weakness"){
+                                if(leakData.length<=4){
+                                    leakData.push(result[i]);
+                                }else{
+
+                                }
+							}
+                            //填充站点信息
+                            if(result[i].moduleType=="siteinfo"){
+                               // siteinfo=result[i].value;
+                               // var siteinfoDetail=JSON.parse(siteinfo)[0].value;
+                               //  $(".liOne").html(siteinfoDetail.title);
+                               //  $(".liThree").html(siteinfoDetail.ip);
+                               //  $(".liFive").html(siteinfoDetail.alexa);
+                               //  $(".liSven").html(siteinfoDetail.host);
+                               //  $(".liTen").html(siteinfoDetail.server);
+                               //  $(".liEle").html(siteinfoDetail.whois);
+                               //  $(".liTwl").html('--');
+                               //  break;
+                            }
+                            //填充可用性信息
+
+                        }
+                        console.log(abilityData);
+                        //展示漏洞信息
+						leakinfo(leakData);
+                        console.log(leakData);
+                        //可用性表填入数据
+                    }
+                });
+			}
+			//展示漏洞信息
+			function leakinfo(leakData){
+                var webCount=0;
+                var xssCount=0;
+                var sqlCount=0;
+				var leakDataOne=leakData[0];
+				var leakDataVal=JSON.parse(leakData[0].value);
+				console.log(leakDataVal);
+				for(var i=0;i<leakDataVal.length;i++){
+                    if(leakDataVal[i].type=='webvul'){
+                        webCount=webCount+1;
+                    }
+                    if(leakDataVal[i].type=='xss'){
+                        xssCount=xssCount+1;
+					}
+					if(leakDataVal[i].type=='sql'){
+                        sqlCount=sqlCount+1;
+					}
+				}
+				var webname=jsonName['webvul'];
+                var xssname=jsonName['xss'];
+                var sqlname=jsonName['sql'];
+				console.log(webCount);
+				$(".p1 .title").html(webname+webCount+'个');
+                $(".p2 .title").html(xssname+xssCount+'个');
+                $(".p3 .title").html(sqlname+sqlCount+'个');
+			}
+			//根据url获取到数据
+			function getSiteDetailC(){
+                $.ajax({
+                    type:"post",
+                    url:"/perform/getWebetailDesc",
+                    // url:"/service/resultEvents?virtualGroupId="+taskId,
+					data:{"url":site},
+                    xhrFields: {withCredentials: true},
+                    async:true,
+                    success:function(data){
+                        var time=[];
+                        var leakCount=[];
+                        var safeCount=[];
+                        var score=[];
+                        summaryChart(data);
+                        trend(data);
+                        //网站检测时间轴
+						for(var i=0;i<data.data.length;i++){
+						    var dataItem=data.data[i];
+						    var leak=dataItem.riskHighCount+dataItem.riskMiddleCount+dataItem.riskLowCount;
+							time.push(data.data[i].createTime);
+                            leakCount.push(leak);
+                            score.push(dataItem.score);
+						}
+						for(var i=0;i<time.length;i++){
+                            timeAxis.eq(i).find('.time').html(time[i]);
+                            timeAxis.eq(i).find('.leak').html(leakCount[i]+'个漏洞');
+                            if(score[i]>66&&score<100){
+                                timeAxis.eq(i).find('.error').html('高危');
+							}
+							if(score[i]>33&&score<66){
+                                timeAxis.eq(i).find('.error').html('中危');
+							}
+                            if(score[i]>0&&score<33){
+                                timeAxis.eq(i).find('.error').html('低危');
+                            }
+						}
+
+                    }
+                });
 			}
 		</script>
-	</body>
+		</body>
 
 </html>

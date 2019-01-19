@@ -707,12 +707,13 @@
                 }
                 item.push($(this).attr('value'));
             });
-            console.log(item);
             if(siteVal == '' || siteVal == null || siteVal == undefined) {
                 temTitle.find('.fa').removeClass('fa-chevron-circle-down');
                 temTitle.find('.fa').addClass('fa-warning');
                 temTitle.find('span').html('下发任务失败');
                 temAlert.html('请填写站点名');
+                temCover.show();
+                temPop.show();
                 return false;
             } else {
                 for(var i = 0; i < siteArr.length; i++) {
@@ -721,6 +722,8 @@
                         temTitle.find('.fa').addClass('fa-warning');
                         temTitle.find('span').html('下发任务失败');
                         temAlert.html('填写的网站有误');
+                        temCover.show();
+                        temPop.show();
                         return false;
                     }
                 }
@@ -964,6 +967,8 @@
                         temCover.show();
                         temPop.show();
 					}else{
+                        temTitle.find('.fa').removeClass('fa-chevron-circle-down');
+                        temTitle.find('.fa').addClass('fa-warning');
                         temTitle.find('span').html('下发任务失败');
                         temAlert.html(data.message);
                         temCover.show();
@@ -1001,9 +1006,15 @@
                         temTitle.find('.fa').addClass('fa-chevron-circle-down');
                         temTitle.find('span').html('下发任务成功');
                         temAlert.html('下发周期任务成功');
+                        temCover.show();
+                        temPop.show();
 					}else{
+                        temTitle.find('.fa').removeClass('fa-chevron-circle-down');
+                        temTitle.find('.fa').addClass('fa-warning');
                         temTitle.find('span').html('下发任务失败');
                         temAlert.html(data.message);
+                        temCover.show();
+                        temPop.show();
 					}
                 }
             });

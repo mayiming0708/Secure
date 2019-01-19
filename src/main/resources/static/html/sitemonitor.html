@@ -464,7 +464,7 @@
 									<div class="panel-heading">
 										<i class="iconfont icon-wangzhan"></i>网站列表
 										<div class="pull-right">
-											<button type="button" id="addBtn" class="btn btn-success btn-xs btnAll">新增下发任务</button>
+											<button type="button" id="addBtn" class="btn btn-success btn-xs btnAll" style="display: none">新增下发任务</button>
 										</div>
 									</div>
 									<div class="panel-body">
@@ -779,8 +779,8 @@
 		}
 		window.operateEvents={
 			"click #detailBtn":function(e,value,row,index){
-				//跳转到漏洞详情页
-				window.location.href="sitedetail";
+				//跳转到网站漏洞详情页
+                window.location.href = "sitedetail?url="+row.url;
 			}
 		}
 		</script>

@@ -458,7 +458,7 @@
 								<div class="inner">
 									<h3><span>44</span><sup style="font-size: 20px">个</sup></h3>
 
-									<p>发现漏洞个数</p>
+									<p>漏洞与安全事件个数</p>
 								</div>
 								<div class="icon">
 									<i class="ion ion-person-add"></i>
@@ -496,8 +496,8 @@
 											<div class="form-groups" id="task-type">
 												<label for="name">任务类型<p class="prompt"></p></label>
 												<select name="task-type-choose">
-													<option value="临时任务">临时任务</option>
-													<option value="周期任务">周期任务</option>
+													<option value="0">临时任务</option>
+													<option value="1">周期任务</option>
 												</select>
 											</div>
 											<div class="form-groups" id="tempory-site-name">
@@ -507,6 +507,7 @@
 											
 											<div class="choose-title">检测项</div>
 											<ul class="choose-item clearfix">
+												<li data='0' class="all">全部</li>
 												<li data='0'>暗链</li>
 												<li data='0'>挂马</li>
 												<li data='0'>关键词</li>
@@ -545,7 +546,7 @@
 										<a href="#site-faq" data-toggle="tab" class="sitetab">网站风险分布</a>
 									</li>
 									<li>
-										<a href="#bug-faq" data-toggle="tab" class="leaktab">漏洞风险分布</a>
+										<a href="#bug-faq" data-toggle="tab" class="leaktab">漏洞与安全事件风险分布</a>
 									</li>
 									<!--<li class="pull-left header"><i class="fa fa-inbox"></i> 下发临时任务</li>-->
 								</ul>
@@ -596,7 +597,7 @@
 									<div class="chart tab-pane clearfix" id="bug-faq" style="position: relative; height: 300px;">
 										<div class="bug-faq-left">
 											<div class="info">
-											<p class="title">高危漏洞类型排名</p>
+											<p class="title">高危漏洞安全事件类型排名</p>
 											<ul class="bug-rank-list">
 												<li class="clearfix">
 													<img src="/static/image/canteen-top1.png">
@@ -667,7 +668,7 @@
 						<section class="col-lg-4 connectedSortable">
 							<div class="box box-success bug-type-right">
 								<div class="title">
-									网站漏洞类型占比
+									网站漏洞安全类型占比
 								</div>
 								<div class="bug-type-chart3" id="bug-type-chart3">
 									
@@ -922,17 +923,30 @@
             var temBtn = $(".temporary-task-total button");
             var temTitle = $(".temporary-task-total  .pop-alert .title");
             var taskType= $(".temporary-task-total select");
+            //获取到cookie值
+            var userId=getCookie("userId");
             //漏洞风险分布图表
 			var bugfaq=echarts.init(document.getElementById('bug-faq-chart2'));
-
 			$(function() {
                 judgeCookie();
                 getIndexData();
 				//下发临时任务检测项
-				$(".choose-item li").click(function() {
+                $(".choose-item li.all").click(function() {
+                    if($(this).hasClass('active')) {
+                      	$(".choose-item li").removeClass('active');
+                        $(".choose-item li").attr('data', '0');
+                    } else {
+                        $(".choose-item li").addClass('active');
+                        $(".choose-item li").attr('data', '1');
+                    }
+
+                });
+				$(".choose-item li:not('.all')").click(function() {
 					if($(this).hasClass('active')) {
 						$(this).removeClass('active');
 						$(this).attr('data', '0');
+                        $(".choose-item li.all").removeClass('active');
+                        $(".choose-item li.all").attr('data', '0');
 					} else {
 						$(this).addClass('active');
 						$(this).attr('data', '1');
@@ -948,8 +962,7 @@
 					var siteVal = site.val();
 					var siteArr = siteVal.split(',');
 					var taskTypeVal=taskType.val();
-					temCover.show();
-					temPop.show();
+
 					$("#tempory-task .choose-item li").each(function() {
 						checkItem.push($(this).attr('data'));
 						if($(this).attr('data') == 1) {
@@ -957,38 +970,38 @@
 						}
 					})
 					if(siteVal == '' || siteVal == null || siteVal == undefined) {
-
+                        temTitle.find('.fa').removeClass('fa-chevron-circle-down');
+                        temTitle.find('.fa').addClass('fa-warning');
+                        temTitle.find('span').html('下发任务失败');
 						temAlert.html('请填写站点名');
+                        temCover.show();
+                        temPop.show();
 						return false;
 					} else {
 						for(var i = 0; i < siteArr.length; i++) {
 							if(!siteArr[i].match(reg)) {
+                                temTitle.find('.fa').removeClass('fa-chevron-circle-down');
+                                temTitle.find('.fa').addClass('fa-warning');
+                                temTitle.find('span').html('下发任务失败');
 								temAlert.html('填写的网站有误');
+                                temCover.show();
+                                temPop.show();
 								return false;
 							}
 						}
 					}
 					if(choose == 0) {
+                        temTitle.find('.fa').removeClass('fa-chevron-circle-down');
+                        temTitle.find('.fa').addClass('fa-warning');
+                        temTitle.find('span').html('下发任务失败');
 						temAlert.html('请选择检测项');
+                        temCover.show();
+                        temPop.show();
 						return false;
+					}else{
+                        //选择好之后调取下发任务的接口
+                        indexAddTask(taskTypeVal,siteVal,checkItem);
 					}
-					temTitle.find('.fa').removeClass('fa-warning');
-					temTitle.find('.fa').addClass('fa-chevron-circle-down');
-					temTitle.find('span').html('下发任务成功');
-					temAlert.html('下发周期任务成功');
-					console.log(checkItem);
-					$.ajax({
-						type:"post",
-						url:"",
-						async:true
-					});
-//					if(taskTypeVal=='周期任务'){
-//						temAlert.html('下发周期任务成功');
-//					}else{
-//						temAlert.html('下发临时任务成功');
-//					}
-					
-			
 				});
 
 				//点击确定按钮 弹窗消失
@@ -1125,76 +1138,66 @@
 			}
 
 //			checkSite();//针对检测项展示的高危，中危，低危
-			function bugTypeChart2() {
+			function bugTypeChart2(data) {
 				var data = [{
 						name: '暗链',
-						count1: 100,
-						count2: 120,
-						count3: 50,
-						count4: 80,
+						count1: data.blackLinks.high,
+						count2: data.blackLinks.middle,
+						count3: data.blackLinks.low
 					},
 					{
 						name: '挂马',
-						count1: 100,
-						count2: 70,
-						count3: 150,
-						count4: 80,
+                        count1: data.malscan.high,
+                        count2: data.malscan.middle,
+                        count3: data.malscan.low
 					},
 					{
 						name: '关键词',
-						count1: 100,
-						count2: 120,
-						count3: 150,
-						count4: 80,
+                        count1: data.keyword.high,
+                        count2: data.keyword.middle,
+                        count3: data.keyword.low
 					},
 					{
 						name: 'sql注入漏洞',
-						count1: 100,
-						count2: 12,
-						count3: 150,
-						count4: 80,
+                        count1: data.sql.high,
+                        count2: data.sql.middle,
+                        count3: data.sql.low
 					},
 					{
 						name: 'XSS跨站脚本漏洞',
-						count1: 100,
-						count2: 120,
-						count3: 150,
-						count4: 70,
+                        count1: data.xss.high,
+                        count2: data.xss.middle,
+                        count3: data.xss.low
 					},
 					{
 						name: '应用漏洞',
-						count1: 100,
-						count2: 120,
-						count3: 90,
-						count4: 80,
+                        count1: data.webvul.high,
+                        count2: data.webvul.middle,
+                        count3: data.webvul.low
 					},
 					{
 						name: '信息泄露',
-						count1: 100,
-						count2: 120,
-						count3: 150,
-						count4: 80,
+                        count1: data.infoLeak.high,
+                        count2: data.infoLeak.middle,
+                        count3: data.infoLeak.low
 					},
 					{
 						name: 'CGI漏洞',
-						count1: 120,
-						count2: 120,
-						count3: 150,
-						count4: 80,
+                        count1: data.cgi.high,
+                        count2: data.cgi.middle,
+                        count3: data.cgi.low
 					},
 					{
 						name: 'CSRF跨站请求伪造漏洞',
-						count1: 100,
-						count2: 120,
-						count3: 50,
-						count4: 80,
+                        count1: data.csrf.high,
+                        count2: data.csrf.middle,
+                        count3: data.csrf.low
 					},
 					{
 						name: '表单破解漏洞',
-						count1: 100,
-						count2: 80,
-						count3: 150,
-						count4: 80,
+                        count1: data.formCrack.high,
+                        count2: data.formCrack.middle,
+                        count3: data.formCrack.low
 					},
 				]
 				var names = data.map(v => {
@@ -1209,16 +1212,13 @@
 				var count3 = data.map(v => {
 					return v.count3
 				});
-				var count4 = data.map(v => {
-					return v.count4
-				});
 				var myChart = echarts.init(document.getElementById('bug-type-chart2'));
 				option = {
 					title: {
-						text: '漏洞类型风险分布图'
+						text: '漏洞与安全事件风险分布图'
 					},
 					backgroundColor: '#fff',
-					color: ['#FF9E67', '#FFC376', '#FFD6B7', '#cccccc'],
+					color: ['#FF9E67', '#FFC376', '#FFD6B7'],
 					barWidth: 50,
 					tooltip: {
 						trigger: 'axis',
@@ -1280,26 +1280,13 @@
 							name: '低危',
 							stack: '总量',
 							data: count3
-						},
-						{
-							type: 'bar',
-							name: '信息',
-							stack: '总量',
-							label: {
-								normal: {
-									show: true,
-									position: 'top',
-									formatter: '{c}',
-								}
-							},
-							data: count4
 						}
 					]
 				};
 				myChart.setOption(option);
 
 			}
-			bugTypeChart2();//网站漏洞类型占比
+			// bugTypeChart2();//网站漏洞类型占比
 			function bugTypeChart3(chart3Data,bugTotal) {
 				var myChart = echarts.init(document.getElementById('bug-type-chart3'));
 				var colorList = [
@@ -1309,7 +1296,7 @@
 				// 总和
 				var total = {
 					value: bugTotal,
-					name: '共检测漏洞数'
+					name: '漏洞与安全事件数'
 				}
 
 				var originalData = [{
@@ -1511,7 +1498,7 @@
 				// 总和
 				var total = {
 					value: data.bugCounts,
-					name: '共检测漏洞数'
+					name: '漏洞与安全事件数'
 				}
 
 				var originalData = [{
@@ -1611,8 +1598,18 @@
                 window.onresize = bugfaq.resize;
 			}
 			// bugFaqChart();//漏洞类型风险分布图的图2
-			function bugTypeChart4() {
+			function bugTypeChart4(data) {
 				var bugTypeChart4 = echarts.init(document.getElementById('bug-type-chart4'));
+				var blackLinks=[data.blackLinks.high,data.blackLinks.middle,data.blackLinks.low];
+				var cgi=[data.cgi.high,data.cgi.middle,data.cgi.low];
+				var csrf=[data.csrf.high,data.csrf.middle,data.csrf.low];
+				var formCrack=[data.formCrack.high,data.formCrack.middle,data.formCrack.low];
+				var infoLeak=[data.infoLeak.high,data.infoLeak.middle,data.infoLeak.low];
+				var keyword=[data.keyword.high,data.keyword.middle,data.keyword.low];
+				var malscan=[data.malscan.high,data.malscan.middle,data.malscan.low];
+				var sql=[data.sql.high,data.sql.middle,data.sql.low];
+                var webvul=[data.webvul.high,data.webvul.middle,data.webvul.low];
+                var xss=[data.xss.high,data.xss.middle,data.xss.low];
 				var option = '';
 				option = {
 					title: {
@@ -1639,7 +1636,7 @@
 						text: ''
 					},
 					legend: {
-						data: ['暗链', '挂马', '关键词', 'sql注入漏洞', 'XSS跨站脚本漏洞', '应用漏洞', 'CGI漏洞', 'CSRF跨站请求伪造漏洞', '表单破解漏洞']
+						data: ['暗链', '挂马', '关键词', 'sql注入漏洞', 'XSS跨站脚本漏洞', '应用漏洞','信息泄露' ,'CGI漏洞', 'CSRF跨站请求伪造漏洞', '表单破解漏洞']
 					},
 					grid: {
 						left: '3%',
@@ -1665,7 +1662,7 @@
 									position: 'insideRight'
 								}
 							},
-							data: [320, 302, 301]
+							data: blackLinks
 						},
 						{
 							name: '挂马',
@@ -1673,11 +1670,11 @@
 							stack: '总量',
 							label: {
 								normal: {
-									show: true,
+									show: false,
 									position: 'insideRight'
 								}
 							},
-							data: [120, 132, 101]
+							data: malscan
 						},
 						{
 							name: '关键词',
@@ -1685,11 +1682,11 @@
 							stack: '总量',
 							label: {
 								normal: {
-									show: true,
+									show: false,
 									position: 'insideRight'
 								}
 							},
-							data: [220, 182, 191]
+							data: keyword
 						},
 						{
 							name: 'sql注入漏洞',
@@ -1697,11 +1694,11 @@
 							stack: '总量',
 							label: {
 								normal: {
-									show: true,
+									show: false,
 									position: 'insideRight'
 								}
 							},
-							data: [150, 212, 201]
+							data: sql
 						},
 						{
 							name: 'XSS跨站脚本漏洞',
@@ -1709,11 +1706,11 @@
 							stack: '总量',
 							label: {
 								normal: {
-									show: true,
+									show: false,
 									position: 'insideRight'
 								}
 							},
-							data: [820, 832, 901]
+							data: xss
 						},
 						{
 							name: '应用漏洞',
@@ -1721,23 +1718,35 @@
 							stack: '总量',
 							label: {
 								normal: {
-									show: true,
+									show: false,
 									position: 'insideRight'
 								}
 							},
-							data: [820, 832, 901]
+							data: [24,216,60]
 						},
+                        {
+                            name: '信息泄露',
+                            type: 'bar',
+                            stack: '总量',
+                            label: {
+                                normal: {
+                                    show: false,
+                                    position: 'insideRight'
+                                }
+                            },
+                            data: infoLeak
+                        },
 						{
 							name: 'CGI漏洞',
 							type: 'bar',
 							stack: '总量',
 							label: {
 								normal: {
-									show: true,
+									show: false,
 									position: 'insideRight'
 								}
 							},
-							data: [820, 832, 901]
+							data: cgi
 						},
 						{
 							name: 'CSRF跨站请求伪造漏洞',
@@ -1745,11 +1754,11 @@
 							stack: '总量',
 							label: {
 								normal: {
-									show: true,
+									show: false,
 									position: 'insideRight'
 								}
 							},
-							data: [820, 832, 901]
+							data: csrf
 						},
 						{
 							name: '表单破解漏洞',
@@ -1757,17 +1766,17 @@
 							stack: '总量',
 							label: {
 								normal: {
-									show: true,
+									show: false,
 									position: 'insideRight'
 								}
 							},
-							data: [820, 832, 901]
+							data: formCrack
 						}
 					]
 				};
 				bugTypeChart4.setOption(option);
 			}
-			bugTypeChart4();
+			// bugTypeChart4();
 
 			//获取首页展示数据
             function getIndexData(){
@@ -1775,7 +1784,7 @@
                     type:"post",
                     url:"/perform/performData",
                     xhrFields: {withCredentials: true},
-                    data:{},
+                    data:{"userId":userId},
                     dataType: "json",
                     async:true,
                     success:function(data){
@@ -1786,6 +1795,8 @@
             }
 
             function showIop(data){
+                //取出漏洞类型分布图数据
+				var levelRecord=data['levelRecord'];
                 //网站风险分布
 				var highlevel=0;
                 var midlevel=0;
@@ -1798,9 +1809,10 @@
                 $(".bg-yellow .inner span").html(data.bugCounts);
                 $(".bg-red .inner span").html(data.avgUseTime);
                 //网站风险分布
-                for(var i=0;i<data.topURL.length;i++){
-                    $("#site-faq .rank-list li").eq(i).find('.site-name').html(data.topURL[i].url);
-                    $("#site-faq .rank-list li").eq(i).find('.score').html(data.topURL[i].score);
+				var topURL=data.topURL.reverse();
+                for(var i=0;i<topURL.length;i++){
+                    $("#site-faq .rank-list li").eq(i).find('.site-name').html(topURL[i].url);
+                    $("#site-faq .rank-list li").eq(i).find('.score').html(topURL[i].score);
                 }
 				//漏洞风险分布
 				//高危漏洞类型排名
@@ -1844,8 +1856,99 @@
                 bugTypeChart3(chart3Data,bugTotal);
 				//网站风险图
                 siteFaqChart(highlevel,midlevel,lowlevel,safe);
+                //按漏洞分的漏洞与安全事件分布
+                bugTypeChart2(levelRecord);
+                //按风险等级划分漏洞
+                bugTypeChart4(levelRecord);
             }
+			//调取下发任务接口
+            function indexAddTask(taskTypeVal,siteVal,checkItem){
+				console.log(taskTypeVal);
+				console.log(siteVal);
+				console.log(checkItem);
+				if(taskTypeVal==0){
+                    $.ajax({
+                        type:"post",
+                        url:"http://localhost/issue/temp",
+                        xhrFields: {withCredentials: true},
+                        data:JSON.stringify(
+                            {"urls":siteVal,
+                                "blackLinks":checkItem[1],
+                                "malscan":checkItem[2],
+                                "keyword":checkItem[3],
+                                "sqlInjection":checkItem[4],
+                                "xss":checkItem[5],
+                                "webvul":checkItem[6],
+                                "infoLeak":checkItem[7],
+                                "cgi":checkItem[8],
+                                "csrf":checkItem[9],
+                                "formCrack":checkItem[10]
+                            }),
+                        contentType: "application/json;charset=UTF-8",
+                        dataType: "json",
+                        async:true,
+                        success:function(data){
+                            if(data.code==0){
+                                temTitle.find('.fa').removeClass('fa-warning');
+                                temTitle.find('.fa').addClass('fa-chevron-circle-down');
+                                temTitle.find('span').html('下发任务成功');
+                                temAlert.html('下发临时任务成功');
+                                temCover.show();
+                                temPop.show();
+                            }else{
+                                temTitle.find('.fa').removeClass('fa-chevron-circle-down');
+                                temTitle.find('.fa').addClass('fa-warning');
+                                temTitle.find('span').html('下发任务失败');
+                                temAlert.html(data.message);
+                                temCover.show();
+                                temPop.show();
 
+                            }
+
+                        }
+                    });
+				}else{
+                    //周期任务调取接口
+                    $.ajax({
+                        type:"post",
+                        url:"http://localhost/issue/period",
+                        xhrFields: {withCredentials: true},
+                        data:JSON.stringify(
+                            {"urls":siteVal,
+                                "blackLinks":checkItem[1],
+                                "malscan":checkItem[2],
+                                "keyword":checkItem[3],
+                                "sqlInjection":checkItem[4],
+                                "xss":checkItem[5],
+                                "webvul":checkItem[6],
+                                "infoLeak":checkItem[7],
+                                "cgi":checkItem[8],
+                                "csrf":checkItem[9],
+                                "formCrack":checkItem[10]
+                            }),
+                        contentType: "application/json;charset=UTF-8",
+                        dataType: "json",
+                        async:true,
+                        success:function(data){
+                            if(data.code==0){
+                                temTitle.find('.fa').removeClass('fa-warning');
+                                temTitle.find('.fa').addClass('fa-chevron-circle-down');
+                                temTitle.find('span').html('下发任务成功');
+                                temAlert.html('下发周期任务成功');
+                                temCover.show();
+                                temPop.show();
+                            }else{
+                                temTitle.find('.fa').removeClass('fa-chevron-circle-down');
+                                temTitle.find('.fa').addClass('fa-warning');
+                                temTitle.find('span').html('下发任务失败');
+                                temAlert.html(data.message);
+                                temCover.show();
+                                temPop.show();
+                            }
+                        }
+                    });
+				}
+			}
 		</script>
 	</body>
 </html>

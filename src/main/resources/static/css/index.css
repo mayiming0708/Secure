@@ -40,7 +40,7 @@ ul{
 	float: left;
     font-size: 16px;
     display: inline-block;
-    padding: 0 10px;
+    padding: 0 9px;
     border: 1px solid #2ca2bf;
     border-radius: 5px;
     margin-left: 18px;
@@ -584,7 +584,7 @@ button.close{
 	color: #000;
 }
 #site-summary-content-chart{
-	height: 300px;
+	height: 400px;
 }
 .site-summary-content .top{
 	height: 100px;
@@ -631,6 +631,7 @@ button.close{
     border-radius: 5px;
     display: inline-block;
     float: right;
+	cursor: pointer;
 }
 #taskAddModal .modal-content{
 	border-radius: 10px;
@@ -921,3 +922,96 @@ button.close{
 	/*font-size: 17px;*/
 	/*margin-right: 5px;*/
 /*}*/
+.site-summary-content.box-body{
+	padding: 10px 20px;
+}
+.site-summary-content .row.bottom{
+	height: 300px;
+}
+#site-summary-bottom-time{
+	height: 300px;
+}
+#site-summary-bottom-time .flow{
+	position: relative;
+	height: 100%;
+}
+#site-summary-bottom-time .line{
+	position: absolute;
+	width: 100%;
+	border-radius: 5px;
+	height: 4px;
+	background-color: #6bbae8;
+	top: 63%;
+}
+#site-summary-bottom-time  .detail li{
+	float: left;
+	width: 15%;
+	text-align: center;
+	margin-left: 5px;
+}
+#site-summary-bottom-time  .detail li span{
+	display: block;
+	width: 100%;
+}
+#site-summary-bottom-time  .detail .dot{
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: lightskyblue;
+	text-align: center;
+	display: inline-block;
+	z-index: 10;
+	cursor: pointer;
+}
+#site-summary-bottom-time  .detail{
+	position: absolute;
+	top: 23%;
+	width: 100%;
+}
+#site-summary-bottom-time .alert{
+	padding: 0;
+	text-align: center;
+	background-color: #2aa4d6;
+	/*display: inline-block;*/
+	border-radius: 5px;
+	color: #fff;
+	padding: 6px 0;
+}
+#site-summary-bottom-time .alert .fa{
+	color: #c71585;
+}
+#site-summary-content-table{
+	height: 400px;
+	width: 100%;
+}
+.site-info-title{
+	font-size: 17px;
+	margin-bottom: 10px;
+	cursor: pointer;
+}
+.site-info-title i{
+	color: #2aa4d6;
+	margin-left: 5px;
+}
+.site-info-content{
+	display: none;
+}
+.site-info-content li{
+	height: 39px;
+	line-height: 39px;
+
+}
+.site-info-content ul{
+	width: 25%;
+	float: left;
+}
+.site-info-content li span:first-child{
+	margin-right: 20px;
+}
+.site-ablity-content{
+	font-size: 15px;
+	color: #333;
+}
+#site-leak .content{
+	height: auto;
+}
