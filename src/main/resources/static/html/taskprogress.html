@@ -1044,7 +1044,12 @@
         },
         "click #detailBtn": function(e, value, row, index) {
             // var taskId=row.virtualGroupId;
-            window.location.href = "taskdetail?id="+row.virtualGroupId;
+			if(row.isPeriod==1){
+                window.location.href = "taskdetailWeek?id="+row.virtualGroupId;
+			}else{
+                window.location.href = "taskdetail?id="+row.virtualGroupId;
+			}
+
             // setCookie(taskId,taskId);
         }
     }

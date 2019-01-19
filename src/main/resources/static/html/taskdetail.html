@@ -494,10 +494,26 @@
 										<div class="col-lg-12">
 											<div class="panel panel-default ablity-chart">
 												<div class="panel-heading">
-													可用性检测分析图
+													安全事件检测列表
 												</div>
 												<div class="panel-body">
+													<table class="table table-bordered table-striped table-condensed" id="task-safety-table">
 
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-lg-12">
+											<div class="panel panel-default ablity-chart">
+												<div class="panel-heading">
+													漏洞检测列表
+												</div>
+												<div class="panel-body">
+													<table class="table table-bordered table-striped table-condensed" id="task-leak-table">
+
+													</table>
 												</div>
 											</div>
 										</div>
@@ -632,15 +648,14 @@
 			function getTaskDetail(){
                 $.ajax({
                     type:"get",
-					url:"/static/json/data1.json",
-                    // url:"/service/resultEvents?virtualGroupId="+taskId,
-                    // xhrFields: {withCredentials: true},
-                    // dataType: "json",
+                    url:"/service/resultEvents?virtualGroupId="+taskId,
+                    xhrFields: {withCredentials: true},
+                    dataType: "json",
                     async:true,
                     success:function(data){
-                        // console.log(data);
+                        console.log(data);
                         //从data中获取可用性 安全事件 漏洞的值
-						taskItemDetail(data);
+						 taskItemDetail(data);
                     }
                 });
 			}
@@ -733,12 +748,12 @@
                     pageNumber:1,
                     pageList: [10, 20, 50, 100, 200, 500],
 					sidePagination:'client',
-                    search: true,
+                    // search: true,
                     showColumns: true,
                     showRefresh: false,
                     showExport: false,
                     exportTypes: ['csv','txt','xml'],
-                    search: true,
+                    // search: true,
                     clickToSelect: true,
                     columns:
                         [
@@ -752,6 +767,7 @@
 								valign:"middle",
 								sortable:"true",
 								formatter:function(value,row,index){
+                                    var value=JSON.parse(value);
 									var dns=value[0].value['dns_hijack'].hijacked;
 									if(dns==false){
 										return "无DNS劫持";
@@ -767,13 +783,22 @@
 								valign:"middle",
 								sortable:"true",
                                 formatter:function(value,row,index){
-                                    var http=value[0].value['http_get'].status;
+                                    var value=JSON.parse(value);
+                                    var http=value[0].value['http_get'];
                                     console.log(http);
-                                    if(http==200){
+                                    var status='';
+                                    if(http==''||http==undefined||http==null){
+                                        status='--';
+									}else{
+                                        status=http.status;
+									}
+									if(status=='--'){
+									    return '--';
+									}else if(status==200){
                                         return "正常";
-                                    }else{
+									}else{
                                         return "异常";
-                                    }
+									}
                                 }
 							},
                         ],
@@ -811,13 +836,13 @@
                     pageNumber:1,
                     pageList: [10, 20, 50, 100, 200, 500],
                     sidePagination:'client',
-                    search: true,
+                    // search: true,
                     showColumns: true,
                     showRefresh: false,
                     showExport: false,
                     exportTypes: ['csv','txt','xml'],
-                    search: true,
-                    clickToSelect: true,
+                    // search: true,
+                    // clickToSelect: true,
                     columns:
                         [
                             {field:"site",title:"检测站点",align:"center",valign:"middle",sortable:"true"},
@@ -830,8 +855,9 @@
                                 sortable:"true",
                                 formatter:function(value,row,index){
                                     var cgi=0;
+                                    var value=JSON.parse(value);
                                   for(var i=0;i<value.length;i++){
-										if(value[i].type=="CGI"){
+										if(value[i].type=="cgi"){
                                             cgi=cgi+1;
 										}
 								  }
@@ -846,6 +872,7 @@
                                 sortable:"true",
                                 formatter:function(value,row,index){
                                     var webvul=0;
+                                    var value=JSON.parse(value);
                                     for(var i=0;i<value.length;i++){
                                         if(value[i].type=="webvul"){
                                             webvul=webvul+1;
@@ -861,13 +888,14 @@
                                 valign:"middle",
                                 sortable:"true",
                                 formatter:function(value,row,index){
-                                    var CSRF=0;
+                                    var csrf=0;
+                                    var value=JSON.parse(value);
                                     for(var i=0;i<value.length;i++){
                                         if(value[i].type=="CSRF"){
-                                            CSRF=CSRF+1;
+                                            csrf=csrf+1;
                                         }
                                     }
-                                    return CSRF;
+                                    return csrf;
                                 }
                             },
                             {
@@ -878,6 +906,7 @@
                                 sortable:"true",
                                 formatter:function(value,row,index){
                                     var sql=0;
+                                    var value=JSON.parse(value);
                                     for(var i=0;i<value.length;i++){
                                         if(value[i].type=="sql"){
                                             sql=sql+1;
@@ -894,6 +923,7 @@
                                 sortable:"true",
                                 formatter:function(value,row,index){
                                     var xss=0;
+                                    var value=JSON.parse(value);
                                     for(var i=0;i<value.length;i++){
                                         if(value[i].type=="xss"){
                                             xss=xss+1;
@@ -909,13 +939,14 @@
                                 valign:"middle",
                                 sortable:"true",
                                 formatter:function(value,row,index){
-                                    var statistics=0;
+                                    var formCrack=0;
+                                    var value=JSON.parse(value);
                                     for(var i=0;i<value.length;i++){
-                                        if(value[i].type=="statistics"){
-                                            statistics=statistics+1;
+                                        if(value[i].type=="formCrack"){
+                                            formCrack=formCrack+1;
                                         }
                                     }
-                                    return statistics;
+                                    return formCrack;
                                 }
                             },
                             {field:"endAt",title:"结束检测时间",align:"center",valign:"middle",sortable:"true"},
@@ -960,12 +991,12 @@
                     pageNumber:1,
                     pageList: [10, 20, 50, 100, 200, 500],
                     sidePagination:'client',
-                    search: true,
+                    // search: true,
                     showColumns: true,
                     showRefresh: false,
                     showExport: false,
                     exportTypes: ['csv','txt','xml'],
-                    search: true,
+                    // search: true,
                     clickToSelect: true,
                     columns:
                         [
@@ -979,6 +1010,7 @@
                                 sortable:"true",
                                 formatter:function(value,row,index){
                                     var keyword=0;
+                                    var value=JSON.parse(value);
                                     for(var i=0;i<value.length;i++){
                                         if(value[i].type=="keyword"){
                                             keyword=keyword+1;
@@ -995,6 +1027,7 @@
                                 sortable:"true",
                                 formatter:function(value,row,index){
                                     var malscan=0;
+                                    var value=JSON.parse(value);
                                     for(var i=0;i<value.length;i++){
                                         if(value[i].type=="malscan"){
                                             malscan=malscan+1;
@@ -1005,50 +1038,19 @@
                             },
                             {
                                 field:"value",
-                                title:"内容变更",
+                                title:"信息泄露",
                                 align:"center",
                                 valign:"middle",
                                 sortable:"true",
                                 formatter:function(value,row,index){
-                                    var CSRF=0;
+                                    var infoLeak=0;
+                                    var value=JSON.parse(value);
                                     for(var i=0;i<value.length;i++){
-                                        if(value[i].type=="CSRF"){
-                                            CSRF=CSRF+1;
+                                        if(value[i].type=="info_leak"){
+                                            infoLeak=infoLeak+1;
                                         }
                                     }
-                                    return CSRF;
-                                }
-                            },
-                            {
-                                field:"value",
-                                title:"Web应用",
-                                align:"center",
-                                valign:"middle",
-                                sortable:"true",
-                                formatter:function(value,row,index){
-                                    var sql=0;
-                                    for(var i=0;i<value.length;i++){
-                                        if(value[i].type=="sql"){
-                                            sql=sql+1;
-                                        }
-                                    }
-                                    return sql;
-                                }
-                            },
-                            {
-                                field:"value",
-                                title:"统计",
-                                align:"center",
-                                valign:"middle",
-                                sortable:"true",
-                                formatter:function(value,row,index){
-                                    var statistics=0;
-                                    for(var i=0;i<value.length;i++){
-                                        if(value[i].type=="statistics"){
-                                            statistics=statistics+1;
-                                        }
-                                    }
-                                    return statistics;
+                                    return infoLeak;
                                 }
                             },
                             {
@@ -1058,45 +1060,14 @@
                                 valign:"middle",
                                 sortable:"true",
                                 formatter:function(value,row,index){
-                                    var black_links=0;
+                                    var black_links	=0;
+                                    var value=JSON.parse(value);
                                     for(var i=0;i<value.length;i++){
                                         if(value[i].type=="black_links"){
                                             black_links=black_links+1;
                                         }
                                     }
                                     return black_links;
-                                }
-                            },
-                            {
-                                field:"value",
-                                title:"内容泄露",
-                                align:"center",
-                                valign:"middle",
-                                sortable:"true",
-                                formatter:function(value,row,index){
-                                    var info_leak=0;
-                                    for(var i=0;i<value.length;i++){
-                                        if(value[i].type=="info_leak"){
-                                            info_leak=info_leak+1;
-                                        }
-                                    }
-                                    return info_leak;
-                                }
-                            },
-                            {
-                                field:"value",
-                                title:"文件泄露",
-                                align:"center",
-                                valign:"middle",
-                                sortable:"true",
-                                formatter:function(value,row,index){
-                                    var file_leak=0;
-                                    for(var i=0;i<value.length;i++){
-                                        if(value[i].type=="file_leak"){
-                                            file_leak=file_leak+1;
-                                        }
-                                    }
-                                    return file_leak;
                                 }
                             },
                             {field:"endAt",title:"结束检测时间",align:"center",valign:"middle",sortable:"true"},
@@ -1137,16 +1108,15 @@
 			}
 		}
          function taskItemDetail(data){
+			    var abilityCount=0;
+			    var weaklessCount=0;
 			    var abilityData=[];
-			    var contentData=[];
 			    var weaknessData=[];
 			    var siteinfoData=[];
 			    for(var i=0;i<data.length;i++){
 			        if(data[i].moduleType=="availability"){
                         abilityData.push(data[i]);
-					}
-					if(data[i].moduleType=="content"){
-                        contentData.push(data[i]);
+                        console.log(data[i]);
 					}
 					if(data[i].moduleType=="weakness"){
                         weaknessData.push(data[i]);
@@ -1157,7 +1127,17 @@
 				}
              abilityTable(abilityData);
              leakTable(weaknessData);
-			 safetyTable(contentData);
+			 safetyTable(weaknessData);
+			 //概述table的描述
+
+			 var dataTotal=[abilityData,weaknessData];
+             tableInit(dataTotal);
+			 for(var i=0;i<weaknessData.length;i++){
+                 var vul=JSON.parse(weaknessData[0].value);
+                 console.log(vul);
+			 }
+
+
 			 //概述表传入的data
 			 // var summaryData=[{"checkItem":"可用性","startAt":"2018-10-6","startEnd":"2018-10-9"},{"checkItem":"安全事件"},{"checkItem":"漏洞"}]
 
