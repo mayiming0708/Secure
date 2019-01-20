@@ -602,7 +602,7 @@ button.close{
 .site-summary-content .top-right{
 	/*float: right;*/
 }
-.site-summary-content .top span{
+.site-summary-content .top .bottom-span{
 	margin-left: 10px;
     font-size: 24px;
     color: red;
@@ -929,7 +929,7 @@ button.close{
 	height: 300px;
 }
 #site-summary-bottom-time{
-	height: 300px;
+	/*height: 300px;*/
 }
 #site-summary-bottom-time .flow{
 	position: relative;
@@ -1002,7 +1002,7 @@ button.close{
 
 }
 .site-info-content ul{
-	width: 25%;
+	width: 50%;
 	float: left;
 }
 .site-info-content li span:first-child{
@@ -1014,4 +1014,37 @@ button.close{
 }
 #site-leak .content{
 	height: auto;
+}
+#site-leak{
+	color: #333;
+}
+.leak-item .leak-item-title{
+	height: 39px;
+	line-height: 39px;
+	font-size: 16px;
+	cursor: pointer;
+}
+.leak-item .leak-item-title i{
+	margin-left: 5px;
+	color: #6bbae8;
+	vertical-align: middle;
+	font-size: 20px;
+}
+.leak-item .leak-item-content{
+	display: none;
+}
+.site-leak-content{
+	color: #333;
+}
+.leak-item .leak-item-title .weight{
+	margin-left: 5px;
+	color: #6bbae8;
+	vertical-align: middle;
+	font-size: 30px;
+}
+.top .top-left{
+	text-align: center;
+}
+.top .top-left span{
+	display: block;
 }

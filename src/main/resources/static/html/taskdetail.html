@@ -452,12 +452,18 @@
 										<div class="col-lg-12">
 											<div class="panel panel-default">
 												<div class="panel-heading">
-													任务检测项列表
+													任务站点详情综述
 												</div>
 												<div class="panel-body">
-													<table class="table table-bordered table-striped table-condensed" id="task-summary-table">
+													<!--<table class="table table-bordered table-striped table-condensed" id="task-summary-table">-->
 
-													</table>
+													<!--</table>-->
+                                                    <div class="sitename">http://testasp.vulnweb.com</div>
+                                                    <div class="faq">风险值<span class=""></span></div>
+                                                    <div class="url">共发现<span class=""></span>个url</div>
+                                                    <div class="high">高危<span></span>个</div>
+                                                    <div class="mid">中危<span></span>个</div>
+                                                    <div class="low">低危<span></span>个</div>
 												</div>
 											</div>
 										</div>
@@ -624,6 +630,9 @@
             // var id=GetQueryString("id");
             // var taskId=getCookie(id);
             var taskId=GetQueryString("id");
+            var isPeriod=GetQueryString("isPeriod");
+
+            console.log(isPeriod);
 			//概述table
 			var tableSummary = $("#task-summary-table");
 			var tableAbility= $("#task-abilty-table");
@@ -643,6 +652,8 @@
                 getTaskDetail();
                 //任务名称填充
 				$(".task-detail .nav .header span").html(taskId);
+
+
 			})
 			//获取该任务id的详细信息
 			function getTaskDetail(){
@@ -801,10 +812,26 @@
 									}
                                 }
 							},
+                            {field:"testTime",
+                                title:"检测周期",
+                                align:"center",
+                                valign:"middle",
+                                sortable:"true",
+                                formatter:function(){
+                                return "30分钟";
+                                }
+                            },
+
                         ],
                     data:abilityData,
 					onLoadSuccess: function(res) { //可不写
 						//加载成功时
+                        if(isPeriod==0){
+                            console.log(isPeriod);
+                            alert('临时');
+                            // $('#tableOrderRealItems').bootstrapTable('showColumn', 'ShopName');
+                            tableAbility.bootstrapTable('hideColumn', 'testTime')
+                        }
 						console.log(res);
 					},
 					onLoadError: function(statusCode) {
@@ -862,7 +889,7 @@
 										}
 								  }
 								  return cgi;
-                                }
+                                },
                             },
                             {
                                 field:"value",
@@ -891,7 +918,7 @@
                                     var csrf=0;
                                     var value=JSON.parse(value);
                                     for(var i=0;i<value.length;i++){
-                                        if(value[i].type=="CSRF"){
+                                        if(value[i].type=="csrf"){
                                             csrf=csrf+1;
                                         }
                                     }
@@ -977,6 +1004,7 @@
 			}
 			//安全事件表初始化
 			function safetyTable(contentData){
+			    console.log(contentData);
                 tableSafe.bootstrapTable('destroy');
                 tableSafe.bootstrapTable({
                     //gau请求地址,此处数据为本地加载
@@ -1104,7 +1132,8 @@
 		}
 		window.operateEvents={
 			"click #detailBtn":function(e,value,row,index){
-				alert("查看报表详情");
+			    var site=row.site;
+				window.location.href= window.location.href = "tasksitedetail?id="+taskId+"&url="+site;
 			}
 		}
          function taskItemDetail(data){
@@ -1142,8 +1171,11 @@
 			 // var summaryData=[{"checkItem":"可用性","startAt":"2018-10-6","startEnd":"2018-10-9"},{"checkItem":"安全事件"},{"checkItem":"漏洞"}]
 
 		 }
-		//
-		</script>
+
+
+
+
+        </script>
 	</body>
 
 </html>

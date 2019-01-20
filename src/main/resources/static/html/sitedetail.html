@@ -146,10 +146,13 @@
 								</div>
 								<div class="box-body border-radius-none site-summary-content" style="">
 									<div class="top">
-										<div class="top-left">风险值<span class="fengxian"></span></div>
-										<div class="top-right">
-											共发现url<span class="fengxian"></span>
+										<div class="top-left">
+											<span>风险值</span>
+											<span class="bottom-span"><span><i class="fa fa-warning" style="margin-right: 3px"></i><b class="num">67</b></span></span>
 										</div>
+										<!--<div class="top-right">-->
+											<!--共发现url<span class="fengxian"></span>-->
+										<!--</div>-->
 									</div>
 									<div class="row center">
 										<section class="col-lg-6 connectedSortable site-summary-content-chart" id="site-summary-content-chart">
@@ -160,7 +163,7 @@
 										</section>
 									</div>
 									<div class="row bottom">
-										<section class="col-lg-6 connectedSortable site-summary-content-chart" id="site-summary-bottom-time">
+										<section class="col-lg-6 connectedSortable site-summary-content-chart" id="site-summary-bottom-time" style="display: none;">
 											<div class="flow">
 												<div class="title">
 													网站检测时间轴
@@ -206,13 +209,35 @@
 													<th>结果</th>
 												</tr>
 												</thead>
-												<tbody>
-
+												<tbody id="summary-bottom-table">
+													<tr><td colspan="5">正在加载中，请稍等...</td></tr>
 												</tbody>
 											</table>
 										</section>
+										<section class="col-lg-6 connectedSortable site-info">
+											<div class="site-info-title">站点信息<i class="iconfont icon-xiala1"></i></div>
+											<div class="site-info-content">
+												<ul class="site-info-content-left">
+													<li><span>网站标题</span><span class="liOne">Home of Acuncetix Art</span></li>
+													<li><span>地理位置</span><span class="liTwo">--</span></li>
+													<li><span>IP地址</span><span class="liThree">176.28.50.165</span></li>
+													<li><span>ICP备案</span><span class="liFour">--</span></li>
+													<li><span>Alexa排名</span><span class="liFive">371978</span></li>
+													<li><span>Page Rank</span><span class="liSix">--</span></li>
+												</ul>
+												<ul class="site-info-content-right">
+													<li><span>网站域名</span><span class="liSven">testphp.vulnweb.com</span></li>
+													<li><span>操作系统</span><span class="liEig">--</span></li>
+													<li><span>脚本语言</span><span class="liNine">--</span></li>
+													<li><span>服务器技术</span><span class="liTen">nginx/1.14.1</span></li>
+													<li><span>域名到期</span><span class="liEle">2019年06月14日</span></li>
+													<li><span>数据库</span><span class="liTwl">MySQL</span></li>
+												</ul>
+											</div>
+										</section>
+
 									</div>
-									<div class="row site-info">
+									<div class="row site-info" style="display: none;">
 										<section class="col-lg-12 connectedSortable">
 											<div class="site-info-title">站点信息<i class="iconfont icon-xiala1"></i></div>
 											<div class="site-info-content">
@@ -247,49 +272,123 @@
                 						</button>
 									</div>
 								</div>
-								<div class="box-body border-radius-none site-leak-content" style="height: 430px;">
+								<div class="box-body border-radius-none site-ablity-content" style="">
 									<div class="title">
 										网站监控状态
 									</div>
-									<div></div>
+									<table class="table table-bordered table-striped table-condensed" id="app-table">
+
+									</table>
 								</div>
 							</div>
 							
 							<div class="box box-solid bg-teal-gradient site-summary-item" id="site-leak">
 								<div class="box-header ui-sortable-handle" style="cursor: move;">
 									<i class="fa fa-th"></i>
-									<h3 class="box-title">漏洞</h3>
+									<h3 class="box-title">漏洞与安全事件列表</h3>
 									<div class="box-tools pull-right">
 										<button type="button" class="btn bg-teal btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
                 						</button>
 									</div>
 								</div>
-								<div class="box-body border-radius-none site-ablity-content" style="height: 430px;">
-									<li class="p1">
-										<div class="title"></div>
-										<div class="content1"></div>
-									</li>
-									<li class="p2">
-										<div class="title"></div>
-										<div class="content1"></div>
-									</li>
-									<li class="p3">
-										<div class="title"></div>
-										<div class="content1"></div>
-									</li>
-									<li class="p4">
-										<div class="title"></div>
-										<div class="content1"></div>
-									</li>
-									<li class="p5">
-										<div class="title"></div>
-										<div class="content1"></div>
-									</li>
-									<li class="p6">
-										<div class="title"></div>
-										<div class="content1"></div>
-									</li>
+								<div class="box-body border-radius-none site-leak-content" style="">
+									<table class="table table-bordered table-striped table-condensed" id="leak-table">
 
+									</table>
+								</div>
+							</div>
+							<div class="box box-solid bg-teal-gradient site-summary-item" id="site-safe">
+								<div class="box-header ui-sortable-handle" style="cursor: move;">
+									<i class="fa fa-th"></i>
+									<h3 class="box-title">漏洞与安全事件列表详情</h3>
+									<div class="box-tools pull-right">
+										<button type="button" class="btn bg-teal btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
+										</button>
+									</div>
+
+
+								</div>
+								<div class="box-body border-radius-none site-leak-content" style="">
+									<div class="leak-item leakOne">
+										<div class="leak-item-title"><span>CGI <span class="weight" id="cgiCount">0</span>个</span><i class="iconfont icon-xiala1"></i></div>
+										<div class="leak-item-content">
+											<table class="table table-bordered table-striped table-condensed" id="cgiTable">
+
+											</table>
+										</div>
+									</div>
+									<div class="leak-item leakTwo">
+										<div class="leak-item-title"><span>应用漏洞 <span class="weight" id="webCount">0</span>个</span><i class="iconfont icon-xiala1"></i></div>
+										<div class="leak-item-content">
+											<table class="table table-bordered table-striped table-condensed" id="webvulTable">
+
+											</table>
+										</div>
+									</div>
+									<div class="leak-item leakThree">
+										<div class="leak-item-title"><span>CSRF <span class="weight" id="csrfCount">0</span>个</span><i class="iconfont icon-xiala1"></i></div>
+										<div class="leak-item-content">
+											<table class="table table-bordered table-striped table-condensed" id="csrfTable">
+
+											</table>
+										</div>
+									</div>
+									<div class="leak-item leakFour">
+										<div class="leak-item-title"><span>sql注入 <span class="weight" id="sqlCount">0</span>个</span><i class="iconfont icon-xiala1"></i></div>
+										<div class="leak-item-content">
+											<table class="table table-bordered table-striped table-condensed" id="sqlTable">
+
+											</table>
+										</div>
+									</div>
+									<div class="leak-item leakFive">
+										<div class="leak-item-title"><span>xss <span class="weight" id="xssCount">0</span>个</span><i class="iconfont icon-xiala1"></i></div>
+										<div class="leak-item-content">
+											<table class="table table-bordered table-striped table-condensed" id="xssTable">
+
+											</table>
+										</div>
+									</div>
+									<div class="leak-item leakSix">
+										<div class="leak-item-title"><span>表单破解漏洞 <span class="weight" id="formCount">0</span>个</span><i class="iconfont icon-xiala1"></i></div>
+										<div class="leak-item-content">
+											<table class="table table-bordered table-striped table-condensed" id="formCrackTable">
+
+											</table>
+										</div>
+									</div>
+									<div class="leak-item leakSeven">
+										<div class="leak-item-title"><span>关键词 <span class="weight" id="keywordCount">0</span>个</span><i class="iconfont icon-xiala1"></i></div>
+										<div class="leak-item-content">
+											<table class="table table-bordered table-striped table-condensed" id="keywordTable">
+
+											</table>
+										</div>
+									</div>
+									<div class="leak-item leakEig">
+										<div class="leak-item-title"><span>挂马 <span class="weight" id="malscanCount">0</span>个</span><i class="iconfont icon-xiala1"></i></div>
+										<div class="leak-item-content">
+											<table class="table table-bordered table-striped table-condensed" id="malscanTable">
+
+											</table>
+										</div>
+									</div>
+									<div class="leak-item leakNine">
+										<div class="leak-item-title"><span>信息泄露 <span class="weight" id="infoLeakCount">0</span>个</span><i class="iconfont icon-xiala1"></i></div>
+										<div class="leak-item-content">
+											<table class="table table-bordered table-striped table-condensed" id="infoLeakTable">
+
+											</table>
+										</div>
+									</div>
+									<div class="leak-item leakTen">
+										<div class="leak-item-title"><span>暗链 <span class="weight" id="blackLinkCount">0</span>个</span><i class="iconfont icon-xiala1"></i></div>
+										<div class="leak-item-content">
+											<table class="table table-bordered table-striped table-condensed" id="blackLinksTable">
+
+											</table>
+										</div>
+									</div>
 								</div>
 							</div>
 
@@ -339,25 +438,37 @@
 			var jsonName={
 			    "xss":"XSS跨站脚本漏洞",
 				"black_links":"暗链",
-				"siteinfo":"站点信息",
-				"availability":"可用性",
+				"siteinfo":"站点信息",//
+				"availability":"可用性",//
             	"malscan":"暗链",
                 "keyword":"关键词",
                 "sql":"sql注入",
                 "webvul":"应用漏洞",
-				"infoLeak":"信息泄露",
+				"info_leak":"信息泄露",
 				"cgi":"cgi",
 				"csrf":"CSRF跨站请求伪造漏洞",
 				"formCrack":"表单破解漏洞"
 
 			}
+            var weaknessArr = [];
 			// var summaryTable=$("#site-summary-content-table");
 			var bottomTable=$("#site-summary-bottom-table");
 			var timeAxis=$("#site-summary-bottom-time .detail li");
 			var abilityData=[];
 			var site='';
 			var userId=getCookie('userId');
-			console.log(userId);
+			var tableleakList=$("#leak-table");
+			var cgiTable=$("#cgiTable");
+			var webTable=$("#webvulTable");
+			var csrfTable=$("#csrfTable");
+			var sqlTable=$("#sqlTable");
+			var xssTable=$("#xssTable");
+			var formTable=$("#formCrackTable");
+			var keywordTable=$("#keywordTable");
+			var malscanTable=$("#malscanTable");
+			var infoLeakTable=$("#infoLeakTable");
+			var blackLinkTable=$("#blackLinksTable");
+			var appTable=$("#app-table");
 			$(function(){
                 judgeCookie();
 				//综述中图表
@@ -382,6 +493,15 @@
                         $(".site-info-content").hide();
 					}
 				})
+				//内容的展开与上拉
+				$(".leak-item .leak-item-title").click(function(){
+				    var content= $(this).next('.leak-item-content');
+				    if(content.css('display')=='none'){
+				        content.show();
+					}else{
+                        content.hide();
+					}
+				})
 
 			});
             function GetQueryString(name) {
@@ -389,85 +509,6 @@
                 var r = window.location.search.substr(1).match(reg);//search,查询？后面的参数，并匹配正则
                 if(r!=null)return  unescape(r[2]); return null;
             }
-			//综述中table
-			// function siteSummaryTable(){
-			// 	summaryTable.bootstrapTable('destroy');
-			// 	summaryTable.bootstrapTable({
-			// 		//gau请求地址,此处数据为本地加载
-			// 		url: "/static/json/siteSummary.json",
-			// 		//请求方式
-			// 		method: "GET",
-			// 		//table高度：如果没有设置，表格自动根据记录条数觉得表格高度
-			// 		//	    	height: '582',
-			// 		//是否显示行间隔色
-			// 		// toolbar: '#toolbar', //工具按钮用哪个容器
-			// 		striped: true, //是否显示行间隔色
-			// 		cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-			// 		pagination: true, //是否显示分页（*）
-			// 		sortable: false, //是否启用排序
-			// 		sortOrder: "asc", //排序方式
-			// 		//          queryParams: oTableInit.queryParams,//传递参数（*）
-			// 		sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
-			// 		pageNumber: 1, //初始化加载第一页，默认第一页
-			// 		pageSize: 10, //每页的记录行数（*）
-			// 		pageList: [10, 25, 50, 100], //可供选择的每页的行数（*）
-			// 		// search: true, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
-			// 		strictSearch: true,
-			// 		showColumns: true, //是否显示所有的列
-			// 		showRefresh: true, //是否显示刷新按钮
-			// 		minimumCountColumns: 2, //最少允许的列数
-			// 		clickToSelect: true, //是否启用点击选中行
-			// 		//          height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
-			// 		uniqueId: "ID", //每一行的唯一标识，一般为主键列
-			// 		// showToggle: true, //是否显示详细视图和列表视图的切换按钮
-			// 		// cardView: false, //是否显示详细视图
-			// 		// detailView: false,
-			// 		//表头
-			// 		columns: [{
-			// 			title: '检测项',
-			// 			field: 'checkItem', //id
-			// 			//	    		checkbox: true, //checkbox
-			// 			align: 'center', //对其方式
-			// 			valign: 'middle' //对其方式
-			// 		}, {
-			// 			title: '高危',
-			// 			field: 'highFaq',
-			// 			align: 'center',
-			// 			valign: 'middle',
-			// 		}, {
-			// 			title: '中危',
-			// 			field: 'middleFaq',
-			// 			align: 'center',
-			// 			valign: 'middle'
-			// 		}, {
-			// 			title: '低危',
-			// 			field: 'lowFaq',
-			// 			align: 'center',
-			// 			valign: 'middle'
-			// 		}, {
-			// 			title: '结果',
-			// 			field: 'result',
-			// 			align: 'center',
-			// 			valign: 'middle'
-			// 		}],
-			// 		onLoadSuccess: function(res) { //可不写
-			// 			//加载成功时
-			// 			// console.log(res);
-            //             summaryTable.bootstrapTable('mergeCells', {index: 1, field: 'checkItem', rowspan: 3});
-			// 		},
-			// 		onLoadError: function(statusCode) {
-			// 			return "加载失败了"
-			// 		},
-			// 		formatLoadingMessage: function() {
-			// 			//正在加载
-			// 			return "拼命加载中...";
-			// 		},
-			// 		formatNoMatches: function() {
-			// 			//没有匹配的结果
-			// 			return '无符合条件的记录';
-			// 		}
-			// 	})
-			// }
 			// //综述底部表格
 			function summaryBottomTable(){
                 var checkItemData=['暗链','挂马','关键词','SQL注入漏洞','XSS跨站脚本漏洞','应用漏洞','信息泄露','CGI漏洞',' CSRF跨站请求伪造漏洞',' 表单破解漏洞'];
@@ -826,7 +867,606 @@
                 }
                 myChart.setOption(option);
 			}
-			//获取到该网站数据
+			//漏洞与安全事件列表
+			function getweakList(data){
+                tableleakList.bootstrapTable('destroy');
+                tableleakList.bootstrapTable({
+                    //gau请求地址,此处数据为本地加载
+                    url: "",
+                    //请求方式
+                    method: 'get',
+                    cache: false,
+                    // height: 400,
+                    striped: true,
+                    pagination: true,
+                    pageSize: 10,
+                    pageNumber:1,
+                    pageList: [10, 20, 50, 100, 200, 500],
+                    sidePagination:'client',
+                    // search: true,
+                    showColumns: true,
+                    showRefresh: false,
+                    showExport: false,
+                    exportTypes: ['csv','txt','xml'],
+                    // search: true,
+                    clickToSelect: true,
+                    columns:
+                        [
+                            {field:"virtualGroupId",title:"id",align:"center",valign:"middle",sortable:"true"},
+                            {field:"startAt",title:"开始检测时间",align:"center",valign:"middle",sortable:"true"},
+                            {field:"malscan",title:"挂马",align:"center",valign:"middle",sortable:"true"},
+                            {field:"cgi",title:"CGI漏洞",align:"center",valign:"middle",sortable:"true"},
+                            {field:"formCrack",title:"表单破解漏洞",align:"center",valign:"middle",sortable:"true"},
+                            {field:"infoLeak",title:"信息泄露",align:"center",valign:"middle",sortable:"true"},
+                            {field:"blackLinks",title:"暗链",align:"center",valign:"middle",sortable:"true"},
+                            {field:"webvul",title:"应用漏洞",align:"center",valign:"middle",sortable:"true"},
+                            {field:"xss",title:"XSS跨站脚本漏洞",align:"center",valign:"middle",sortable:"true"},
+                            {field:"csrf",title:"CSRF跨站请求",align:"center",valign:"middle",sortable:"true"},
+                            {field:"keyword",title:"关键词",align:"center",valign:"middle",sortable:"true"},
+                            {field:"sql",title:"sql注入",align:"center",valign:"middle",sortable:"true"},
+                            {
+                                title:"操作",
+                                field:"Button",
+                                events:"operateEvents",
+                                formatter:"AddFunctionAlty"
+                            }
+                        ],
+                    data:data,
+                    onLoadSuccess: function(res) { //可不写
+                        //加载成功时
+                        console.log(res);
+                    },
+                    onLoadError: function(statusCode) {
+                        return "加载失败了"
+                    },
+                    formatLoadingMessage: function() {
+                        //正在加载
+                        return "拼命加载中...";
+                    },
+                    formatNoMatches: function() {
+                        //没有匹配的结果
+                        return '无符合条件的记录';
+                    }
+                })
+			}
+			//cgi table
+			function getcgiTable(data){
+                cgiTable.bootstrapTable('destroy');
+                cgiTable.bootstrapTable({
+                    //gau请求地址,此处数据为本地加载
+                    url: "",
+                    //请求方式
+                    method: 'get',
+                    cache: false,
+                    // height: 400,
+                    striped: true,
+                    pagination: true,
+                    pageSize: 10,
+                    pageNumber:1,
+                    pageList: [10, 20, 50, 100, 200, 500],
+                    sidePagination:'client',
+                    // search: true,
+                    showColumns: true,
+                    showRefresh: false,
+                    showExport: false,
+                    exportTypes: ['csv','txt','xml'],
+                    // search: true,
+                    clickToSelect: true,
+                    columns:
+                        [
+                            {field:"url",title:"url",align:"center",valign:"middle",sortable:"true"},
+                            {field:"risk_level",title:"风险等级",align:"center",valign:"middle",sortable:"true"}
+                        ],
+                    data:data,
+                    onLoadSuccess: function(res) { //可不写
+                        //加载成功时
+                        console.log(res);
+                    },
+                    onLoadError: function(statusCode) {
+                        return "加载失败了"
+                    },
+                    formatLoadingMessage: function() {
+                        //正在加载
+                        return "拼命加载中...";
+                    },
+                    formatNoMatches: function() {
+                        //没有匹配的结果
+                        return '无符合条件的记录';
+                    }
+                })
+			}
+			//应用漏洞table
+			function getwebTable(data){
+                console.log(data);
+                webTable.bootstrapTable('destroy');
+                webTable.bootstrapTable({
+                    //gau请求地址,此处数据为本地加载
+                    url: "",
+                    //请求方式
+                    method: 'get',
+                    cache: false,
+                    // height: 400,
+                    striped: true,
+                    pagination: true,
+                    pageSize: 10,
+                    pageNumber:1,
+                    pageList: [10, 20, 50, 100, 200, 500],
+                    sidePagination:'client',
+                    // search: true,
+                    showColumns: true,
+                    showRefresh: false,
+                    showExport: false,
+                    exportTypes: ['csv','txt','xml'],
+                    // search: true,
+                    clickToSelect: true,
+                    columns:
+                        [
+                            {field:"url",title:"url",align:"center",valign:"middle",sortable:"true"},
+                            {field:"risk_level",title:"风险等级",align:"center",valign:"middle",sortable:"true"},
+                            {field:"detail",title:"详情",align:"center",valign:"middle",sortable:"true"},
+                            {field:"vul_id",title:"vul_id",align:"center",valign:"middle",sortable:"true"},
+                            {field:"name",title:"漏洞名称",align:"center",valign:"middle",sortable:"true"},
+                        ],
+                    data:data,
+                    onLoadSuccess: function(res) { //可不写
+                        //加载成功时
+                        console.log(res);
+                    },
+                    onLoadError: function(statusCode) {
+                        return "加载失败了"
+                    },
+                    formatLoadingMessage: function() {
+                        //正在加载
+                        return "拼命加载中...";
+                    },
+                    formatNoMatches: function() {
+                        //没有匹配的结果
+                        return '无符合条件的记录';
+                    }
+                })
+			}
+			//表单漏洞table
+            function getformTable(data){
+                formTable.bootstrapTable('destroy');
+                formTable.bootstrapTable({
+                    //gau请求地址,此处数据为本地加载
+                    url: "",
+                    //请求方式
+                    method: 'get',
+                    cache: false,
+                    // height: 400,
+                    striped: true,
+                    pagination: true,
+                    pageSize: 10,
+                    pageNumber:1,
+                    pageList: [10, 20, 50, 100, 200, 500],
+                    sidePagination:'client',
+                    // search: true,
+                    showColumns: true,
+                    showRefresh: false,
+                    showExport: false,
+                    exportTypes: ['csv','txt','xml'],
+                    // search: true,
+                    clickToSelect: true,
+                    columns:
+                        [
+                            {field:"url",title:"url",align:"center",valign:"middle",sortable:"true"},
+                            {field:"username",title:"登录用户名",align:"center",valign:"middle",sortable:"true"},
+                            {field:"password",title:"登录密码",align:"center",valign:"middle",sortable:"true"},
+                            {field:"referer",title:"参考",align:"center",valign:"middle",sortable:"true"},
+                        ],
+                    data:data,
+                    onLoadSuccess: function(res) { //可不写
+                        //加载成功时
+                        console.log(res);
+                    },
+                    onLoadError: function(statusCode) {
+                        return "加载失败了"
+                    },
+                    formatLoadingMessage: function() {
+                        //正在加载
+                        return "拼命加载中...";
+                    },
+                    formatNoMatches: function() {
+                        //没有匹配的结果
+                        return '无符合条件的记录';
+                    }
+                })
+            }
+            //暗链table
+            function getblacklinkTable(data){
+                blackLinkTable.bootstrapTable('destroy');
+                blackLinkTable.bootstrapTable({
+                    //gau请求地址,此处数据为本地加载
+                    url: "",
+                    //请求方式
+                    method: 'get',
+                    cache: false,
+                    // height: 400,
+                    striped: true,
+                    pagination: true,
+                    pageSize: 10,
+                    pageNumber:1,
+                    pageList: [10, 20, 50, 100, 200, 500],
+                    sidePagination:'client',
+                    // search: true,
+                    showColumns: true,
+                    showRefresh: false,
+                    showExport: false,
+                    exportTypes: ['csv','txt','xml'],
+                    // search: true,
+                    clickToSelect: true,
+                    columns:
+                        [
+                            {field:"url",title:"url",align:"center",valign:"middle",sortable:"true"},
+                            {field:"links",title:"链接",align:"center",valign:"middle",sortable:"true"},
+                            {field:"keywords",title:"关键词",align:"center",valign:"middle",sortable:"true"},
+                            {field:"risk_level",title:"风险值",align:"center",valign:"middle",sortable:"true"},
+                        ],
+                    data:data,
+                    onLoadSuccess: function(res) { //可不写
+                        //加载成功时
+                        console.log(res);
+                    },
+                    onLoadError: function(statusCode) {
+                        return "加载失败了"
+                    },
+                    formatLoadingMessage: function() {
+                        //正在加载
+                        return "拼命加载中...";
+                    },
+                    formatNoMatches: function() {
+                        //没有匹配的结果
+                        return '无符合条件的记录';
+                    }
+                })
+            }
+           //信息泄露
+            function getInfoLeakTable(data){
+                infoLeakTable.bootstrapTable('destroy');
+                infoLeakTable.bootstrapTable({
+                    //gau请求地址,此处数据为本地加载
+                    url: "",
+                    //请求方式
+                    method: 'get',
+                    cache: false,
+                    // height: 400,
+                    striped: true,
+                    pagination: true,
+                    pageSize: 10,
+                    pageNumber:1,
+                    pageList: [10, 20, 50, 100, 200, 500],
+                    sidePagination:'client',
+                    // search: true,
+                    showColumns: true,
+                    showRefresh: false,
+                    showExport: false,
+                    exportTypes: ['csv','txt','xml'],
+                    // search: true,
+                    clickToSelect: true,
+                    columns:
+                        [
+                            {field:"url",title:"url",align:"center",valign:"middle",sortable:"true"},
+                            {field:"risk_level",title:"风险等级",align:"center",valign:"middle",sortable:"true"},
+                            {field:"match_str",title:"泄露类型",align:"center",valign:"middle",sortable:"true"}
+                        ],
+                    data:data,
+                    onLoadSuccess: function(res) { //可不写
+                        //加载成功时
+                        console.log(res);
+                    },
+                    onLoadError: function(statusCode) {
+                        return "加载失败了"
+                    },
+                    formatLoadingMessage: function() {
+                        //正在加载
+                        return "拼命加载中...";
+                    },
+                    formatNoMatches: function() {
+                        //没有匹配的结果
+                        return '无符合条件的记录';
+                    }
+                })
+            }
+            //xsstable
+            function getxssTable(data){
+                console.log(data);
+                xssTable.bootstrapTable('destroy');
+                xssTable.bootstrapTable({
+                    //gau请求地址,此处数据为本地加载
+                    url: "",
+                    //请求方式
+                    method: 'get',
+                    cache: false,
+                    // height: 400,
+                    striped: true,
+                    pagination: true,
+                    pageSize: 10,
+                    pageNumber:1,
+                    pageList: [10, 20, 50, 100, 200, 500],
+                    sidePagination:'client',
+                    // search: true,
+                    showColumns: true,
+                    showRefresh: false,
+                    showExport: false,
+                    exportTypes: ['csv','txt','xml'],
+                    // search: true,
+                    clickToSelect: true,
+                    columns:
+                        [
+                            {field:"url",title:"url",align:"center",valign:"middle",sortable:"true"},
+                            {field:"risk_level",title:"风险等级",align:"center",valign:"middle",sortable:"true"},
+                            {field:"method",title:"HTTP方法",align:"center",valign:"middle",sortable:"true"},
+                            {field:"place",title:"XSS出现位置",align:"center",valign:"middle",sortable:"true"},
+                            {field:"body",title:"请求体里的表单提交字符串",align:"center",valign:"middle",sortable:"true"}
+                        ],
+                    data:data,
+                    onLoadSuccess: function(res) { //可不写
+                        //加载成功时
+                        console.log(res);
+                    },
+                    onLoadError: function(statusCode) {
+                        return "加载失败了"
+                    },
+                    formatLoadingMessage: function() {
+                        //正在加载
+                        return "拼命加载中...";
+                    },
+                    formatNoMatches: function() {
+                        //没有匹配的结果
+                        return '无符合条件的记录';
+                    }
+                })
+            }
+           //crsf table
+            function getcrsfTable(data){
+                csrfTable.bootstrapTable('destroy');
+                csrfTable.bootstrapTable({
+                    //gau请求地址,此处数据为本地加载
+                    url: "",
+                    //请求方式
+                    method: 'get',
+                    cache: false,
+                    // height: 400,
+                    striped: true,
+                    pagination: true,
+                    pageSize: 10,
+                    pageNumber:1,
+                    pageList: [10, 20, 50, 100, 200, 500],
+                    sidePagination:'client',
+                    // search: true,
+                    showColumns: true,
+                    showRefresh: false,
+                    showExport: false,
+                    exportTypes: ['csv','txt','xml'],
+                    // search: true,
+                    clickToSelect: true,
+                    columns:
+                        [
+                            {field:"url",title:"url",align:"center",valign:"middle",sortable:"true"},
+                            {field:"risk_level",title:"风险等级",align:"center",valign:"middle",sortable:"true"},
+                            {field:"type",title:"CSRF类型",align:"center",valign:"middle",sortable:"true"},
+                            {field:"referer",title:"存在CSRF的URL所在的URL",align:"center",valign:"middle",sortable:"true"},
+                            {field:"method",title:"HTTP方法",align:"center",valign:"middle",sortable:"true"},
+                            {field:"crossdomain",title:"整个site级别是否存在",align:"center",valign:"middle",sortable:"true"}
+                        ],
+                    data:data,
+                    onLoadSuccess: function(res) { //可不写
+                        //加载成功时
+                        console.log(res);
+                    },
+                    onLoadError: function(statusCode) {
+                        return "加载失败了"
+                    },
+                    formatLoadingMessage: function() {
+                        //正在加载
+                        return "拼命加载中...";
+                    },
+                    formatNoMatches: function() {
+                        //没有匹配的结果
+                        return '无符合条件的记录';
+                    }
+                })
+            }
+            //挂马
+            function getmalscanTable(data){
+                malscanTable.bootstrapTable('destroy');
+                malscanTable.bootstrapTable({
+                    //gau请求地址,此处数据为本地加载
+                    url: "",
+                    //请求方式
+                    method: 'get',
+                    cache: false,
+                    // height: 400,
+                    striped: true,
+                    pagination: true,
+                    pageSize: 10,
+                    pageNumber:1,
+                    pageList: [10, 20, 50, 100, 200, 500],
+                    sidePagination:'client',
+                    // search: true,
+                    showColumns: true,
+                    showRefresh: false,
+                    showExport: false,
+                    exportTypes: ['csv','txt','xml'],
+                    // search: true,
+                    clickToSelect: true,
+                    columns:
+                        [
+                            {field:"url",title:"url",align:"center",valign:"middle",sortable:"true"},
+                            {field:"risk_level",title:"风险等级",align:"center",valign:"middle",sortable:"true"},
+                            {field:"static_url",title:"恶意源URL",align:"center",valign:"middle",sortable:"true"},
+                            {field:"static_rule_id",title:"规则ID",align:"center",valign:"middle",sortable:"true"},
+                            {field:"cloud_type",title:"恶意源URL",align:"center",valign:"middle",sortable:"true"},
+                            {field:"cloud_tag",title:"恶意源嵌入方式",align:"center",valign:"middle",sortable:"true"},
+                        ],
+                    data:data,
+                    onLoadSuccess: function(res) { //可不写
+                        //加载成功时
+                        console.log(res);
+                    },
+                    onLoadError: function(statusCode) {
+                        return "加载失败了"
+                    },
+                    formatLoadingMessage: function() {
+                        //正在加载
+                        return "拼命加载中...";
+                    },
+                    formatNoMatches: function() {
+                        //没有匹配的结果
+                        return '无符合条件的记录';
+                    }
+                })
+            }
+			//关键词
+            function getkeywordTable(data){
+                keywordTable.bootstrapTable('destroy');
+                keywordTable.bootstrapTable({
+                    //gau请求地址,此处数据为本地加载
+                    url: "",
+                    //请求方式
+                    method: 'get',
+                    cache: false,
+                    // height: 400,
+                    striped: true,
+                    pagination: true,
+                    pageSize: 10,
+                    pageNumber:1,
+                    pageList: [10, 20, 50, 100, 200, 500],
+                    sidePagination:'client',
+                    // search: true,
+                    showColumns: true,
+                    showRefresh: false,
+                    showExport: false,
+                    exportTypes: ['csv','txt','xml'],
+                    // search: true,
+                    clickToSelect: true,
+                    columns:
+                        [
+                            {field:"url",title:"url",align:"center",valign:"middle",sortable:"true"},
+                            {field:"risk_level",title:"风险等级",align:"center",valign:"middle",sortable:"true"},
+                            {field:"type",title:"结果类型",align:"center",valign:"middle",sortable:"true"},
+                            {field:"keyword",title:"关键词列表",align:"center",valign:"middle",sortable:"true"},
+                            {field:"level",title:"等级",align:"center",valign:"middle",sortable:"true"},
+                        ],
+                    data:data,
+                    onLoadSuccess: function(res) { //可不写
+                        //加载成功时
+                        console.log(res);
+                    },
+                    onLoadError: function(statusCode) {
+                        return "加载失败了"
+                    },
+                    formatLoadingMessage: function() {
+                        //正在加载
+                        return "拼命加载中...";
+                    },
+                    formatNoMatches: function() {
+                        //没有匹配的结果
+                        return '无符合条件的记录';
+                    }
+                })
+            }
+            //sqlTable
+            function getsqlTable(data){
+                sqlTable.bootstrapTable('destroy');
+                sqlTable.bootstrapTable({
+                    //gau请求地址,此处数据为本地加载
+                    url: "",
+                    //请求方式
+                    method: 'get',
+                    cache: false,
+                    // height: 400,
+                    striped: true,
+                    pagination: true,
+                    pageSize: 10,
+                    pageNumber:1,
+                    pageList: [10, 20, 50, 100, 200, 500],
+                    sidePagination:'client',
+                    // search: true,
+                    showColumns: true,
+                    showRefresh: false,
+                    showExport: false,
+                    exportTypes: ['csv','txt','xml'],
+                    // search: true,
+                    clickToSelect: true,
+                    columns:
+                        [
+                            {field:"url",title:"url",align:"center",valign:"middle",sortable:"true"},
+                            {field:"risk_level",title:"风险等级",align:"center",valign:"middle",sortable:"true"},
+                            {field:"method",title:"HTTP方法",align:"center",valign:"middle",sortable:"true"},
+                            {field:"payload",title:"构造注入用的Payload",align:"center",valign:"middle",sortable:"true"},
+                            {field:"place",title:"注入点出现位置",align:"center",valign:"middle",sortable:"true"}
+                        ],
+                    data:data,
+                    onLoadSuccess: function(res) { //可不写
+                        //加载成功时
+                        console.log(res);
+                    },
+                    onLoadError: function(statusCode) {
+                        return "加载失败了"
+                    },
+                    formatLoadingMessage: function() {
+                        //正在加载
+                        return "拼命加载中...";
+                    },
+                    formatNoMatches: function() {
+                        //没有匹配的结果
+                        return '无符合条件的记录';
+                    }
+                })
+            }
+			//可用性
+            function getappTable(data){
+                appTable.bootstrapTable('destroy');
+                appTable.bootstrapTable({
+                    //gau请求地址,此处数据为本地加载
+                    url: "",
+                    //请求方式
+                    method: 'get',
+                    cache: false,
+                    // height: 400,
+                    striped: true,
+                    pagination: true,
+                    pageSize: 10,
+                    pageNumber:1,
+                    pageList: [10, 20, 50, 100, 200, 500],
+                    sidePagination:'client',
+                    // search: true,
+                    showColumns: true,
+                    showRefresh: false,
+                    showExport: false,
+                    exportTypes: ['csv','txt','xml'],
+                    // search: true,
+                    clickToSelect: true,
+                    columns:
+                        [
+                            {field:"url",title:"url",align:"center",valign:"middle",sortable:"true"},
+                            {field:"startAt",title:"开始监测时间",align:"center",valign:"middle",sortable:"true"},
+                            {field:"dnsTime",title:"dns解析速度",align:"center",valign:"middle",sortable:"true"},
+                            {field:"isHijacked",title:"dns截持",align:"center",valign:"middle",sortable:"true"},
+                            {field:"ping",title:"ping响应速度",align:"center",valign:"middle",sortable:"true"}
+                        ],
+                    data:data,
+                    onLoadSuccess: function(res) { //可不写
+                        //加载成功时
+                        console.log(res);
+                    },
+                    onLoadError: function(statusCode) {
+                        return "加载失败了"
+                    },
+                    formatLoadingMessage: function() {
+                        //正在加载
+                        return "拼命加载中...";
+                    },
+                    formatNoMatches: function() {
+                        //没有匹配的结果
+                        return '无符合条件的记录';
+                    }
+                })
+            }
+
+            //获取到该网站数据
 			function getSiteDetailM(){
                 $.ajax({
                     type:"get",
@@ -877,6 +1517,15 @@
 						leakinfo(leakData);
                         console.log(leakData);
                         //可用性表填入数据
+
+						//填充综述表格
+						getTableInfo(data.count);
+						//填入站点信息数据
+                        getSiteInfo(data);
+						//漏洞与安全事件列表
+                        setJsonInfo(result);
+                        setAppJsonInfo(result);
+
                     }
                 });
 			}
@@ -945,9 +1594,527 @@
                             }
 						}
 
+						//填充风险值
+						var score2=data.data[0].score;
+						$(".num").html(score2);
+                        if(score2>66&&score2<100){
+							$(".top-left .fa").css('color','red');
+                        }
+                        if(score2>33&&score2<66){
+                            $(".top-left .fa").css('color','#d87c5a');
+                        }
+                        if(score2>0&&score2<33){
+                            $(".top-left .fa").css('color','#e09d85');
+                        }
+                        if(score2==0){
+                            $(".top-left .fa").css('color',' #74a52a');
+						}
+
                     }
                 });
 			}
+			//填充综述表格信息
+            function getTableInfo(data){
+                var dataVal = data;
+                var dataObj = {};
+                var malscan = {};
+                var cgi = {};
+                var formCrack = {};
+                var infoLeak = {};
+                var blackLinks = {};
+                var webvul = {};
+                var xss = {};
+                var csrf = {};
+                var keyword = {};
+                var sql = {};
+                var keyName = {
+                    'malscan' : '挂马',
+                    'cgi' : 'CGI漏洞',
+                    'formCrack' : '表单破解漏洞',
+                    'infoLeak' : '信息泄露',
+                    'blackLinks' : '暗链',
+                    'webvul' : '应用漏洞',
+                    'xss' : 'XSS跨站脚本漏洞',
+                    'csrf' : 'CSRF跨站请求',
+                    'keyword' : '关键词',
+                    'sql' : 'sql注入',
+                }
+                for(var key in dataVal){
+                    if(key.substring(0,4) == 'mals'){
+                        if(key.substring(key.length-3,key.length) == 'Low'){
+                            malscan.low = dataVal[key];
+                        }else if((key.substring(key.length-3,key.length) == 'dle')) {
+                            malscan.middle = dataVal[key];
+                        }else{
+                            malscan.high = dataVal[key];
+                        }
+                        dataObj.malscan = malscan;
+                    }else if(key.substring(0,3) == 'cgi') {
+                        if(key.substring(key.length-3,key.length) == 'Low'){
+                            cgi.low = dataVal[key];
+                        }else if((key.substring(key.length-3,key.length) == 'dle')) {
+                            cgi.middle = dataVal[key];
+                        }else{
+                            cgi.high = dataVal[key];
+                        }
+                        dataObj.cgi = cgi;
+                    }else if(key.substring(0,4) == 'form') {
+                        if(key.substring(key.length-3,key.length) == 'Low'){
+                            formCrack.low = dataVal[key];
+                        }else if((key.substring(key.length-3,key.length) == 'dle')) {
+                            formCrack.middle = dataVal[key];
+                        }else{
+                            formCrack.high = dataVal[key];
+                        }
+                        dataObj.formCrack = formCrack;
+                    }else if(key.substring(0,4) == 'info') {
+                        if(key.substring(key.length-3,key.length) == 'Low'){
+                            infoLeak.low = dataVal[key];
+                        }else if((key.substring(key.length-3,key.length) == 'dle')) {
+                            infoLeak.middle = dataVal[key];
+                        }else{
+                            infoLeak.high = dataVal[key];
+                        }
+                        dataObj.infoLeak = infoLeak;
+                    }else if(key.substring(0,5) == 'black') {
+                        if(key.substring(key.length-3,key.length) == 'Low'){
+                            blackLinks.low = dataVal[key];
+                        }else if((key.substring(key.length-3,key.length) == 'dle')) {
+                            blackLinks.middle = dataVal[key];
+                        }else{
+                            blackLinks.high = dataVal[key];
+                        }
+                        dataObj.blackLinks = blackLinks;
+                    }else if(key.substring(0,3) == 'web') {
+                        if(key.substring(key.length-3,key.length) == 'Low'){
+                            webvul.low = dataVal[key];
+                        }else if((key.substring(key.length-3,key.length) == 'dle')) {
+                            webvul.middle = dataVal[key];
+                        }else{
+                            webvul.high = dataVal[key];
+                        }
+                        dataObj.webvul = webvul;
+                    }else if(key.substring(0,3) == 'xss') {
+                        if(key.substring(key.length-3,key.length) == 'Low'){
+                            xss.low = dataVal[key];
+                        }else if((key.substring(key.length-3,key.length) == 'dle')) {
+                            xss.middle = dataVal[key];
+                        }else{
+                            xss.high = dataVal[key];
+                        }
+                        dataObj.xss = xss;
+                    }else if(key.substring(0,4) == 'csrf') {
+                        if(key.substring(key.length-3,key.length) == 'Low'){
+                            csrf.low = dataVal[key];
+                        }else if((key.substring(key.length-3,key.length) == 'dle')) {
+                            csrf.middle = dataVal[key];
+                        }else{
+                            csrf.high = dataVal[key];
+                        }
+                        dataObj.csrf = csrf;
+                    }else if(key.substring(0,3) == 'key') {
+                        if(key.substring(key.length-3,key.length) == 'Low'){
+                            keyword.low = dataVal[key];
+                        }else if((key.substring(key.length-3,key.length) == 'dle')) {
+                            keyword.middle = dataVal[key];
+                        }else{
+                            keyword.high = dataVal[key];
+                        }
+                        dataObj.keyword = keyword;
+                    }else if(key.substring(0,3) == 'sql') {
+                        if(key.substring(key.length-3,key.length) == 'Low'){
+                            sql.low = dataVal[key];
+                        }else if((key.substring(key.length-3,key.length) == 'dle')) {
+                            sql.middle = dataVal[key];
+                        }else{
+                            sql.high = dataVal[key];
+                        }
+                        dataObj.sql = sql;
+                    }
+                }
+                var resTbody = '';
+                for(var key1 in dataObj){
+                    var resTr = '<tr><td>'+keyName[key1]+'</td>';
+                    var count = 0;
+                    for(var keyLevel in dataObj[key1]){
+                        var res = '<td>'+dataObj[key1][keyLevel]+'</td>';
+                        resTr += res;
+                        count += Number(dataObj[key1][keyLevel]);
+                    }
+                    resTr += '<td>'+count+'</td></tr>';
+                    resTbody += resTr;
+                }
+                $("#summary-bottom-table").html(resTbody);
+			}
+			//填充站点信息
+            function getSiteInfo(data){
+                var siteinfo=[];
+                var result=data['resultEvent'];
+                for(var i=0;i<result.length;i++){
+                    if(result[i].moduleType=="siteinfo"){
+                        var value=JSON.parse(result[i].value);
+                        var info=value[0].value;
+                        $(".site-info-content-left .liOne").html(info.title);
+                        $(".site-info-content-left .liTwo").html('--');
+                        $(".site-info-content-left .liThree").html(info.ip);
+                        $(".site-info-content-left .liFour").html('--');
+                        $(".site-info-content-left .liFive").html(info.alexa);
+                        $(".site-info-content-left .liSix").html('--');
+                        $(".site-info-content-right .liSven").html(info.host);
+                        $(".site-info-content-right .liEig").html('--');
+                        $(".site-info-content-right .liNine").html('--');
+                        $(".site-info-content-right .liTen").html(info.server);
+                        $(".site-info-content-right .liEle").html(info.whois);
+                        $(".site-info-content-right .liTwl").html('--');
+                        // console.log(value[0]);
+						return false;
+					}
+				}
+			}
+
+            //拼接漏洞信息和安全信息json
+            function setJsonInfo(data1) {
+                var dataVal = data1;
+
+                var weaknessItemArr = [];
+                for(var i=0;i<dataVal.length;i++){
+                    if(dataVal[i].moduleType == 'weakness'){
+                        weaknessArr.push(dataVal[i]);
+                    }
+                }
+                for(var i=0;i<weaknessArr.length;i++){
+                    var weaknessVal = JSON.parse(weaknessArr[i].value);
+                    var malscanCount = 0;
+                    var cgiCount = 0;
+                    var formCrackCount = 0;
+                    var infoLeakCount = 0;
+                    var blackLinksCount = 0;
+                    var webvulCount = 0;
+                    var xssCount = 0;
+                    var csrfCount = 0;
+                    var keywordCount = 0;
+                    var sqlCount = 0;
+                    for(var j=0;j<weaknessVal.length;j++){
+                        if(weaknessVal[j].type == "webvul"){
+                            webvulCount ++;
+                        }else if(weaknessVal[j].type == "cgi"){
+                            cgiCount ++;
+                        }else if(weaknessVal[j].type == "csrf"){
+                            csrfCount ++;
+                        }else if(weaknessVal[j].type == "sql"){
+                            sqlCount ++;
+                        }else if(weaknessVal[j].type == "xss"){
+                            xssCount ++;
+                        }else if(weaknessVal[j].type == "formCrack"){
+                            formCrackCount ++;
+                        }else if(weaknessVal[j].type == "keyword"){
+                            keywordCount ++;
+                        }else if(weaknessVal[j].type == "info_leak"){
+                            infoLeakCount ++;
+                        }else if(weaknessVal[j].type == "black_links"){
+                            blackLinksCount ++;
+                        }else if(weaknessVal[j].type == "malscan"){
+                            malscanCount ++;
+                        }
+                    }
+                    var weaknessObj = {
+                        'virtualGroupId' : weaknessArr[i].virtualGroupId,
+                        'startAt' : weaknessArr[i].startAt,
+                        'malscan' : malscanCount,
+                        'cgi' : cgiCount,
+                        'formCrack' : formCrackCount,
+                        'infoLeak' : infoLeakCount,
+                        'blackLinks' : blackLinksCount,
+                        'webvul' : webvulCount,
+                        'xss' : xssCount,
+                        'csrf' : csrfCount,
+                        'keyword' : keywordCount,
+                        'sql' : sqlCount
+                    };
+                    weaknessItemArr.push(weaknessObj);
+                }
+                console.log(weaknessItemArr)
+                getweakList(weaknessItemArr);
+                setDetailJsonInfo(weaknessArr,weaknessArr[0].virtualGroupId);
+            }
+            //创建按钮并给按钮添加事件
+            function AddFunctionAlty(value,row,index){
+                return [
+                    '<button id="detailBtn" type="button" class="btn  btn-warning">查看详情</button>'
+                ];
+            }
+            window.operateEvents={
+                "click #detailBtn":function(e,value,row,index){
+                    var id=row.virtualGroupId;
+                    // window.location.href = "tasksitedetail?id="+taskId+"&url="+site;
+					//
+					// weaknessDetail(id);
+                    setDetailJsonInfo(weaknessArr,id);
+                }
+            }
+
+            //拼接漏洞信息与安全信息详情json
+            function setDetailJsonInfo(weaknessArrVal,id) {
+                var data;
+                for(var key=0;key<weaknessArrVal.length;key++){
+                    if(weaknessArrVal[key].virtualGroupId == id){
+                        data = weaknessArrVal[key];
+                        break;
+                    }
+                }
+                var dataVal = JSON.parse(data.value);
+                var dataTotalObj = {};
+                var malscanArr = [];
+                var cgiArr = [];
+                var formCrackArr = [];
+                var infoLeakArr = [];
+                var blackLinksArr = [];
+                var webvulArr = [];
+                var xssArr = [];
+                var csrfArr = [];
+                var keywordArr = [];
+                var sqlArr = [];
+                for(var i=0;i<dataVal.length;i++){
+                    if(dataVal[i].type == 'webvul'){
+                        var webvulObj = {
+                            "url":dataVal[i].url,
+                            "risk_level":dataVal[i].risk_level,
+                            "detail":dataVal[i].value.detail,
+                            "vul_id":dataVal[i].value.vul_id,
+                            "name":dataVal[i].value.name,
+                        };
+                        webvulArr.push(webvulObj);
+                    }else if(dataVal[i].type == 'sql'){
+                        var SqlObj = {
+                            "url":dataVal[i].url,
+                            "risk_level":dataVal[i].risk_level,
+                            "method":dataVal[i].value.method,
+                            "param":dataVal[i].value.param,
+                            "payload":dataVal[i].value.payload,
+                            "place":dataVal[i].value.place,
+                        };
+                        sqlArr.push(SqlObj);
+                    }else if(dataVal[i].type == 'black_links'){
+                        var blackLinksStr = '';
+                        var blackKeywordsStr = '';
+                        for(var j=0;j<dataVal[i].value.links;j++){
+                            blackLinksStr += dataVal[i].value.links[j] + ';';
+                            blackKeywordsStr += dataVal[i].value.keywords[j] + ';';
+                        }
+                        var blackObj = {
+                            "url":dataVal[i].url,
+                            "risk_level":dataVal[i].risk_level,
+                            "links":blackLinksStr,
+                            "keywords":blackKeywordsStr
+                        };
+                        blackLinksArr.push(blackObj);
+                    }else if(dataVal[i].type == 'xss'){
+                        var xssObj = {
+                            "url":dataVal[i].url,
+                            "risk_level":dataVal[i].risk_level,
+                            "method":dataVal[i].value.method,
+                            "place":dataVal[i].value.place,
+                            "path":dataVal[i].value.path,
+                            "body":dataVal[i].value.body,
+                        };
+                        xssArr.push(xssObj);
+                    }else if(dataVal[i].type == 'info_leak'){
+                        var infoLeakStr = '';
+                        for(var j=0;j<dataVal[i].value.match_str;j++){
+                            infoLeakStr += dataVal[i].value.match_str[j] + ';';
+                        }
+                        var infoLeakObj = {
+                            "url":dataVal[i].url,
+                            "risk_level":dataVal[i].risk_level,
+                            "match_str":infoLeakStr
+                        };
+                        infoLeakArr.push(infoLeakObj);
+                    }else if(dataVal[i].type == 'cgi'){
+                        var cgiObj = {
+                            "url":dataVal[i].url,
+                            "risk_level":dataVal[i].risk_level
+                        };
+                        cgiArr.push(cgiObj);
+                    }else if(dataVal[i].type == 'csrf'){
+                        var csrfObj = {
+                            "url":dataVal[i].url,
+                            "risk_level":dataVal[i].risk_level,
+                            "type":dataVal[i].value.type,
+                            "referer":dataVal[i].value.referer,
+                            "method":dataVal[i].value.method,
+                            "crossdomain":dataVal[i].value.crossdomain
+                        };
+                        csrfArr.push(csrfObj);
+                    }else if(dataVal[i].type == 'form_crack'){
+                        var formcrackObj = {
+                            "url":dataVal[i].url,
+                            "risk_level":dataVal[i].risk_level,
+                            "username":dataVal[i].username,
+                            "password":dataVal[i].password,
+                            "referer":dataVal[i].referer
+                        };
+                        formCrackArr.push(formcrackObj);
+                    }else if(dataVal[i].type == 'malscan'){
+                        var staticUrl = '';
+                        var staticRuleId = '';
+                        var staticType = '';
+                        var cloudUrl = '';
+                        var cloudTag = '';
+                        for(var j=0;j<dataVal[i].value.static;j++){
+                            staticUrl = dataVal[i].value.static[j].url;
+                            staticRuleId += dataVal[i].value.static[j].rule_id + ';';
+                            cloudUrl = dataVal[i].value.cloud[j].url;
+                            cloudTag += dataVal[i].value.cloud[j].tag + ';';
+                        }
+                        var malscanObj = {
+                            "url":dataVal[i].url,
+                            "risk_level":dataVal[i].risk_level,
+                            "static_url":staticUrl,
+                            "static_rule_id":staticRuleId,
+                            "static_type":staticType,
+                            "cloud_type":cloudUrl,
+                            "cloud_tag":cloudTag
+                        };
+                        malscanArr.push(malscanObj);
+                    }else if(dataVal[i].type == 'keyword'){
+                        var type = '';
+                        var keywordVal = '';
+                        var level = '';
+                        for(var j=0;j<dataVal[i].value.keywords;j++){
+                            type += dataVal[i].value.keywords[j].type + ';';
+                            keywordVal += dataVal[i].value.keywords[j].keyword + ';';
+                            level += dataVal[i].value.keywords[j].level + ';';
+                        }
+                        var keywordObj = {
+                            "url":dataVal[i].url,
+                            "risk_level":dataVal[i].risk_level,
+                            "type":type,
+                            "keyword":keywordVal,
+                            "level":level
+                        };
+                        keywordArr.push(keywordObj);
+                    }
+                }
+                dataTotalObj.malscanTable = malscanArr;
+                dataTotalObj.cgiTable = cgiArr;
+                dataTotalObj.formCrackTable = formCrackArr;
+                dataTotalObj.infoLeakTable = infoLeakArr;
+                dataTotalObj.blackLinksTable = blackLinksArr;
+                dataTotalObj.webvulTable = webvulArr;
+                dataTotalObj.xssTable = xssArr;
+                dataTotalObj.csrfTable = csrfArr;
+                dataTotalObj.keywordTable = keywordArr;
+                dataTotalObj.sqlTable = sqlArr;
+                console.log(dataTotalObj)
+                for (var key in dataTotalObj) {
+                    if (key == 'webvulTable') {
+                        if (dataTotalObj[key].length > 0) {
+                            $('#' + key).show();
+                            getwebTable(dataTotalObj[key]);
+                        } else {
+                            $('#' + key).hide();
+                        }
+                        $("#webCount").html(dataTotalObj[key].length);
+                    } else if (key == 'malscanTable') {
+                        if (dataTotalObj[key].length > 0) {
+                            $('#' + key).show();
+                            getmalscanTable(dataTotalObj[key]);
+                        } else {
+                            $('#' + key).hide();
+                        }
+                        $("#malscanCount").html(dataTotalObj[key].length);
+
+                    } else if (key == 'cgiTable') {
+                        if (dataTotalObj[key].length > 0) {
+                            $('#' + key).show();
+                            getcgiTable(dataTotalObj[key]);
+                        } else {
+                            $('#' + key).hide();
+                        }
+                        $("#cgiCount").html(dataTotalObj[key].length);
+                    } else if (key == 'formCrackTable') {
+                        if (dataTotalObj[key].length > 0) {
+                            $('#' + key).show();
+                            getformTable(dataTotalObj[key]);
+                        } else {
+                            $('#' + key).hide();
+                        }
+                        $("#formCount").html(dataTotalObj[key].length);
+                    } else if (key == 'infoLeakTable') {
+                        if (dataTotalObj[key].length > 0) {
+                            $('#' + key).show();
+                            getInfoLeakTable(dataTotalObj[key]);
+                        } else {
+                            $('#' + key).hide();
+                        }
+                        $("#infoLeakCount").html(dataTotalObj[key].length);
+                    } else if (key == 'blackLinksTable') {
+                        if (dataTotalObj[key].length > 0) {
+                            $('#' + key).show();
+                            getblacklinkTable(dataTotalObj[key]);
+                        } else {
+                            $('#' + key).hide();
+                        }
+                        $("#blackLinkCount").html(dataTotalObj[key].length);
+                    } else if (key == 'xssTable') {
+                        if (dataTotalObj[key].length > 0) {
+                            $('#' + key).show();
+                            getxssTable(dataTotalObj[key]);
+                        } else {
+                            $('#' + key).hide();
+                        }
+                        $("#xssCount").html(dataTotalObj[key].length);
+                    } else if (key == 'csrfTable') {
+                        if (dataTotalObj[key].length > 0) {
+                            $('#' + key).show();
+                            getcrsfTable(dataTotalObj[key]);
+                        } else {
+                            $('#' + key).hide();
+                        }
+                        $("#csrfCount").html(dataTotalObj[key].length);
+                    } else if (key == 'keywordTable') {
+                        if (dataTotalObj[key].length > 0) {
+                            $('#' + key).show();
+                            getkeywordTable(dataTotalObj[key]);
+                        } else {
+                            $('#' + key).hide();
+                        }
+                        $("#keywordCount").html(dataTotalObj[key].length);
+                    } else if (key == 'sqlTable') {
+                        if (dataTotalObj[key].length > 0) {
+                            $('#' + key).show();
+                            getsqlTable(dataTotalObj[key]);
+                        } else {
+                            $('#' + key).hide();
+                        }
+                        $("#sqlCount").html(dataTotalObj[key].length);
+                    }
+
+                }
+            }
+            //拼接应用信息json
+            function setAppJsonInfo(data1) {
+                var appArr = [];
+                var appItemArr = [];
+                for(var i=0;i<data1.length;i++){
+                    if(data1[i].moduleType == "availability"){
+                        appArr.push(data1[i]);
+                    }
+                }
+                for(var i=0;i<appArr.length;i++){
+                    var appVal = JSON.parse(appArr[i].value);
+                    var appObj = {
+                        "url":appVal[0].url,
+                        "startAt":appArr[i].startAt,
+                        "dnsTime":appVal[0].value.dns.time,
+                        "isHijacked":appVal[0].value.dns_hijack.hijacked,
+                        "ping":appVal[0].value.ping
+                    }
+                    appItemArr.push(appObj)
+                }
+                getappTable(appItemArr);
+                console.log(appItemArr)
+            }
 		</script>
 		</body>
 
