@@ -1290,8 +1290,8 @@
 			function bugTypeChart3(chart3Data,bugTotal) {
 				var myChart = echarts.init(document.getElementById('bug-type-chart3'));
 				var colorList = [
-					'#66c5d7', '#11c88c', '#989cff', '#ffa55d', '#9c7de1', '#5d9eff', '#ffdb5d', '#ee82ed', '#8fca5f', '#b995f5'
-				];
+                    '#66c5d7', '#11c88c', '#989cff', '#ffa55d', '#9c7de1', '#5d9eff', '#ffdb5d', '#ee82ed', '#8fca5f', '#b995f5'
+                ];
 
 				// 总和
 				var total = {
@@ -1599,6 +1599,7 @@
 			}
 			// bugFaqChart();//漏洞类型风险分布图的图2
 			function bugTypeChart4(data) {
+			    var colorList=['#66c5d7', '#11c88c', '#989cff', '#ffa55d', '#9c7de1', '#5d9eff', '#ffdb5d', '#ee82ed', '#8fca5f', '#b995f5'];
 				var bugTypeChart4 = echarts.init(document.getElementById('bug-type-chart4'));
 				var blackLinks=[data.blackLinks.high,data.blackLinks.middle,data.blackLinks.low];
 				var cgi=[data.cgi.high,data.cgi.middle,data.cgi.low];
@@ -1658,9 +1659,12 @@
 							stack: '总量',
 							label: {
 								normal: {
-									show: true,
+									show: false,
 									position: 'insideRight'
 								}
+							},
+							itemStyle:{
+							    color:colorList[0]
 							},
 							data: blackLinks
 						},
@@ -1674,6 +1678,9 @@
 									position: 'insideRight'
 								}
 							},
+                            itemStyle:{
+                                color:colorList[1]
+                            },
 							data: malscan
 						},
 						{
@@ -1686,6 +1693,9 @@
 									position: 'insideRight'
 								}
 							},
+                            itemStyle:{
+                                color:colorList[2]
+                            },
 							data: keyword
 						},
 						{
@@ -1698,6 +1708,9 @@
 									position: 'insideRight'
 								}
 							},
+                            itemStyle:{
+                                color:colorList[3]
+                            },
 							data: sql
 						},
 						{
@@ -1710,6 +1723,9 @@
 									position: 'insideRight'
 								}
 							},
+                            itemStyle:{
+                                color:colorList[4]
+                            },
 							data: xss
 						},
 						{
@@ -1722,6 +1738,9 @@
 									position: 'insideRight'
 								}
 							},
+                            itemStyle:{
+                                color:colorList[5]
+                            },
 							data: [24,216,60]
 						},
                         {
@@ -1733,6 +1752,9 @@
                                     show: false,
                                     position: 'insideRight'
                                 }
+                            },
+                            itemStyle:{
+                                color:colorList[6]
                             },
                             data: infoLeak
                         },
@@ -1746,6 +1768,9 @@
 									position: 'insideRight'
 								}
 							},
+                            itemStyle:{
+                                color:colorList[7]
+                            },
 							data: cgi
 						},
 						{
@@ -1758,6 +1783,9 @@
 									position: 'insideRight'
 								}
 							},
+                            itemStyle:{
+                                color:colorList[8]
+                            },
 							data: csrf
 						},
 						{
@@ -1770,6 +1798,9 @@
 									position: 'insideRight'
 								}
 							},
+                            itemStyle:{
+                                color:colorList[9]
+                            },
 							data: formCrack
 						}
 					]

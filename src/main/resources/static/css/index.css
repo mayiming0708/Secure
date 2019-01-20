@@ -522,7 +522,7 @@ button.close{
 }
 
 .ablity-chart{
-	height: 400px;
+	/*height: 400px;*/
 }
 #ablity .panel-heading{
 	 background-color: #6bbae8;
@@ -927,6 +927,7 @@ button.close{
 }
 .site-summary-content .row.bottom{
 	height: 300px;
+	margin-top: 10px;
 }
 #site-summary-bottom-time{
 	/*height: 300px;*/
@@ -985,16 +986,19 @@ button.close{
 	width: 100%;
 }
 .site-info-title{
-	font-size: 17px;
+	font-size: 16px;
+	font-weight: bold;
 	margin-bottom: 10px;
-	cursor: pointer;
+	height: 39px;
+	line-height: 39px;
 }
 .site-info-title i{
 	color: #2aa4d6;
 	margin-left: 5px;
+	color: transparent;
 }
 .site-info-content{
-	display: none;
+	/*display: none;*/
 }
 .site-info-content li{
 	height: 39px;
@@ -1004,6 +1008,7 @@ button.close{
 .site-info-content ul{
 	width: 50%;
 	float: left;
+	padding-left: 0;
 }
 .site-info-content li span:first-child{
 	margin-right: 20px;
@@ -1047,4 +1052,16 @@ button.close{
 }
 .top .top-left span{
 	display: block;
+}
+.site-info-content li{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.bottom-table-title{
+	height: 39px;
+	line-height: 39px;
+	font-size: 16px;
+	font-weight: bold;
+	margin-bottom: 10px;
 }

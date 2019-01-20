@@ -432,56 +432,13 @@
 					<section class="col-lg-12 connectedSortable">
 						<div class="nav-tabs-custom task-detail">
 							<ul class="nav nav-tabs pull-right">
-								<li class="active">
-									<a href="#summary" data-toggle="tab">概述</a>
-								</li>
 								<li>
-									<a href="#ablity" data-toggle="tab">可用性</a>
-								</li>
-								<li>
-									<a href="#safety" data-toggle="tab">安全事件</a>
-								</li>
-								<li>
-									<a href="#leak" data-toggle="tab">漏洞</a>
+									<a href="#ablity" data-toggle="tab" class="active">任务检测详情列表</a>
 								</li>
 								<li class="pull-left header"><i class="fa fa-inbox"></i><span></span></li>
 							</ul>
 							<div class="tab-content no-padding">
-								<div class="tab-pane active" id="summary">
-									<div class="row">
-										<div class="col-lg-12">
-											<div class="panel panel-default">
-												<div class="panel-heading">
-													任务站点详情综述
-												</div>
-												<div class="panel-body">
-													<!--<table class="table table-bordered table-striped table-condensed" id="task-summary-table">-->
-
-													<!--</table>-->
-                                                    <div class="sitename">http://testasp.vulnweb.com</div>
-                                                    <div class="faq">风险值<span class=""></span></div>
-                                                    <div class="url">共发现<span class=""></span>个url</div>
-                                                    <div class="high">高危<span></span>个</div>
-                                                    <div class="mid">中危<span></span>个</div>
-                                                    <div class="low">低危<span></span>个</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-lg-12">
-											<div class="panel panel-default summary-chart">
-												<div class="panel-heading">
-													任务概述分析图
-												</div>
-												<div class="panel-body">
-
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="tab-pane" id="ablity">
+							<div class="tab-pane active" id="ablity">
 									<div class="row">
 										<div class="col-lg-12">
 											<div class="panel panel-default">
@@ -520,62 +477,6 @@
 													<table class="table table-bordered table-striped table-condensed" id="task-leak-table">
 
 													</table>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="tab-pane" id="safety">
-									<div class="row">
-										<div class="col-lg-12">
-											<div class="panel panel-default">
-												<div class="panel-heading">
-													安全事件检测列表
-												</div>
-												<div class="panel-body">
-													<table class="table table-bordered table-striped table-condensed" id="task-safety-table">
-
-													</table>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-lg-12">
-											<div class="panel panel-default leak-chart">
-												<div class="panel-heading">
-													安全事件检测分析图
-												</div>
-												<div class="panel-body">
-
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="tab-pane" id="leak">
-										<div class="row">
-										<div class="col-lg-12">
-											<div class="panel panel-default">
-												<div class="panel-heading">
-													漏洞检测列表
-												</div>
-												<div class="panel-body">
-													<table class="table table-bordered table-striped table-condensed" id="task-leak-table">
-
-													</table>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-lg-12">
-											<div class="panel panel-default leak-chart">
-												<div class="panel-heading">
-													漏洞检测分析图
-												</div>
-												<div class="panel-body">
-
 												</div>
 											</div>
 										</div>
@@ -631,7 +532,7 @@
             // var taskId=getCookie(id);
             var taskId=GetQueryString("id");
             var isPeriod=GetQueryString("isPeriod");
-
+			var userId=getCookie("userId");
             console.log(isPeriod);
 			//概述table
 			var tableSummary = $("#task-summary-table");
@@ -812,16 +713,6 @@
 									}
                                 }
 							},
-                            {field:"testTime",
-                                title:"检测周期",
-                                align:"center",
-                                valign:"middle",
-                                sortable:"true",
-                                formatter:function(){
-                                return "30分钟";
-                                }
-                            },
-
                         ],
                     data:abilityData,
 					onLoadSuccess: function(res) { //可不写
@@ -1133,7 +1024,7 @@
 		window.operateEvents={
 			"click #detailBtn":function(e,value,row,index){
 			    var site=row.site;
-				window.location.href= window.location.href = "tasksitedetail?id="+taskId+"&url="+site;
+                window.location.href = "sitedetail?url="+site;
 			}
 		}
          function taskItemDetail(data){

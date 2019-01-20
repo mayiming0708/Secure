@@ -199,6 +199,7 @@
 											</div>
 										</section>
 										<section class="col-lg-6 connectedSortable site-summary-bottom-table">
+											<div class="bottom-table-title">风险类型分布列表</div>
 											<table class="table table-bordered table-striped table-condensed" id="bugdetailTable">
 												<thead>
 												<tr>
@@ -239,7 +240,7 @@
 									</div>
 									<div class="row site-info" style="display: none;">
 										<section class="col-lg-12 connectedSortable">
-											<div class="site-info-title">站点信息<i class="iconfont icon-xiala1"></i></div>
+											<div class="site-info-title">站点信息</div>
 											<div class="site-info-content">
 												<ul class="site-info-content-left">
 													<li><span>网站标题</span><span class="liOne">Home of Acuncetix Art</span></li>
@@ -485,14 +486,14 @@
                 //获取到该网站的详细数据
                 getSiteDetailM();
                 getSiteDetailC();
-                //站点信息隐藏
-				$(".site-info-title i").click(function(){
-				    if($(".site-info-content").css('display')=='none'){
-                        $(".site-info-content").show();
-					}else{
-                        $(".site-info-content").hide();
-					}
-				})
+                // //站点信息隐藏
+				// $(".site-info-title i").click(function(){
+				//     if($(".site-info-content").css('display')=='none'){
+                //         $(".site-info-content").show();
+				// 	}else{
+                //         $(".site-info-content").hide();
+				// 	}
+				// })
 				//内容的展开与上拉
 				$(".leak-item .leak-item-title").click(function(){
 				    var content= $(this).next('.leak-item-content');
@@ -597,6 +598,13 @@
 			function summaryChart(data){
                 var myChart = echarts.init(document.getElementById('site-summary-content-chart'));
                var option = {
+                   title:{
+                       text:'风险分布图',
+					   textStyle:{
+                           color:'#333',
+							fontSize:'16'
+					   }
+				   },
                     tooltip: {
                         trigger: 'item',
                         formatter: "{a} <br/>{b}: {c} ({d}%)"
@@ -604,6 +612,7 @@
                     legend: {
                         orient: 'vertical',
                         x: 'left',
+						y:'10%',
                         data:['暗链','挂马','关键词','SQL注入','XSS','应用漏洞','信息泄露','CGI漏洞','CSRF','表单破解']
                     },
                     series: [
@@ -702,7 +711,7 @@
                         textStyle: {
                             color: '#90979c',
                         },
-                        "data": ['高危', '中危', '低危']
+                        "data": ['高危', '中危', '低危','风险值']
                     },
 
 
@@ -955,7 +964,10 @@
                     columns:
                         [
                             {field:"url",title:"url",align:"center",valign:"middle",sortable:"true"},
-                            {field:"risk_level",title:"风险等级",align:"center",valign:"middle",sortable:"true"}
+                            {field:"risk_level",title:"风险等级",align:"center",valign:"middle",sortable:"true",formatter:function(value,row,index){
+                                    var riskStatus=riskLevel(value);
+                                    return riskStatus;
+                                }}
                         ],
                     data:data,
                     onLoadSuccess: function(res) { //可不写
@@ -1002,7 +1014,11 @@
                     columns:
                         [
                             {field:"url",title:"url",align:"center",valign:"middle",sortable:"true"},
-                            {field:"risk_level",title:"风险等级",align:"center",valign:"middle",sortable:"true"},
+                            {field:"risk_level",title:"风险等级",align:"center",valign:"middle",sortable:"true",
+                                formatter:function(value,row,index){
+                                   var riskStatus=riskLevel(value);
+                                   return riskStatus;
+                                }},
                             {field:"detail",title:"详情",align:"center",valign:"middle",sortable:"true"},
                             {field:"vul_id",title:"vul_id",align:"center",valign:"middle",sortable:"true"},
                             {field:"name",title:"漏洞名称",align:"center",valign:"middle",sortable:"true"},
@@ -1101,7 +1117,11 @@
                             {field:"url",title:"url",align:"center",valign:"middle",sortable:"true"},
                             {field:"links",title:"链接",align:"center",valign:"middle",sortable:"true"},
                             {field:"keywords",title:"关键词",align:"center",valign:"middle",sortable:"true"},
-                            {field:"risk_level",title:"风险值",align:"center",valign:"middle",sortable:"true"},
+                            {field:"risk_level",title:"风险值",align:"center",valign:"middle",sortable:"true",
+                                formatter:function(value,row,index){
+                                    var riskStatus=riskLevel(value);
+                                    return riskStatus;
+                                }},
                         ],
                     data:data,
                     onLoadSuccess: function(res) { //可不写
@@ -1147,7 +1167,10 @@
                     columns:
                         [
                             {field:"url",title:"url",align:"center",valign:"middle",sortable:"true"},
-                            {field:"risk_level",title:"风险等级",align:"center",valign:"middle",sortable:"true"},
+                            {field:"risk_level",title:"风险等级",align:"center",valign:"middle",sortable:"true",formatter:function(value,row,index){
+                                    var riskStatus=riskLevel(value);
+                                    return riskStatus;
+                                }},
                             {field:"match_str",title:"泄露类型",align:"center",valign:"middle",sortable:"true"}
                         ],
                     data:data,
@@ -1195,7 +1218,10 @@
                     columns:
                         [
                             {field:"url",title:"url",align:"center",valign:"middle",sortable:"true"},
-                            {field:"risk_level",title:"风险等级",align:"center",valign:"middle",sortable:"true"},
+                            {field:"risk_level",title:"风险等级",align:"center",valign:"middle",sortable:"true",formatter:function(value,row,index){
+                                    var riskStatus=riskLevel(value);
+                                    return riskStatus;
+                                }},
                             {field:"method",title:"HTTP方法",align:"center",valign:"middle",sortable:"true"},
                             {field:"place",title:"XSS出现位置",align:"center",valign:"middle",sortable:"true"},
                             {field:"body",title:"请求体里的表单提交字符串",align:"center",valign:"middle",sortable:"true"}
@@ -1244,7 +1270,10 @@
                     columns:
                         [
                             {field:"url",title:"url",align:"center",valign:"middle",sortable:"true"},
-                            {field:"risk_level",title:"风险等级",align:"center",valign:"middle",sortable:"true"},
+                            {field:"risk_level",title:"风险等级",align:"center",valign:"middle",sortable:"true",formatter:function(value,row,index){
+                                    var riskStatus=riskLevel(value);
+                                    return riskStatus;
+                                }},
                             {field:"type",title:"CSRF类型",align:"center",valign:"middle",sortable:"true"},
                             {field:"referer",title:"存在CSRF的URL所在的URL",align:"center",valign:"middle",sortable:"true"},
                             {field:"method",title:"HTTP方法",align:"center",valign:"middle",sortable:"true"},
@@ -1294,7 +1323,10 @@
                     columns:
                         [
                             {field:"url",title:"url",align:"center",valign:"middle",sortable:"true"},
-                            {field:"risk_level",title:"风险等级",align:"center",valign:"middle",sortable:"true"},
+                            {field:"risk_level",title:"风险等级",align:"center",valign:"middle",sortable:"true",formatter:function(value,row,index){
+                                    var riskStatus=riskLevel(value);
+                                    return riskStatus;
+                                }},
                             {field:"static_url",title:"恶意源URL",align:"center",valign:"middle",sortable:"true"},
                             {field:"static_rule_id",title:"规则ID",align:"center",valign:"middle",sortable:"true"},
                             {field:"cloud_type",title:"恶意源URL",align:"center",valign:"middle",sortable:"true"},
@@ -1344,7 +1376,11 @@
                     columns:
                         [
                             {field:"url",title:"url",align:"center",valign:"middle",sortable:"true"},
-                            {field:"risk_level",title:"风险等级",align:"center",valign:"middle",sortable:"true"},
+                            {field:"risk_level",title:"风险等级",align:"center",valign:"middle",sortable:"true",
+                                formatter:function(value,row,index){
+                                    var riskStatus=riskLevel(value);
+                                    return riskStatus;
+                                }},
                             {field:"type",title:"结果类型",align:"center",valign:"middle",sortable:"true"},
                             {field:"keyword",title:"关键词列表",align:"center",valign:"middle",sortable:"true"},
                             {field:"level",title:"等级",align:"center",valign:"middle",sortable:"true"},
@@ -1393,7 +1429,11 @@
                     columns:
                         [
                             {field:"url",title:"url",align:"center",valign:"middle",sortable:"true"},
-                            {field:"risk_level",title:"风险等级",align:"center",valign:"middle",sortable:"true"},
+                            {field:"risk_level",title:"风险等级",align:"center",valign:"middle",sortable:"true",
+                                formatter:function(value,row,index){
+                                    var riskStatus=riskLevel(value);
+                                    return riskStatus;
+                                }},
                             {field:"method",title:"HTTP方法",align:"center",valign:"middle",sortable:"true"},
                             {field:"payload",title:"构造注入用的Payload",align:"center",valign:"middle",sortable:"true"},
                             {field:"place",title:"注入点出现位置",align:"center",valign:"middle",sortable:"true"}
@@ -1444,7 +1484,13 @@
                             {field:"url",title:"url",align:"center",valign:"middle",sortable:"true"},
                             {field:"startAt",title:"开始监测时间",align:"center",valign:"middle",sortable:"true"},
                             {field:"dnsTime",title:"dns解析速度",align:"center",valign:"middle",sortable:"true"},
-                            {field:"isHijacked",title:"dns截持",align:"center",valign:"middle",sortable:"true"},
+                            {field:"isHijacked",title:"dns劫持",align:"center",valign:"middle",sortable:"true",formatter:function(value,row,index){
+                                    if(value==false){
+                                        return "无DNS劫持";
+                                    }else{
+                                        return "DNS响应异常";
+                                    }
+								}},
                             {field:"ping",title:"ping响应速度",align:"center",valign:"middle",sortable:"true"}
                         ],
                     data:data,
@@ -1607,7 +1653,9 @@
                             $(".top-left .fa").css('color','#e09d85');
                         }
                         if(score2==0){
-                            $(".top-left .fa").css('color',' #74a52a');
+                            $(".top-left .fa").removeClass('fa-warning');
+                            $(".top-left .fa").addClass('fa-chevron-circle-down');
+                       $(".site-summary-content .top .bottom-span").css('color','#00a65a');
 						}
 
                     }
@@ -2115,6 +2163,22 @@
                 getappTable(appItemArr);
                 console.log(appItemArr)
             }
+		//判断风险等级函数
+			function riskLevel(data){
+                if(data>8){
+                    return '<i class="fa fa-warning" style="color: red">高危</i>';
+				}
+				if(data>5&&data<=8){
+				    return '<i class="fa fa-warning" style="color: #3397af">中危</i>';
+				}
+				if(data>=2&&data<=5){
+				    return '<i class="fa fa-warning" style="color: #e09d85">低危</i>';
+				}
+				if(data<2){
+				    return '<i class="fa fa-warning" style="color: #00a65a">信息</i>';
+				}
+			}
+
 		</script>
 		</body>
 
