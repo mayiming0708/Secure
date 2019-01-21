@@ -1065,3 +1065,13 @@ button.close{
 	font-weight: bold;
 	margin-bottom: 10px;
 }
+#btn-html2canvas{
+	float: right;
+	height: 40px;
+	line-height: 40px;
+	margin-right: 7px
+}
+.num{
+	display: inline-block;
+	font-weight: 600;
+}

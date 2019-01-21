@@ -100,7 +100,7 @@
 
 	<body class="hold-transition skin-blue sidebar-mini" id="content">
 		<div class="wrapper">
-			<button id="btn-html2canvas">export PDF by using jspdf + html2canvas</button>
+			<button id="btn-html2canvas">导出为PDF</button>
 			<div class="content-wrapper site-detail-total">
 				<div class="row">
 					<section class="col-lg-12 connectedSortable site-detail box">
@@ -767,7 +767,7 @@
                         "xAxisIndex": [
                             0
                         ],
-                        bottom: 30,
+                        bottom: 0,
                         "start": 10,
                         "end": 80,
                         handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
@@ -1483,7 +1483,9 @@
                         [
                             {field:"url",title:"url",align:"center",valign:"middle",sortable:"true"},
                             {field:"startAt",title:"开始监测时间",align:"center",valign:"middle",sortable:"true"},
-                            {field:"dnsTime",title:"dns解析速度",align:"center",valign:"middle",sortable:"true"},
+                            {field:"dnsTime",title:"dns解析速度",align:"center",valign:"middle",sortable:"true",formatter:function(value,row,index){
+									return value+'ms';
+								}},
                             {field:"isHijacked",title:"dns劫持",align:"center",valign:"middle",sortable:"true",formatter:function(value,row,index){
                                     if(value==false){
                                         return "无DNS劫持";
@@ -1491,7 +1493,9 @@
                                         return "DNS响应异常";
                                     }
 								}},
-                            {field:"ping",title:"ping响应速度",align:"center",valign:"middle",sortable:"true"}
+                            {field:"ping",title:"ping响应速度",align:"center",valign:"middle",sortable:"true",formatter:function(value,row,index){
+                                return value+'ms';
+								}}
                         ],
                     data:data,
                     onLoadSuccess: function(res) { //可不写
@@ -1642,20 +1646,24 @@
 
 						//填充风险值
 						var score2=data.data[0].score;
-						$(".num").html(score2);
+
                         if(score2>66&&score2<100){
 							$(".top-left .fa").css('color','red');
+                            $(".num").html(score2+'(高危)');
                         }
                         if(score2>33&&score2<66){
                             $(".top-left .fa").css('color','#d87c5a');
+                            $(".num").html(score2+'(中危)');
                         }
                         if(score2>0&&score2<33){
                             $(".top-left .fa").css('color','#e09d85');
+                            $(".num").html(score2+'(低危)');
                         }
                         if(score2==0){
                             $(".top-left .fa").removeClass('fa-warning');
                             $(".top-left .fa").addClass('fa-chevron-circle-down');
                        $(".site-summary-content .top .bottom-span").css('color','#00a65a');
+                            $(".num").html(score2+'(安全)');
 						}
 
                     }
