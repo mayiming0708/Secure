@@ -1655,10 +1655,10 @@
 						//填充风险值
 						var score2=data.data[0].score;
 						var finishRate=data.data[0].finishRate;
-						if(finishRate==0){
+						if(finishRate!=1){
 						    $(".bottom-span").html('正在检测中');
                             $(".bottom-span").css('color','#333');
-                            $(".bottom-span").css('font-size','18px');
+                            $(".bottom-span").css('font-size','16px');
 						}else{
                             if(score2>66&&score2<100){
                                 $(".top-left .fa").css('color','red');
