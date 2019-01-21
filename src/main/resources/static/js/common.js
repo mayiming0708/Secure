@@ -14,7 +14,6 @@ $(function(){
             dataType: "json",
             async:true,
             success:function(data){
-                alert("注销成功");
                 delCookie("username")
                 window.location.href="index";
             }
