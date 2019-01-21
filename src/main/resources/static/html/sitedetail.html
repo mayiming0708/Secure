@@ -1654,25 +1654,31 @@
 
 						//填充风险值
 						var score2=data.data[0].score;
-
-                        if(score2>66&&score2<100){
-							$(".top-left .fa").css('color','red');
-                            $(".num").html(score2+'(高危)');
-                        }
-                        if(score2>33&&score2<66){
-                            $(".top-left .fa").css('color','#d87c5a');
-                            $(".num").html(score2+'(中危)');
-                        }
-                        if(score2>0&&score2<33){
-                            $(".top-left .fa").css('color','#e09d85');
-                            $(".num").html(score2+'(低危)');
-                        }
-                        if(score2==0){
-                            $(".top-left .fa").removeClass('fa-warning');
-                            $(".top-left .fa").addClass('fa-chevron-circle-down');
-                       $(".site-summary-content .top .bottom-span").css('color','#00a65a');
-                            $(".num").html(score2+'(安全)');
+						var finishRate=data.data[0].finishRate;
+						if(finishRate==0){
+						    $(".bottom-span").html('正在检测中');
+                            $(".bottom-span").css('color','#333');
+						}else{
+                            if(score2>66&&score2<100){
+                                $(".top-left .fa").css('color','red');
+                                $(".num").html(score2+'(高危)');
+                            }
+                            if(score2>33&&score2<66){
+                                $(".top-left .fa").css('color','#d87c5a');
+                                $(".num").html(score2+'(中危)');
+                            }
+                            if(score2>0&&score2<33){
+                                $(".top-left .fa").css('color','#e09d85');
+                                $(".num").html(score2+'(低危)');
+                            }
+                            if(score2==0){
+                                $(".top-left .fa").removeClass('fa-warning');
+                                $(".top-left .fa").addClass('fa-chevron-circle-down');
+                                $(".site-summary-content .top .bottom-span").css('color','#00a65a');
+                                $(".num").html(score2+'(安全)');
+                            }
 						}
+
 
                     }
                 });
