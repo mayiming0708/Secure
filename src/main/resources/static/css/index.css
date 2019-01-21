@@ -547,8 +547,10 @@ button.close{
 	background-color: #fff;
 }
 .site-detail #navbar-example li.active a{
-	background-color: #6bbae8;
-    color: #fff;
+	/*background-color: #6bbae8;*/
+    /*color: #fff;*/
+	background-color: transparent;
+	color: #333;
 }
 .site-detail-total.content-wrapper {
 	padding: 20px 115px;
@@ -1081,4 +1083,8 @@ button.close{
 }
 .rank-list li .site-name{
 	cursor: pointer;
+}
+.site-detail #navbar-example .navbar-nav li:first-child a{
+	background-color: #6bbae8;
+	color: #fff;
 }
