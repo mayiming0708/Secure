@@ -83,13 +83,15 @@
             b.risk_low_count riskLowCount,
             a.finish_rate finishRate,
             b.score score,
-            a.create_time createTime
+            a.create_time createTime,
+            a.is_success is_success
         FROM
             (SELECT * FROM ws_finish_type WHERE url=#{url} AND state=0) b
         JOIN
             ws_task a
         ON
             a.virtual_group_id =b.virtual_group_id
+        where  is_success=1
         ORDER BY
             a.create_time
         DESC

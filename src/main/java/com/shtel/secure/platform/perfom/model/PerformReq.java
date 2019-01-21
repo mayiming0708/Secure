@@ -32,6 +32,7 @@ public class PerformReq {
     private String createTime;
     private int currentPage;
     private int pageSize;
+    private double finishRate;
 
     public int getRiskHighCount() {
         return riskHighCount;
@@ -239,5 +240,13 @@ public class PerformReq {
 
     public void setCsrf(int csrf) {
         this.csrf = csrf;
+    }
+
+    public double getFinishRate() {
+        return finishRate;
+    }
+
+    public void setFinishRate(double finishRate) {
+        this.finishRate = finishRate;
     }
 }

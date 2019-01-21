@@ -330,6 +330,7 @@ public class PerformService {
             response.put("keyword",response.getInteger("keyword")+performReq.getKeyword());
             response.put("csrf",response.getInteger("csrf")+performReq.getCsrf());
             response.put("xss",response.getInteger("xss")+performReq.getXss());
+            response.put("finishRate",performReq.getFinishRate());
         }
         response.put("data",list);
         return response;
