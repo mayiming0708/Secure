@@ -1069,9 +1069,16 @@ button.close{
 	float: right;
 	height: 40px;
 	line-height: 40px;
-	margin-right: 7px
+	margin-right: 7px;
+	margin-top: 5px;
+	outline: none;
+	background-color: lightskyblue;
+	-webkit-appearance: none;
 }
 .num{
 	display: inline-block;
 	font-weight: 600;
+}
+.rank-list li .site-name{
+	cursor: pointer;
 }
