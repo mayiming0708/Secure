@@ -98,7 +98,7 @@ public class LoginAction {
             @ApiResponse(code = 0, message = "注册账号成功"),
             @ApiResponse(code = 100, message = "此账号已被注册")
     })
-    @PostMapping("/register ")
+    @PostMapping("/register")
     public String register (@RequestParam("account") String account, @RequestParam("password") String password) {
         logger.info("账号注册");
         User user=new User();
