@@ -125,5 +125,37 @@ public class LoginAction {
         return IssueService.Response("注册成功", 0, new JSONObject()).toJSONString();
     }
 
+    @ApiOperation(value = "修改邮箱密码", notes = "修改邮箱密码")
+    @ApiResponses({
+            @ApiResponse(code = 0, message = "修改密码邮箱成功"),
+            @ApiResponse(code = 100, message = "修改密码邮箱失败")
+    })
+    @PostMapping("/revisePassword")
+    public String revisePasswordAndEmail(HttpServletRequest httpServletRequest) {
+        Object account=  httpServletRequest.getParameter("account");
+        if ("".equals(account)||account==null)
+            return IssueService.Response("账号为空字段", 100, new JSONObject()).toJSONString();
+        Object password= httpServletRequest.getParameter("password");
+        if ("".equals(password)||password==null)
+            return IssueService.Response("密码为空字段", 100, new JSONObject()).toJSONString();
+        Object NewPassword= httpServletRequest.getParameter("newPassword");
+        if ("".equals(NewPassword)||NewPassword==null)
+            return IssueService.Response("新密码为空字段", 100, new JSONObject()).toJSONString();
+        logger.info("修改密码邮箱");
+        User user = new User();
+        user.setAccount((String)account);
+        user.setPassword(MD5Utils.MD5Encode((String)password, "utf-8"));
+        User newUser=userMapper.selectOne(user);
+        if (newUser == null)
+            return IssueService.Response("原密码输入错误，修改密码失败", 100, new JSONObject()).toJSONString();
+        newUser.setPassword(MD5Utils.MD5Encode((String)NewPassword, "utf-8"));
+        Object email=  httpServletRequest.getParameter("email");
+        if(email!=null)
+            if(!("").equals((String)email))
+                newUser.setEmail((String)email);
+        userMapper.updateByPrimaryKeySelective(newUser);
+        return IssueService.Response("修改密码邮箱成功", 0, new JSONObject()).toJSONString();
+    }
+
 
 }
