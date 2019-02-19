@@ -20,6 +20,10 @@ import java.io.InputStreamReader;
  */
 @Controller
 public class AcceptAction {
+    @GetMapping("/ws/register")
+    public void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/static/html/register.html").forward(request,response);
+    }
     @GetMapping("/ws/index")
     public void loginIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/static/html/login.html").forward(request,response);
@@ -44,6 +48,7 @@ public class AcceptAction {
     public void sitedetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/static/html/sitedetail.html").forward(request,response);
     }
+
 
     public void acceptData(HttpServletRequest request, HttpServletResponse response, @RequestParam("parameter") String parameter) {
         String str = parameter;
