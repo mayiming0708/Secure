@@ -66,6 +66,7 @@ public class LoginAction {
         User result2 = userMapper.selectOne(user);
         if (result2 != null) {
             request.getSession().setAttribute("USERID", result.getId());
+            request.getSession().setAttribute("EMAIL", result.getEmail());
             request.getSession().setMaxInactiveInterval(60 * 30);
             JSONObject uesrJSON = new JSONObject();
             uesrJSON.put("USERID", result.getId());
@@ -100,61 +101,75 @@ public class LoginAction {
     })
     @PostMapping("/register")
     public String register(HttpServletRequest httpServletRequest) {
-        Object account=  httpServletRequest.getParameter("account");
-        if ("".equals(account)||account==null)
+        Object account = httpServletRequest.getParameter("account");
+        if ("".equals(account) || account == null)
             return IssueService.Response("账号为空字段", 100, new JSONObject()).toJSONString();
-        Object password= httpServletRequest.getParameter("password");
-        if ("".equals(password)||password==null)
+        Object password = httpServletRequest.getParameter("password");
+        if ("".equals(password) || password == null)
             return IssueService.Response("密码为空字段", 100, new JSONObject()).toJSONString();
-        Object email=  httpServletRequest.getParameter("email");
-        if ("".equals(email)||email==null)
+        Object email = httpServletRequest.getParameter("email");
+        if ("".equals(email) || email == null)
             return IssueService.Response("邮箱为空字段", 100, new JSONObject()).toJSONString();
         logger.info("账号注册");
         User user = new User();
-        user.setAccount((String)account);
+        user.setAccount((String) account);
         if (userMapper.selectOne(user) != null)
             return IssueService.Response("此账号已被注册", 100, new JSONObject()).toJSONString();
         tk.mybatis.mapper.entity.Example example = new Example(User.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("email", (String)email);
+        criteria.andEqualTo("email", (String) email);
         int count = userMapper.selectCountByExample(example);
-        if (count>0)
+        if (count > 0)
             return IssueService.Response("此邮箱已被注册", 100, new JSONObject()).toJSONString();
-        user.setPassword(MD5Utils.MD5Encode((String)password, "utf-8"));
+        user.setPassword(MD5Utils.MD5Encode((String) password, "utf-8"));
         userMapper.insertSelective(user);
         return IssueService.Response("注册成功", 0, new JSONObject()).toJSONString();
     }
 
-    @ApiOperation(value = "修改邮箱密码", notes = "修改邮箱密码")
+    @ApiOperation(value = "修改密码", notes = "修改密码")
     @ApiResponses({
-            @ApiResponse(code = 0, message = "修改密码邮箱成功"),
-            @ApiResponse(code = 100, message = "修改密码邮箱失败")
+            @ApiResponse(code = 0, message = "修改密码成功"),
+            @ApiResponse(code = 100, message = "修改密码失败")
     })
     @PostMapping("/revisePassword")
-    public String revisePasswordAndEmail(HttpServletRequest httpServletRequest) {
-        Object account=  httpServletRequest.getParameter("account");
-        if ("".equals(account)||account==null)
-            return IssueService.Response("账号为空字段", 100, new JSONObject()).toJSONString();
-        Object password= httpServletRequest.getParameter("password");
-        if ("".equals(password)||password==null)
+    public String revisePassword(HttpServletRequest httpServletRequest) {
+        Object userId = httpServletRequest.getParameter("userId");
+        if ("".equals(userId) || userId == null)
+            return IssueService.Response("userId为空字段", 100, new JSONObject()).toJSONString();
+        Object password = httpServletRequest.getParameter("password");
+        if ("".equals(password) || password == null)
             return IssueService.Response("密码为空字段", 100, new JSONObject()).toJSONString();
-        Object NewPassword= httpServletRequest.getParameter("newPassword");
-        if ("".equals(NewPassword)||NewPassword==null)
+        Object NewPassword = httpServletRequest.getParameter("newPassword");
+        if ("".equals(NewPassword) || NewPassword == null)
             return IssueService.Response("新密码为空字段", 100, new JSONObject()).toJSONString();
         logger.info("修改密码邮箱");
         User user = new User();
-        user.setAccount((String)account);
-        user.setPassword(MD5Utils.MD5Encode((String)password, "utf-8"));
-        User newUser=userMapper.selectOne(user);
-        if (newUser == null)
+        user.setId(Integer.parseInt((String) userId));
+        User newUser = userMapper.selectByPrimaryKey(user);
+        if (password.equals(newUser.getPassword()))
             return IssueService.Response("原密码输入错误，修改密码失败", 100, new JSONObject()).toJSONString();
-        newUser.setPassword(MD5Utils.MD5Encode((String)NewPassword, "utf-8"));
-        Object email=  httpServletRequest.getParameter("email");
-        if(email!=null)
-            if(!("").equals((String)email))
-                newUser.setEmail((String)email);
+        newUser.setPassword(MD5Utils.MD5Encode((String) NewPassword, "utf-8"));
         userMapper.updateByPrimaryKeySelective(newUser);
-        return IssueService.Response("修改密码邮箱成功", 0, new JSONObject()).toJSONString();
+        return IssueService.Response("修改密码成功", 0, new JSONObject()).toJSONString();
+    }
+
+    @ApiOperation(value = "修改邮箱", notes = "修改邮箱")
+    @ApiResponses({
+            @ApiResponse(code = 0, message = "修改邮箱成功"),
+            @ApiResponse(code = 100, message = "修改邮箱失败")
+    })
+    @PostMapping("/reviseEmail")
+    public String reviseEmail(HttpServletRequest httpServletRequest) {
+        Object userId = httpServletRequest.getParameter("userId");
+        if ("".equals(userId) || userId == null)
+            return IssueService.Response("userId为空字段", 100, new JSONObject()).toJSONString();
+        Object email = httpServletRequest.getParameter("email");
+        if ("".equals(email) || email == null)
+            return IssueService.Response("邮箱为空字段", 100, new JSONObject()).toJSONString();
+        User user = userMapper.selectByPrimaryKey(Integer.parseInt((String) userId));
+        user.setEmail((String) email);
+        userMapper.updateByPrimaryKeySelective(user);
+        return IssueService.Response("修改邮箱成功", 0, new JSONObject()).toJSONString();
     }
 
 
