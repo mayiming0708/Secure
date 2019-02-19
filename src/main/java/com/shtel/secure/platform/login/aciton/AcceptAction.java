@@ -48,6 +48,11 @@ public class AcceptAction {
     public void sitedetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/static/html/sitedetail.html").forward(request,response);
     }
+    @PostMapping("/ws/registerAccount")
+    public void registerUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/login/register").forward(request,response);
+    }
+
 
 
     public void acceptData(HttpServletRequest request, HttpServletResponse response, @RequestParam("parameter") String parameter) {

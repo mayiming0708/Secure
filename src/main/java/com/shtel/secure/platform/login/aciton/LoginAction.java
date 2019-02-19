@@ -10,8 +10,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import tk.mybatis.mapper.entity.Example;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -62,13 +62,13 @@ public class LoginAction {
         User result = userMapper.selectOne(user);
         if (result == null)
             return IssueService.Response("该用户不存在", 100, new JSONObject()).toJSONString();
-        user.setPassword(MD5Utils.MD5Encode(password,"utf-8"));
+        user.setPassword(MD5Utils.MD5Encode(password, "utf-8"));
         User result2 = userMapper.selectOne(user);
-        if (result2!=null) {
+        if (result2 != null) {
             request.getSession().setAttribute("USERID", result.getId());
             request.getSession().setMaxInactiveInterval(60 * 30);
-            JSONObject uesrJSON=new JSONObject();
-            uesrJSON.put("USERID",result.getId());
+            JSONObject uesrJSON = new JSONObject();
+            uesrJSON.put("USERID", result.getId());
             logger.info("登录成功");
             return IssueService.Response("登录成功", 0, uesrJSON).toJSONString();
         }
@@ -87,9 +87,9 @@ public class LoginAction {
 
     @PostMapping("/test")
     public void test(@RequestParam("account") String account, @RequestParam("password") String password) {
-        User user=new User();
+        User user = new User();
         user.setAccount(account);
-        user.setPassword(MD5Utils.MD5Encode(password,"utf-8"));
+        user.setPassword(MD5Utils.MD5Encode(password, "utf-8"));
         userMapper.insert(user);
     }
 
@@ -99,15 +99,30 @@ public class LoginAction {
             @ApiResponse(code = 100, message = "此账号已被注册")
     })
     @PostMapping("/register")
-    public String register (@RequestParam("account") String account, @RequestParam("password") String password) {
+    public String register(HttpServletRequest httpServletRequest) {
+        Object account=  httpServletRequest.getParameter("account");
+        if ("".equals(account)||account==null)
+            return IssueService.Response("账号为空字段", 100, new JSONObject()).toJSONString();
+        Object password= httpServletRequest.getParameter("password");
+        if ("".equals(password)||password==null)
+            return IssueService.Response("密码为空字段", 100, new JSONObject()).toJSONString();
+        Object email=  httpServletRequest.getParameter("email");
+        if ("".equals(email)||email==null)
+            return IssueService.Response("邮箱为空字段", 100, new JSONObject()).toJSONString();
         logger.info("账号注册");
-        User user=new User();
-        user.setAccount(account);
-        if(userMapper.selectOne(user)!=null)
-            return IssueService.Response("此账号已被注册",100,new JSONObject()).toJSONString();
-        user.setPassword(MD5Utils.MD5Encode(password,"utf-8"));
+        User user = new User();
+        user.setAccount((String)account);
+        if (userMapper.selectOne(user) != null)
+            return IssueService.Response("此账号已被注册", 100, new JSONObject()).toJSONString();
+        tk.mybatis.mapper.entity.Example example = new Example(User.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("email", (String)email);
+        int count = userMapper.selectCountByExample(example);
+        if (count>0)
+            return IssueService.Response("此邮箱已被注册", 100, new JSONObject()).toJSONString();
+        user.setPassword(MD5Utils.MD5Encode((String)password, "utf-8"));
         userMapper.insertSelective(user);
-        return  IssueService.Response("注册成功",0,new JSONObject()).toJSONString();
+        return IssueService.Response("注册成功", 0, new JSONObject()).toJSONString();
     }
 
 
