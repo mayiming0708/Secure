@@ -70,6 +70,7 @@ public class LoginAction {
             request.getSession().setMaxInactiveInterval(60 * 30);
             JSONObject uesrJSON = new JSONObject();
             uesrJSON.put("USERID", result.getId());
+            uesrJSON.put("EMAIL", result.getEmail());
             logger.info("登录成功");
             return IssueService.Response("登录成功", 0, uesrJSON).toJSONString();
         }
