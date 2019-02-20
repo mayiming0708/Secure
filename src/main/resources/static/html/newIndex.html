@@ -90,6 +90,23 @@
 			#tempory-task .flow-img li {
 				height: 78px;
 			}
+			.bug-faq-right{
+				width: 50%;
+			}
+			#bug-type-chart4{
+				width: 100%;
+			}
+			#bug-faq-chart2 div:first-child{
+
+			}
+			#site-faq-chart{
+				width: 100%;
+				height: 100%;
+			}
+			#bug-faq-chart2{
+				width: 100%;
+				height: 100%;
+			}
 		</style>
 	</head>
 
@@ -144,14 +161,27 @@
 									<!-- User image -->
 									<li class="user-header">
 										<img src="/static/image/user2-160x160.jpg" class="img-circle" alt="User Image">
+
+									</li>
+									<!-- Menu Body -->
+									<li class="user-body">
+										<div class="row">
+											<div class="col-xs-4 text-center">
+												<a href="#" class="btn btn-default btn-flat" id="changePassword">修改密码</a>
+											</div>
+											<div class="col-xs-4 text-center">
+												<a href="#" class="btn btn-default btn-flat" id="changeEmail">修改邮箱</a>
+											</div>
+											<div class="col-xs-4 text-center">
+												<a href="#" class="btn btn-default btn-flat" id="signOut">登出</a>
+											</div>
+										</div>
+										<!-- /.row -->
 									</li>
 									<!-- Menu Footer-->
-									<li class="user-footer">
-										<div class="pull-right">
-											<a href="#" class="btn btn-default btn-flat">登出</a>
-										</div>
-									</li>
+
 								</ul>
+
 							</li>
 							<!-- Control Sidebar Toggle Button -->
 							<li>
@@ -371,7 +401,7 @@
 									<!--<li class="pull-left header"><i class="fa fa-inbox"></i> 下发临时任务</li>-->
 								</ul>
 								<div class="tab-content no-padding">
-									<!-- Morris chart - Sales -->
+
 									<div class="chart tab-pane active" id="site-faq" style="position: relative; height: 300px;">
 									<div class="site-faq-left">
 										<div class="info">
@@ -410,8 +440,8 @@
 											</ul>
 										</div>
 									</div>
-										<div class="site-faq-right" id="site-faq-chart">
-											
+										<div class="site-faq-right">
+											<div id="site-faq-chart"></div>
 										</div>
 									</div>
 									<div class="chart tab-pane clearfix" id="bug-faq" style="position: relative; height: 300px;">
@@ -456,8 +486,8 @@
 											</ul>
 										</div>
 										</div>
-										<div class="bug-faq-right" id="bug-faq-chart2">
-											
+										<div class="bug-faq-right">
+											<div id="bug-faq-chart2" style="width: 100%;height: 100%"></div>
 										</div>
 									</div>
 								</div>
@@ -469,18 +499,18 @@
 							<div class="nav-tabs-custom bug-type-left">
 								<ul class="nav nav-tabs pull-right">
 									<li class="active">
-										<a href="#bug-type-chart2" data-toggle="tab">漏洞与安全事件类型风险分布图</a>
+										<a href="#bug-type-chartQ1" data-toggle="tab">漏洞与安全事件类型风险分布图</a>
 									</li>
 									<li>
-										<a href="#bug-type-chart4" data-toggle="tab">漏洞与安全事件风险类型分布图</a>
+										<a href="#bug-type-chartQ2" data-toggle="tab">漏洞与安全事件风险类型分布图</a>
 									</li>
 								</ul>
 								<div class="tab-content no-padding">
-									<div class="chart tab-pane active bug-type-chart2" id="bug-type-chart2" style="position: relative; height: 400px;">
-										
+									<div class="chart tab-pane active bug-type-chart2" id="bug-type-chartQ1" style="position: relative; height: 400px;">
+										<div id="bug-type-chart2" style="width: 100%;height: 100%"></div>
 									</div>
-									<div class="chart tab-pane bug-type-chart4" id="bug-type-chart4" style="position: relative; height: 400px;width: 700px;">
-										
+									<div class="chart tab-pane bug-type-chart4" style="height: 400px;" id="bug-type-chartQ2">
+										<div id="bug-type-chart4" style="width: 100%;height: 100%"></div>
 									</div>
 								</div>
 							</div>
@@ -701,10 +731,14 @@
 					<!-- /.tab-pane -->
 				</div>
 			</aside>
-			<!-- /.control-sidebar -->
-			<!-- Add the sidebar's background. This div must be placed
-       immediately after the control sidebar -->
 			<div class="control-sidebar-bg"></div>
+			<!--修改密码弹窗-->
+			<div class="modal-change-password" id="modalChangePassword"></div>
+			<!--修改密码弹窗背景-->
+			<div class="progress-bg"></div>
+			<!--修改邮箱弹窗-->
+			<div class="modal-change-email" id="modalChangeEmail"></div>
+
 		</div>
 		<!-- ./wrapper -->
 
@@ -747,6 +781,14 @@
             var userId=getCookie("userId");
             //漏洞风险分布图表
 			var bugfaq=echarts.init(document.getElementById('bug-faq-chart2'));
+			//网站风险分布
+			var sitebugfaq = echarts.init(document.getElementById('site-faq-chart'));
+
+			var bugtypechart4 = echarts.init(document.getElementById('bug-type-chart4'));
+
+			var bugtypechart3 = echarts.init(document.getElementById('bug-type-chart3'));
+
+			var bugtypechart2 = echarts.init(document.getElementById('bug-type-chart2'));
 			//设置任务下发的状态
 			var flag=1;
 			$(function() {
@@ -887,9 +929,12 @@
                 //echarts图形添加屏幕自适应
                 window.addEventListener("resize", function () {
                     bugfaq.resize();
+					sitebugfaq.resize();
+					bugtypechart4.resize();
+					bugtypechart3.resize();
+					bugtypechart2.resize();
                 });
-                $(".temporary-task-total .leaktab").click(function(){
-				});
+
 
                 //点击网站历史风险值排名跳转到该网站
 					$(".rank-list li .site-name").click(function(){
@@ -1041,7 +1086,7 @@
 				var count3 = data.map(v => {
 					return v.count3
 				});
-				var myChart = echarts.init(document.getElementById('bug-type-chart2'));
+				// var myChart = echarts.init(document.getElementById('bug-type-chart2'));
 				option = {
 					// title: {
 					// 	text: '漏洞与安全事件风险分布图'
@@ -1112,12 +1157,15 @@
 						}
 					]
 				};
-				myChart.setOption(option);
+				bugtypechart2.clear();
+				bugtypechart2.setOption(option);
+				bugtypechart2.resize();
+				window.onresize = bugtypechart2.resize;
 
 			}
 			// bugTypeChart2();//网站漏洞类型占比
 			function bugTypeChart3(chart3Data,bugTotal) {
-				var myChart = echarts.init(document.getElementById('bug-type-chart3'));
+				// var myChart = echarts.init(document.getElementById('bug-type-chart3'));
 				var colorList = [
                     '#66c5d7', '#11c88c', '#989cff', '#ffa55d', '#9c7de1', '#5d9eff', '#ffdb5d', '#ee82ed', '#8fca5f', '#b995f5'
                 ];
@@ -1240,12 +1288,13 @@
 						data: originalData
 					}]
 				};
-				myChart.setOption(option);
+				bugtypechart3.clear();
+				bugtypechart3.setOption(option);
+				bugtypechart3.resize();
+				window.onresize = bugtypechart3.resize;
 			}
 			// bugTypeChart3();//网站风险饼图
 			function siteFaqChart(highlevel,midlevel,lowlevel,safe){
-				var myChart = echarts.init(document.getElementById('site-faq-chart'));
-
 					var option = {
 						tooltip: {
 							trigger: 'item',
@@ -1310,13 +1359,17 @@
 						],
 						backgroundColor: '#fff'
 					};
-					myChart.setOption(option);
+				sitebugfaq.clear();
+				sitebugfaq.setOption(option,true);
+				sitebugfaq.resize();
+				window.onresize = sitebugfaq.resize;
 			}
 			// siteFaqChart();
 
 			//漏洞风险分布
 			function bugFaqChart(data) {
-
+				$("#bug-faq-chart2").css('width',$("#site-faq-chart").width());
+				$("#bug-faq-chart2").css('height',$("#site-faq-chart").height());
 				// var myChart = echarts.init(document.getElementById('bug-faq-chart2'));
 				//ehcarts重构
 
@@ -1428,8 +1481,11 @@
 			}
 			// bugFaqChart();//漏洞类型风险分布图的图2
 			function bugTypeChart4(data) {
+				$("#bug-type-chart4").css('width',$("#bug-type-chart2").width());
+				$("#bug-type-chart4").css('height',$("#bug-type-chart2").height());
+
 			    var colorList=['#66c5d7', '#11c88c', '#989cff', '#ffa55d', '#9c7de1', '#5d9eff', '#ffdb5d', '#ee82ed', '#8fca5f', '#b995f5'];
-				var bugTypeChart4 = echarts.init(document.getElementById('bug-type-chart4'));
+
 				var blackLinks=[data.blackLinks.high,data.blackLinks.middle,data.blackLinks.low];
 				var cgi=[data.cgi.high,data.cgi.middle,data.cgi.low];
 				var csrf=[data.csrf.high,data.csrf.middle,data.csrf.low];
@@ -1634,7 +1690,10 @@
 						}
 					]
 				};
-				bugTypeChart4.setOption(option);
+				bugtypechart4.clear();
+				bugtypechart4.setOption(option);
+				bugtypechart4.resize();
+				window.onresize = bugtypechart4.resize;
 			}
 			// bugTypeChart4();
 
@@ -1709,9 +1768,10 @@
                         safe=safe+1;
 					}
 				}
-				setCookie('bugFaqChart',data);
-				//漏洞风险分布图
-               	bugFaqChart(data);
+				setCookie("bugFaqData",data);
+
+				// //漏洞风险分布图
+               	 bugFaqChart(data);
 				//漏洞分布图
                 bugTypeChart3(chart3Data,bugTotal);
 				//网站风险图
