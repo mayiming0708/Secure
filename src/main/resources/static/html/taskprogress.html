@@ -435,6 +435,39 @@
 	</footer>
 	<!--修改密码弹窗-->
 	<div class="modal-change-password" id="modalChangePassword"></div>
+	<!--修改邮箱弹窗-->
+	<div class="modal-change-email" id="modalChangeEmail"></div>
+	<!--发送邮件弹窗-->
+	<div class="modal-send-email" id="modalSendEmail">
+		<div class="box box-info">
+			<div class="box-header ui-sortable-handle" style="cursor: move;">
+				<i class="fa fa-envelope"></i>
+
+				<h3 class="box-title">发送邮件</h3>
+				<!-- tools box -->
+				<div class="pull-right box-tools">
+					<button type="button" class="btn btn-info btn-sm" data-toggle="tooltip" title="">
+						<i class="fa fa-times"></i></button>
+				</div>
+				<!-- /. tools -->
+			</div>
+			<div class="box-body">
+				<form action="#" method="post">
+					<div class="form-group">
+						<input type="email" class="form-control" name="emailto" placeholder="收件人:">
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" name="subject" placeholder="主题:">
+					</div>
+				</form>
+				</form>
+			</div>
+			<div class="box-footer clearfix">
+				<button type="button" class="pull-right btn btn-default" id="sendEmail">发送
+					<i class="fa fa-arrow-circle-right"></i></button>
+			</div>
+		</div>
+	</div>
 	<!--修改密码弹窗背景-->
 	<div class="progress-bg"></div>
 </div>
@@ -494,6 +527,11 @@
             height:'400px'
         });
 
+        //取消发送邮箱
+		$("#modalSendEmail .btn-sm").click(function(){
+			$("#modalSendEmail").hide();
+			$(".progress-bg").hide();
+		})
         //table表格初始化
         tableInit(2,'');
         table.bootstrapTable('hideLoading');
@@ -888,7 +926,8 @@
 			// setCookie(taskId,taskId);
 		},
 		"click #emailBtn": function(e, value, row, index) {
-			alert('发送邮件');
+			$("#modalSendEmail").show();
+			$(".progress-bg").show();
 		}
     }
 
