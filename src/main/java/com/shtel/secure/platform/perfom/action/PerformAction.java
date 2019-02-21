@@ -71,9 +71,9 @@ public class PerformAction {
     }
 
     @PostMapping("/sendMail")
-    public JSONObject sendMail(@RequestParam("senderAddress") String senderAddress,@RequestParam("content") String content ){
+    public JSONObject sendMail(@RequestParam("address") String address,@RequestParam("content") String content ){
         try{
-            EmailUtil.sendMail("kobe_competition@163.com","QQQ332211","kobe_competition@163.com",senderAddress,content,"webSock");
+            EmailUtil.sendMail("kobe_competition@163.com","QQQ332211","kobe_competition@163.com",address,content,"webSock");
             return IssueService.Response("发送邮件成功", 0, new JSONObject());
         }catch (Exception e){
             return IssueService.Response("发送邮件失败", 100, new JSONObject());
