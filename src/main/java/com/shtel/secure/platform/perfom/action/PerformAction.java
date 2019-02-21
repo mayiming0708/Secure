@@ -1,8 +1,10 @@
 package com.shtel.secure.platform.perfom.action;
 
 import com.alibaba.fastjson.JSONObject;
+import com.shtel.secure.platform.issue.service.IssueService;
 import com.shtel.secure.platform.perfom.model.PerformReq;
 import com.shtel.secure.platform.perfom.service.PerformService;
+import com.shtel.secure.utils.EmailUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,5 +68,15 @@ public class PerformAction {
     @PostMapping("/getWebetailDesc")
     public JSONObject getWebetailDesc(@RequestParam("url")String url){
         return performService.getWebDetailListDESC(url);
+    }
+
+    @PostMapping("/sendMail")
+    public JSONObject sendMail(@RequestParam("senderAddress") String senderAddress,@RequestParam("content") String content ){
+        try{
+            EmailUtil.sendMail("kobe_competition@163.com","QQQ332211","kobe_competition@163.com",senderAddress,content,"webSock");
+            return IssueService.Response("发送邮件成功", 0, new JSONObject());
+        }catch (Exception e){
+            return IssueService.Response("发送邮件失败", 100, new JSONObject());
+        }
     }
 }
