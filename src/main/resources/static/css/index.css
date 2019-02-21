@@ -406,7 +406,7 @@ ul.rank-list{
     color: steelblue;
 }
 .bug-faq-right{
-	width: 240px;
+	width: 50%;
 	height: 300px;
 	float: right;
 }
@@ -1088,3 +1088,100 @@ button.close{
 	background-color: #6bbae8;
 	color: #fff;
 }
+#bug-faq{
+	width: 100%;
+}
+/*修改密码弹框*/
+.progress-bg{
+	display: none;
+	z-index: 2000;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,.4);
+}
+.modal-change-password{
+	display: none;
+	z-index: 2001;
+	position: absolute;
+	top: 22%;
+	left: 0;
+	right: 0;
+}
+.change-password-table{
+	width: 100%;
+
+}
+.change-password-table tr{
+	height: 50px;
+}
+.change-password-table tr td:nth-child(1){
+	width: 30%;
+	text-align: right;
+}
+.change-password-table tr td:nth-child(2){
+	width: 40%;
+	text-align: center;
+}
+.change-password-table tr td:nth-child(3){
+	width: 30%;
+}
+.change-password-table td input{
+	width: 90%;
+}
+.error-msg1{
+	display: none;
+	color: red;
+	text-align: center;
+}
+/*修改密码弹框end*/
+
+/*修改邮箱弹窗start*/
+.modal-change-email{
+	display: none;
+	z-index: 2001;
+	position: absolute;
+	top: 22%;
+	left: 0;
+	right: 0;
+}
+.change-email-table{
+	width: 100%;
+
+}
+.change-email-table tr{
+	height: 50px;
+}
+.change-email-table tr td:nth-child(1){
+	width: 30%;
+	text-align: right;
+}
+.change-email-table tr td:nth-child(2){
+	width: 40%;
+	text-align: center;
+}
+.change-email-table tr td:nth-child(3){
+	width: 30%;
+}
+.change-email-table td input{
+	width: 90%;
+}
+.error-msg1{
+	display: none;
+	color: red;
+	text-align: center;
+}
+/*修改邮箱弹窗end*/
+
+/*发送邮件弹窗start*/
+.modal-send-email{
+	display: none;
+	z-index: 2001;
+	position: absolute;
+	top: 22%;
+	left: 40%;
+	right: 0;
+	width: 20%;
+}
+/*发送邮件弹窗end*/
