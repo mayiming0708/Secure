@@ -553,7 +553,7 @@ button.close{
 	color: #333;
 }
 .site-detail-total.content-wrapper {
-	padding: 20px 115px;
+	padding: 1vw 4vw;
 	margin-left: 0;
 }
 .box.site-summary-item{
@@ -647,7 +647,7 @@ button.close{
 .task-type-progress select{
 	/*height: 25px;*/
     line-height: 25px;
-    margin-left: 10px;
+    margin-left: 0;
     border-radius: 5px;
 }
  .cover{
@@ -1105,7 +1105,7 @@ button.close{
 	display: none;
 	z-index: 2001;
 	position: absolute;
-	top: 22%;
+	top: 13%;
 	left: 0;
 	right: 0;
 }
@@ -1142,7 +1142,7 @@ button.close{
 	display: none;
 	z-index: 2001;
 	position: absolute;
-	top: 22%;
+	top: 13%;
 	left: 0;
 	right: 0;
 }
@@ -1166,6 +1166,7 @@ button.close{
 }
 .change-email-table td input{
 	width: 90%;
+	-webkit-appearance: none;
 }
 .error-msg1{
 	display: none;
@@ -1185,3 +1186,12 @@ button.close{
 	width: 20%;
 }
 /*发送邮件弹窗end*/
+/*任务详情页头部修改*/
+.task-detail .nav-tabs .header{
+	margin-right: 0;
+}
+.task-detail #btn-html2canvas{
+	height: 34px;
+	line-height: 34px;
+	border-radius: 5px;
+}
