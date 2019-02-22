@@ -91,7 +91,6 @@
 				height: 78px;
 			}
 			.bug-faq-right{
-				width: 50%;
 			}
 			#bug-type-chart4{
 				width: 100%;
@@ -272,7 +271,7 @@
 							<!-- small box -->
 							<div class="small-box bg-aqua">
 								<div class="inner">
-									<h3><span>150</span><sup style="font-size: 20px">次</sup></h3>
+									<h3><span>0</span><sup style="font-size: 20px">次</sup></h3>
 
 									<p>下发任务次数</p>
 								</div>
@@ -287,7 +286,7 @@
 							<!-- small box -->
 							<div class="small-box bg-green">
 								<div class="inner">
-									<h3><span>53</span><sup style="font-size: 20px">个</sup></h3>
+									<h3><span>0</span><sup style="font-size: 20px">个</sup></h3>
 
 									<p>检测网站个数</p>
 								</div>
@@ -302,7 +301,7 @@
 							<!-- small box -->
 							<div class="small-box bg-yellow">
 								<div class="inner">
-									<h3><span>44</span><sup style="font-size: 20px">个</sup></h3>
+									<h3><span>0</span><sup style="font-size: 20px">个</sup></h3>
 
 									<p>漏洞与安全事件个数</p>
 								</div>
@@ -317,7 +316,7 @@
 							<!-- small box -->
 							<div class="small-box bg-red">
 								<div class="inner">
-									<h3><span>65</span><sup style="font-size: 20px">s</sup></h3>
+									<h3><span>0</span><sup style="font-size: 20px">s</sup></h3>
 
 									<p>平均检索时间</p>
 								</div>
@@ -332,12 +331,12 @@
 					<div class="row">
 						<section class="col-lg-6 connectedSortable">
 							<div class="box box-success  check-site">
-									<div class="check-site-title">
+									<div class="check-site-title col-md-2">
 										<span>下发任务</span>
 										<i class="fa fa-map-o"></i>
 									</div>
-										<div class="check-site-chart">
-											<div class="chart tab-pane active temporary-task-total" id="tempory-task" style="position: relative; height: 343px;">
+										<div class="check-site-chart col-md-10">
+											<div class="chart tab-pane active temporary-task-total" id="tempory-task" style="position: relative;">
 										<div class="left-part">
 											<div class="form-groups" id="task-type">
 												<label for="name">任务类型<p class="prompt"></p></label>
@@ -398,50 +397,50 @@
 								</ul>
 								<div class="tab-content no-padding">
 
-									<div class="chart tab-pane active" id="site-faq" style="position: relative; height: 300px;">
-									<div class="site-faq-left">
+									<div class="chart tab-pane active" id="site-faq" style="position: relative; ">
+									<div class="site-faq-left col-md-6">
 										<div class="info">
 											<p class="title">网站历史风险值排名</p>
 											<ul class="rank-list">
 												<li class="clearfix top1"><img src="/static/image/canteen-top1.png">
 													<div class="center">
-														<div class="site-name">http://testphp.vulnweb.com</div>
+														<div class="site-name"></div>
 													</div>
 													<div class="progress" style="display: none;">
-														<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
+														<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
 															<span class="sr-only">40% 完成</span>
 														</div>
-													</div><span class="score">68</span>
+													</div><span class="score"></span>
 												</li>
 													<li class="clearfix top2"><img src="/static/image/canteen-top2.png">
 													<div class="center">
-														<div class="site-name">http://testphp.vulnweb.com</div>
+														<div class="site-name"></div>
 													</div>
 													<div class="progress"  style="display: none;">
-														<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
+														<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
 															<span class="sr-only">40% 完成</span>
 														</div>
-													</div><span class="score">65</span>
+													</div><span class="score">0</span>
 												</li>
 													<li class="clearfix top3"><img src="/static/image/canteen-top3.png">
 													<div class="center">
-														<div class="site-name">http://testphp.vulnweb.com</div>
+														<div class="site-name">--</div>
 													</div>
 													<div class="progress" style="display: none;">
-														<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
+														<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
 															<span class="sr-only">40% 完成</span>
 														</div>
-													</div><span class="score">60</span>
+													</div><span class="score"></span>
 												</li>
 											</ul>
 										</div>
 									</div>
-										<div class="site-faq-right">
+										<div class="site-faq-right col-md-6">
 											<div id="site-faq-chart"></div>
 										</div>
 									</div>
-									<div class="chart tab-pane clearfix" id="bug-faq" style="position: relative; height: 300px;">
-										<div class="bug-faq-left">
+									<div class="chart tab-pane clearfix" id="bug-faq" style="position: relative;">
+										<div class="bug-faq-left col-md-6">
 											<div class="info">
 											<p class="title">高危漏洞安全事件类型排名</p>
 											<ul class="bug-rank-list">
@@ -482,7 +481,7 @@
 											</ul>
 										</div>
 										</div>
-										<div class="bug-faq-right">
+										<div class="bug-faq-right col-md-6">
 											<div id="bug-faq-chart2" style="width: 100%;height: 100%"></div>
 										</div>
 									</div>
@@ -1486,6 +1485,7 @@
 				var cgi=[data.cgi.high,data.cgi.middle,data.cgi.low];
 				var csrf=[data.csrf.high,data.csrf.middle,data.csrf.low];
 				var formCrack=[data.formCrack.high,data.formCrack.middle,data.formCrack.low];
+				console.log(formCrack);
 				var infoLeak=[data.infoLeak.high,data.infoLeak.middle,data.infoLeak.low];
 				var keyword=[data.keyword.high,data.keyword.middle,data.keyword.low];
 				var malscan=[data.malscan.high,data.malscan.middle,data.malscan.low];
@@ -1622,7 +1622,7 @@
                             itemStyle:{
                                 color:colorList[5]
                             },
-							data: [24,216,60]
+							data: webvul
 						},
                         {
                             name: '信息泄露',
