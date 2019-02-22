@@ -26,7 +26,7 @@
 		<link rel="stylesheet" type="text/css" href="/static/css/dataTables.bootstrap.min.css" />
 		<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-table.css" />
 		<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-select.min.css" />
-		<link rel="stylesheet" href="/static/iconfont/iconfont2.css">
+		<link rel="stylesheet" href="/static/iconfont/iconfon.css">
 
 		<!-- Google Font -->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
@@ -478,6 +478,10 @@
 			var infoLeakTable=$("#infoLeakTable");
 			var blackLinkTable=$("#blackLinksTable");
 			var appTable=$("#app-table");
+			//绘制综述中饼图
+			var summarychart = echarts.init(document.getElementById('site-summary-content-chart'));
+			//综述中趋势图
+			var trendChart = echarts.init(document.getElementById('site-summary-content-table'));
 			$(function(){
                 judgeCookie();
 				//综述中图表
@@ -510,7 +514,12 @@
 					}else{
                         content.hide();
 					}
-				})
+				});
+				//echarts图形添加屏幕自适应
+				window.addEventListener("resize", function () {
+					trendChart.resize();
+					summarychart.resize();
+				});
 
 			});
             function GetQueryString(name) {
@@ -604,7 +613,7 @@
 			}
 			//绘制综述中饼图
 			function summaryChart(data){
-                var myChart = echarts.init(document.getElementById('site-summary-content-chart'));
+
                var option = {
                    title:{
                        text:'风险分布图',
@@ -666,7 +675,10 @@
                         }
                     ]
                 };
-                myChart.setOption(option);
+				summarychart.clear();
+				summarychart.setOption(option);
+				summarychart.resize();
+				window.onresize = summarychart.resize;
 			}
 			//绘制综述检测网站趋势图
 			function trend(data){
@@ -683,7 +695,7 @@
                     low.push(data[i].riskLowCount);
                     score.push(data[i].score);
 				}
-                var myChart = echarts.init(document.getElementById('site-summary-content-table'));
+                // var myChart = echarts.init(document.getElementById('site-summary-content-table'));
                 // var xData=['2018-09-01 10:20:30','2018-09-10 10:20:30','2018-09-20 10:20:30','2018-10-02 10:20:30','2018-10-03 10:20:30'];
                 var option = {
                     // backgroundColor: "#344b58",
@@ -882,7 +894,10 @@
                         },
                     ]
                 }
-                myChart.setOption(option);
+				trendChart.clear();
+				trendChart.setOption(option);
+				trendChart.resize();
+				window.onresize = trendChart.resize;
 			}
 			//漏洞与安全事件列表
 			function getweakList(data){
