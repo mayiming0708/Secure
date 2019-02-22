@@ -21,7 +21,7 @@ public class WebMvcConfg implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/index", "/login/**", "/api/**", "/jsp/**", "/ws/index","/ws/register", "/ws/registerAccount","/static/**", "/websock-server/**", "/swagger-ui.html", "/error", "/sock/**", "/webjars/**", "/swagger-resources/**")
                 //测试时使用，结束后删除
-                .excludePathPatterns("/perform/**", "/service/**");
+                .excludePathPatterns("/service/**");
     }
 
     @Override
