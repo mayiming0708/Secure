@@ -5,6 +5,7 @@ import com.shtel.secure.platform.finishType.model.FinishType;
 import com.shtel.secure.platform.finishType.service.FinishTypeService;
 import com.shtel.secure.platform.issue.model.Task;
 import com.shtel.secure.platform.issue.service.IssueService;
+import com.shtel.secure.platform.receive.service.ResultEventService;
 import io.swagger.annotations.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -134,10 +135,17 @@ public class IssueAction {
         }
         return validateResponse.toString();
     }
-
+    @Autowired
+    private ResultEventService resultEventService;
     @PostMapping("/ws/test")
-    public JSONObject test(@RequestParam("virtual_group_id") String virtual_group_id ) {
-       return issueService.updateFinishRate(virtual_group_id);
+    public String test() {
+        logger.info("发送信息");
+        Task taskData=issueService.getTaskById(1);
+        resultEventService.sendFinishMail("513545491@qq.com",taskData.getCreateTime().toString(),taskData.getUpdateTime().toString());
+        resultEventService.sendSMS("15882373858",taskData.getCreateTime().toString(),taskData.getUpdateTime().toString());
+        return "操作成功";
     }
+
+
 
 }

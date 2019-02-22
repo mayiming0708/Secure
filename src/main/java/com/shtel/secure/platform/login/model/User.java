@@ -24,6 +24,7 @@ public class User {
     private Date createTime;
     private Date updateTime;
     private String email;
+    private String phoneNum;
 
     public Integer getId() {
         return id;
@@ -72,4 +73,8 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getPhoneNum() { return phoneNum; }
+
+    public void setPhoneNum(String phoneNum) {this.phoneNum = phoneNum; }
 }

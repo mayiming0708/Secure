@@ -69,4 +69,8 @@ public class SMSUtil {
         return result;
     }
 
+    public static void main(String[] args) {
+        sendMessage("chenpio","d41d8cd98f00b204e980","15882373858","您下发的任务已完成，请登录网站查看");
+    }
+
 }

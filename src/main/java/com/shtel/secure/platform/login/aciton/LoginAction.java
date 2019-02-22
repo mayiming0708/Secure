@@ -111,6 +111,9 @@ public class LoginAction {
         Object email = httpServletRequest.getParameter("email");
         if ("".equals(email) || email == null)
             return IssueService.Response("邮箱为空字段", 100, new JSONObject()).toJSONString();
+        Object phoneNum = httpServletRequest.getParameter("phoneNum");
+        if ("".equals(phoneNum) || email == null)
+            return IssueService.Response("手机号为空字段", 100, new JSONObject()).toJSONString();
         logger.info("账号注册");
         User user = new User();
         user.setAccount((String) account);
@@ -123,6 +126,8 @@ public class LoginAction {
         if (count > 0)
             return IssueService.Response("此邮箱已被注册", 100, new JSONObject()).toJSONString();
         user.setPassword(MD5Utils.MD5Encode((String) password, "utf-8"));
+        user.setEmail((String)email);
+        user.setPhoneNum((String)phoneNum);
         userMapper.insertSelective(user);
         return IssueService.Response("注册成功", 0, new JSONObject()).toJSONString();
     }

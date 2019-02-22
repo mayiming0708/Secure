@@ -313,4 +313,8 @@ public class IssueService {
         criteria.andEqualTo("userId", userId);
         return taskMapper.selectByExample(example);
     }
+
+    public Task getTaskById(Integer taskId){
+        return taskMapper.selectByPrimaryKey(taskId);
+    }
 }

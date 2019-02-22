@@ -322,7 +322,9 @@ public class ReceiveAction {
 
 
             if (task.getFinishRate() == 1.00) {
-                resultEventService.sendFinishMail(user.getEmail());
+                Task taskData=issueService.getTaskById(oneJsonObject.getInteger("task_id"));
+                resultEventService.sendFinishMail(user.getEmail(),taskData.getCreateTime().toString(),taskData.getUpdateTime().toString());
+                resultEventService.sendSMS(user.getPhoneNum(),taskData.getCreateTime().toString(),taskData.getUpdateTime().toString());
             }
             resultEventService.updateResultLevelCount(resultLevelCount);
         } catch (Exception e) {

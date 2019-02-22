@@ -14,6 +14,7 @@ import com.shtel.secure.platform.receive.model.mapper.ResultLevelCountMapper;
 import com.shtel.secure.platform.receive.model.mapper.TempMapper;
 import com.shtel.secure.utils.EmailUtil;
 import com.shtel.secure.utils.ResultUtil;
+import com.shtel.secure.utils.SMSUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,10 @@ public class ResultEventService {
     private String accout;
     @Value("${email.password}")
     private String password;
+    @Value("${phone.uid}")
+    private String uid;
+    @Value("${phone.key}")
+    private String key;
 
     public int insert(String value) {
         Temp temp = new Temp();
@@ -104,13 +109,22 @@ public class ResultEventService {
     }
 
 
-    public String sendFinishMail(String receiveAddress) {
+    public String sendFinishMail(String receiveAddress,String startAt,String endAt) {
         try {
-            EmailUtil.sendMail(accout, password, accout, receiveAddress, "您下发的任务已完成，请登录网站查看", "网站监测任务已完成");
+            EmailUtil.sendMail(accout, password, accout, receiveAddress, "您于"+startAt+"下发的任务已于"+endAt+"完成，请登录网站查看", "webSock网站监测任务已完成");
             return ResultUtil.Result(EnumType.SUCCESS);
         } catch (Exception e) {
             return ResultUtil.Result(EnumType.EMAIL_ERROR);
         }
+    }
+
+    public String sendSMS(String smsMob, String startAt,String endAt){
+       try{
+        SMSUtil.sendMessage(uid,key,smsMob,"您于"+startAt+"下发的任务已于"+endAt+"完成，请登录网站查看");
+           return ResultUtil.Result(EnumType.SUCCESS);
+       }catch (Exception e){
+           return ResultUtil.Result(EnumType.EMAIL_ERROR);
+       }
     }
 
     public int insertResultLevelCount(ResultLevelCount resultLevelCount) {
