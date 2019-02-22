@@ -94,6 +94,9 @@
 		#tempory-task .flow-img li {
 			height: 78px;
 		}
+		.icon-youxiang{
+			font-size: 20px;
+		}
 	</style>
 </head>
 
@@ -149,35 +152,24 @@
 							<li class="user-header">
 								<img src="/static/image/user2-160x160.jpg" class="img-circle" alt="User Image">
 
-								<p>
-									Alexander Pierce - Web Developer
-									<small>Member since Nov. 2012</small>
-								</p>
 							</li>
 							<!-- Menu Body -->
 							<li class="user-body">
 								<div class="row">
 									<div class="col-xs-4 text-center">
-										<a href="#">Followers</a>
+										<a href="#" class="btn btn-default btn-flat" id="changePassword">修改密码</a>
 									</div>
 									<div class="col-xs-4 text-center">
-										<a href="#">Sales</a>
+										<a href="#" class="btn btn-default btn-flat" id="changeEmail">修改邮箱</a>
 									</div>
 									<div class="col-xs-4 text-center">
-										<a href="#">Friends</a>
+										<a href="#" class="btn btn-default btn-flat" id="signOut">登出</a>
 									</div>
 								</div>
 								<!-- /.row -->
 							</li>
 							<!-- Menu Footer-->
-							<li class="user-footer">
-								<div class="pull-left">
-									<a href="#" class="btn btn-default btn-flat">Profile</a>
-								</div>
-								<div class="pull-right">
-									<a href="#" class="btn btn-default btn-flat">Sign out</a>
-								</div>
-							</li>
+
 						</ul>
 					</li>
 					<!-- Control Sidebar Toggle Button -->
@@ -405,6 +397,28 @@
 				</div>
 			</div>
 		</div>
+		<div class="modal fade in" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="display: none;">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" style="margin-top: 170px;">
+					<div class="modal-body" style="overflow: hidden ;">
+						<button type="button" class="close" aria-label="Close"><span aria-hidden="true">×</span></button>
+
+
+
+						<div class="cover">
+
+						</div>
+						<div class="pop-alert">
+							<div class="title"><i class="fa fa-warning"></i><span></span></div>
+							<div class="pop-alert-content">
+
+							</div>
+							<button type="button" class="btn btn-block btn-primary btn-flat">确定</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
 	</div>
 	<div class="deletecover"></div>
@@ -419,6 +433,43 @@
 		</div>
 		<strong>©2019 All right reserved. 陇ICP备18001310号-2</strong>
 	</footer>
+	<!--修改密码弹窗-->
+	<div class="modal-change-password" id="modalChangePassword"></div>
+	<!--修改邮箱弹窗-->
+	<div class="modal-change-email" id="modalChangeEmail"></div>
+	<!--发送邮件弹窗-->
+	<div class="modal-send-email" id="modalSendEmail">
+		<div class="box box-info">
+			<div class="box-header ui-sortable-handle" style="cursor: move;">
+				<i class="fa fa-envelope"></i>
+
+				<h3 class="box-title">发送邮件</h3>
+				<!-- tools box -->
+				<div class="pull-right box-tools">
+					<button type="button" class="btn btn-info btn-sm" data-toggle="tooltip" title="">
+						<i class="fa fa-times"></i></button>
+				</div>
+				<!-- /. tools -->
+			</div>
+			<div class="box-body">
+				<form action="#" method="post">
+					<div class="form-group">
+						<input type="email" class="form-control" name="emailto" placeholder="收件人:">
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" name="subject" placeholder="主题:">
+					</div>
+				</form>
+				</form>
+			</div>
+			<div class="box-footer clearfix">
+				<button type="button" class="pull-right btn btn-default" id="sendEmail">发送
+					<i class="fa fa-arrow-circle-right"></i></button>
+			</div>
+		</div>
+	</div>
+	<!--修改密码弹窗背景-->
+	<div class="progress-bg"></div>
 </div>
 <!-- ./wrapper -->
 
@@ -476,6 +527,11 @@
             height:'400px'
         });
 
+        //取消发送邮箱
+		$("#modalSendEmail .btn-sm").click(function(){
+			$("#modalSendEmail").hide();
+			$(".progress-bg").hide();
+		})
         //table表格初始化
         tableInit(2,'');
         table.bootstrapTable('hideLoading');
@@ -843,9 +899,10 @@
     //创建按钮并给按钮添加事件
     function AddFunctionAlty(value, row, index) {
         return ['<button id="deleteBtn" type="button" class="btn btn-danger">删除</button>&nbsp;&nbsp',
-            '<button id="detailBtn" type="button" class="btn  btn-warning">查看详情</button>'
+            '<button id="detailBtn" type="button" class="btn  btn-warning">查看详情</button>','<i class="iconfont icon-youxiang" id="emailBtn" style="margin-left:20px;cursor: pointer"></i>'
         ].join("");
     }
+
     window.operateEvents = {
         "click #deleteBtn": function(e, value, row, index) {
 			//调用删除任务接口
@@ -862,12 +919,18 @@
 			})
 
         },
-        "click #detailBtn": function(e, value, row, index) {
-            // var taskId=row.virtualGroupId;
-                window.location.href = "taskdetail?id="+row.virtualGroupId+"&isPeriod="+row.isPeriod;
-            // setCookie(taskId,taskId);
-        }
+
+		"click #detailBtn": function(e, value, row, index) {
+			// var taskId=row.virtualGroupId;
+			window.location.href = "taskdetail?id="+row.virtualGroupId+"&isPeriod="+row.isPeriod;
+			// setCookie(taskId,taskId);
+		},
+		"click #emailBtn": function(e, value, row, index) {
+			$("#modalSendEmail").show();
+			$(".progress-bg").show();
+		}
     }
+
 
 
 	//调用结果

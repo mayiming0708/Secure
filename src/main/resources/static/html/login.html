@@ -78,15 +78,15 @@
 						</div>
 						<div class="info clearfix">
 							<label id="user_save">
-                        <span class="auto"><i class="iconfont icon-fuxuankuang1" name='user_save' onkeydown=""></i>注册账号</span>
+                        <span class="auto" style="text-decoration: underline">注册账号</span>
 
                        <!-- <input  id="user_save" name="user_save" type="checkbox" onkeydown="EnterPress(event)" placeholder="记住账号">-->
 
                        <!--   <span class="forget"><a href="javascript:;">忘记密码</a></span> -->
 
                     </label>
-                    						<label id="user_forget">
-                        <span class="auto"><i class="iconfont icon-fuxuankuang1" name='user_save' onkeydown=""></i>忘记密码</span>
+                    					 	<label id="user_forget">
+                        <span class="auto"  style="text-decoration: underline">忘记密码</span>
 
                        <!-- <input  id="user_save" name="user_save" type="checkbox" onkeydown="EnterPress(event)" placeholder="记住账号">-->
 
@@ -131,6 +131,12 @@
 		 			}
 				})
 			});
+
+			//点击注册按钮 跳转到注册页面
+			$("#user_save").click(function(){
+				window.location.href="register";
+			})
+
 		})
 		
 		//点击登录按钮
@@ -147,17 +153,20 @@
 				}else{
 					$.ajax({
 						type:"post",
-						url:"http://localhost/login/loginIndex",
+						url:"/login/loginIndex",
 						 data:{ "account":u_name,"password":u_pwd},
 						 xhrFields: {withCredentials: true},
         				dataType: "json",
 						async:true,
 						success:function(data){
 							if(data.code==0){
+								console.log(data);
                                 setCookie("username",u_name);
 								var userId=data.content.USERID;
+								var email=data.content.EMAIL;
 								console.log(userId);
                                 setCookie("userId",userId);
+								setCookie("email",email);
                                 window.location.href="newIndex";
 							}else{
 								$('.errormessege').html(data.message);

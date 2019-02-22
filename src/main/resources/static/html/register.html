@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>管理平台</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/iconfont/iconfont2.css" />
+    <!--<link rel="stylesheet" type="text/css" href="/static/iconfont/iconfont1.css" />-->
+    <link rel="stylesheet" type="text/css" href="/static/css/style02.css" />
+    <style>
+        .service .header{
+            background-color: transparent;
+        }
+        .content.service .divleft .title {
+            width: 37%;
+            float: right;
+            font-size: 30px;
+            color: #fff;
+            /* font-size: 50px; */
+            line-height: 48px;
+            margin-top: 30%;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .service .divleft {
+            padding-right: 0;
+            padding-top: 0;
+        }
+
+        .service .divright {
+            padding-left: 4vw;
+        }
+        .wrapper img{
+            padding: 0.5vh 1vh;
+        }
+        .service .form-groups .info{
+            margin-top: 5px;
+        }
+        #user_forget{
+            float: right;
+        }
+        .service .form-groups .prompt{
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="content service">
+<div class="header">
+    <div class="wrapper">
+        <!--<p class="logo"><img src="image/logo011.png" alt=""></p>-->
+        <img src="/static/image/logo.png" alt="">
+    </div>
+</div>
+<div class="section clearfix">
+    <div class="divleft">
+        <!--<p class="imgs"><img  src="image/imf.png" alt=""></p>-->
+        <div class="title">
+            基于WebSock的网站安全监测应用
+        </div>
+    </div>
+    <div class="divright">
+        <div class="form-groups">
+            <form method="post" name="registerForm" action="">
+                <p class="title">注册</p>
+                <div class="form-group">
+                    <label for="registername"><i class="iconfont icon-yonghuguanli user"></i></label>
+                    <input class="form-control" id="registername" maxlength="20" name="registername" type="text" placeholder="请输入用户名">
+                    <span class="clear"><i class="iconfont icon-guanbi"></i></span>
+                    <input id="loginposition" name="loginposition" type="hidden" value="1">
+                </div>
+                <div class="form-group">
+                    <label for="password"><i class="iconfont icon-mima"></i></label>
+                    <i class="password"></i>
+                    <input class="form-control" id="password" name="password" maxlength="20" type="password" onkeydown="" autocomplete="off" placeholder="请输入密码">
+                    <span class="clear"><i class="iconfont icon-guanbi"></i></span>
+                </div>
+                <div class="form-group">
+                    <label for="repassword"><i class="iconfont icon-mima"></i></label>
+                    <i class="password"></i>
+                    <input class="form-control" id="repassword" name="repassword" maxlength="20" type="password" onkeydown="" autocomplete="off" placeholder="请输入确认密码">
+                    <span class="clear"><i class="iconfont icon-guanbi"></i></span>
+                </div>
+                <div class="form-group">
+                    <label for="email"><i class="iconfont icon-youxiang"></i></label>
+                    <i class="password"></i>
+                    <input class="form-control" id="email" name="email"  type="text" onkeydown="" autocomplete="off" placeholder="请输入邮箱">
+                    <span class="clear"><i class="iconfont icon-guanbi"></i></span>
+                </div>
+                <p class="prompt errormessege">
+
+                </p>
+                <div class="btns" style="width: 48%;float: left">
+                    <input onclick="registerUser()" type="button" class="submit btn-login" value="注 册">
+                </div>
+                <div class="btns returnBtns" style="width: 48%;float: right">
+                    <input type="button" class="submit btn-login" value="返 回">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="copyRight">
+    <!-- 2016 上海理想信息产业（集团）有限公司  版权所有-->中国电信股份有限公司上海公司</div>
+</body>
+
+<!--<script src="js/verifyCode.js" type="text/javascript"></script>-->
+<!--<script src="js/shortcutfunc.js" type="text/javascript"></script>-->
+<!--<script src="js/validate.js" type="text/javascript"></script>-->
+<!--<script src="js/cookie.js" type="text/javascript"></script>-->
+<script src="/static/js/jquery-3.3.1.min.js"></script>
+<script src="/static/js/common.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+
+    var ipt=$(".form-control");
+    var prompt=$(".prompt");
+    $(function(){
+        $("input").focus(function(){
+            prompt.html('');
+        });
+        //点击返回按钮 重定向至登陆页
+        $(".returnBtns").click(function(){
+            window.location.href='index';
+        })
+    })
+
+    //点击注册按钮
+    function registerUser(){
+        var registerName=$("#registername").val();
+        var password=$("#password").val();
+        var repassword=$("#repassword").val();
+        var email=$("#email").val();
+        var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
+        if(registerName==''||registerName==null||registerName==undefined){
+            prompt.html('请输入用户名');
+            return false;
+        }
+
+        if(password==''||password==null||password==undefined){
+            prompt.html('请输入密码');
+            return false;
+        }
+        if(!(repassword===password)){
+            prompt.html('两次密码不一致，请重新输入');
+            return false;
+        }
+        if(email==''||email==null||email==undefined){
+            prompt.html('请输入邮箱');
+            return false;
+         }
+        if(!reg.test(email)){
+            prompt.html('请输入正确的邮箱');
+            return false;
+        }
+        registerquest(registerName,password,email);
+    }
+
+    //注册校验后ajax请求
+    function registerquest(account,password,email){
+        $.ajax({
+            type:"post",
+            url:"/login/register ",
+            data:{ "account":account,"password":password,"email":email},
+            xhrFields: {withCredentials: true},
+            dataType: "json",
+            async:true,
+            success:function(data){
+                if(data.code==0){
+                 alert('注册成功');
+                 window.location.href='index'
+                }
+                if(data.code==100){
+                    prompt.html('该账号已被注册');
+                }
+            }
+        });
+    }
+</script>
+
+</html>
