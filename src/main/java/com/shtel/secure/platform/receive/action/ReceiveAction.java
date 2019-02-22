@@ -167,8 +167,9 @@ public class ReceiveAction {
                             Risk risk = riskService.getRisk(type.getRiskLevelId());
                             if (risk == null) {
                                 Integer total = jsonObject.getJSONObject("value").getInteger("total");
-                                if (total != null)
+                                if (total != null) {
                                     finishType.setRiskUrlCount(finishType.getRiskUrlCount() + total);
+                                }
                             } else {
                                 riskLevel = risk.getLevel();
                             }
@@ -298,6 +299,8 @@ public class ReceiveAction {
                             }
                             finishType.setFormCrack(finishType.getFormCrack() + 1);
                             break;
+                            default:
+                                break;
                     }
                     resultValues.add(jsonObject);
 

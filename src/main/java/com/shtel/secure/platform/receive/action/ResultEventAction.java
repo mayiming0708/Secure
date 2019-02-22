@@ -2,6 +2,8 @@ package com.shtel.secure.platform.receive.action;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.shtel.secure.platform.finishType.service.FinishTypeService;
 import com.shtel.secure.platform.receive.model.ResultEvent;
 import com.shtel.secure.platform.receive.model.ResultLevelCount;
@@ -98,10 +100,13 @@ public class ResultEventAction {
     })
     @RequestMapping(value = "/user/resultEvents", method = RequestMethod.GET)
     public Map<String, Object> resultEventByUserIdAndUrl(@RequestParam Integer userId, @RequestParam(required = false) String url) {
+//        PageHelper.startPage(1, 10);
         List<ResultEvent> resultEvents = resultEventService.getResultEventsByUserIdAndUrl(userId, url);
 
         Map<String, Object> map = new HashMap<>();
         map.put("resultEvent", resultEvents);
+//        PageInfo<ResultEvent> pageInfo = new PageInfo<>(resultEvents);
+//        map.put("resultEvent", pageInfo);
         ResultLevelCount resultLevelCount = new ResultLevelCount();
         resultLevelCount.setUserId(userId);
 
@@ -209,6 +214,8 @@ public class ResultEventAction {
                         } else if (riskLevel >= lowLevel) {
                             resultLevelCount.setFormCrackLow(resultLevelCount.getFormCrackLow() + 1);
                         }
+                        break;
+                    default:
                         break;
                 }
             }
