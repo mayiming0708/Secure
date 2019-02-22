@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <title>管理平台</title>
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="/static/iconfont/iconfont2.css" />
+    <link rel="stylesheet" type="text/css" href="/static/iconfont/iconfon.css" />
     <!--<link rel="stylesheet" type="text/css" href="/static/iconfont/iconfont1.css" />-->
     <link rel="stylesheet" type="text/css" href="/static/css/style02.css" />
     <style>
@@ -90,6 +90,12 @@
                     <input class="form-control" id="email" name="email"  type="text" onkeydown="" autocomplete="off" placeholder="请输入邮箱">
                     <span class="clear"><i class="iconfont icon-guanbi"></i></span>
                 </div>
+                <div class="form-group">
+                    <label for="telephone"><i class="iconfont icon-shouji"></i></label>
+                    <i class="password"></i>
+                    <input class="form-control" id="telephone" name="telephone"  type="text" onkeydown="" autocomplete="off" placeholder="请输入手机号码">
+                    <span class="clear"><i class="iconfont icon-guanbi"></i></span>
+                </div>
                 <p class="prompt errormessege">
 
                 </p>
@@ -133,6 +139,7 @@
         var password=$("#password").val();
         var repassword=$("#repassword").val();
         var email=$("#email").val();
+        var tel=$("#telephone").val();
         var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
         if(registerName==''||registerName==null||registerName==undefined){
             prompt.html('请输入用户名');
@@ -155,22 +162,30 @@
             prompt.html('请输入正确的邮箱');
             return false;
         }
-        registerquest(registerName,password,email);
+        if(tel==''||tel==null||tel==undefined){
+            prompt.html('请输入手机号');
+            return false;
+        }
+        if(!(/^1[34578]\d{9}$/.test(tel))){
+            prompt.html('请输入正确的手机号');
+            return false;
+        }
+        registerquest(registerName,password,email,tel);
     }
 
     //注册校验后ajax请求
-    function registerquest(account,password,email){
+    function registerquest(account,password,email,tel){
         $.ajax({
             type:"post",
-            url:"/login/register ",
-            data:{ "account":account,"password":password,"email":email},
+            url:"/ws/registerAccount",
+            data:{ "account":account,"password":password,"email":email,"phoneNum":tel},
             xhrFields: {withCredentials: true},
             dataType: "json",
             async:true,
             success:function(data){
                 if(data.code==0){
                  alert('注册成功');
-                 window.location.href='index'
+                 // window.location.href='index'
                 }
                 if(data.code==100){
                     prompt.html('该账号已被注册');
