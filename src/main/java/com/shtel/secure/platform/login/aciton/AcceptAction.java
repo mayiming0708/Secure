@@ -20,37 +20,37 @@ import java.io.InputStreamReader;
  */
 @Controller
 public class AcceptAction {
-    @GetMapping("/ws/register")
+    @GetMapping("/register")
     public void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/static/html/register.html").forward(request,response);
+        request.getRequestDispatcher("static/html/register.html").forward(request,response);
     }
-    @GetMapping("/ws/index")
+    @GetMapping("/index")
     public void loginIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/static/html/login.html").forward(request,response);
+        request.getRequestDispatcher("static/html/login.html").forward(request,response);
     }
-    @GetMapping("/ws/newIndex")
+    @GetMapping("/newIndex")
     public void newIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/static/html/newIndex.html").forward(request,response);
+        request.getRequestDispatcher("static/html/newIndex.html").forward(request,response);
     }
-    @GetMapping("/ws/taskprogress")
+    @GetMapping("/taskprogress")
     public void taskprogress(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/static/html/taskprogress.html").forward(request,response);
+        request.getRequestDispatcher("static/html/taskprogress.html").forward(request,response);
     }
-    @GetMapping("/ws/taskdetail")
+    @GetMapping("/taskdetail")
     public void taskdetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/static/html/taskdetail.html").forward(request,response);
+        request.getRequestDispatcher("static/html/taskdetail.html").forward(request,response);
     }
-    @GetMapping("/ws/sitemonitor")
+    @GetMapping("/sitemonitor")
     public void sitemonitor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/static/html/sitemonitor.html").forward(request,response);
+        request.getRequestDispatcher("static/html/sitemonitor.html").forward(request,response);
     }
-    @GetMapping("/ws/sitedetail")
+    @GetMapping("/sitedetail")
     public void sitedetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/static/html/sitedetail.html").forward(request,response);
+        request.getRequestDispatcher("static/html/sitedetail.html").forward(request,response);
     }
-    @PostMapping("/ws/registerAccount")
+    @PostMapping("/registerAccount")
     public void registerUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/login/register").forward(request,response);
+        request.getRequestDispatcher("login/register").forward(request,response);
     }
 
 
