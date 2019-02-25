@@ -19,7 +19,7 @@ public class WebMvcConfg implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/index", "/login/**", "/api/**", "/jsp/**", "/ws/index","/ws/register", "/ws/registerAccount","/static/**", "/websock-server/**", "/swagger-ui.html", "/error", "/sock/**", "/webjars/**", "/swagger-resources/**")
+                .excludePathPatterns("/index", "/login/**", "/api/**", "/jsp/**", "/ws/registerAccount","/static/**", "/websock-server/**", "/swagger-ui.html", "/error", "/sock/**", "/webjars/**", "/swagger-resources/**","/register","/newIndex","/taskprogress","/taskdetail","/sitemonitor","/sitedetail","/registerAccount")
                 //测试时使用，结束后删除
                 .excludePathPatterns("/service/**");
     }
