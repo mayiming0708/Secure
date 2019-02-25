@@ -111,7 +111,7 @@ public class ResultEventService {
 
     public String sendFinishMail(String receiveAddress,String startAt,String endAt) {
         try {
-            EmailUtil.sendMail(accout, password, accout, receiveAddress, "您于"+startAt+"下发的任务已于"+endAt+"完成，请登录网站查看", "webSock网站监测任务已完成");
+            EmailUtil.sendMail(accout, password, accout, receiveAddress, "您于"+startAt+"下发的任务已于"+endAt+"完成，请登录网站查看", "webSock网站监测任务已完成:http://39.96.45.191/websock-server/ws/index");
             return ResultUtil.Result(EnumType.SUCCESS);
         } catch (Exception e) {
             return ResultUtil.Result(EnumType.EMAIL_ERROR);
@@ -120,7 +120,7 @@ public class ResultEventService {
 
     public String sendSMS(String smsMob, String startAt,String endAt){
        try{
-        SMSUtil.sendMessage(uid,key,smsMob,"您于"+startAt+"下发的任务已于"+endAt+"完成，请登录网站查看");
+        SMSUtil.sendMessage(uid,key,smsMob,"您于"+startAt+"下发的任务已于"+endAt+"完成，请登录网站查看:http://39.96.45.191/websock-server/ws/index");
            return ResultUtil.Result(EnumType.SUCCESS);
        }catch (Exception e){
            return ResultUtil.Result(EnumType.EMAIL_ERROR);

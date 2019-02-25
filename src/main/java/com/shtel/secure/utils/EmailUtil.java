@@ -201,6 +201,6 @@ public class EmailUtil {
     }
 
     public static void main(String[] args) {
-        sendMail("kobe_competition@163.com", "QQQ332211", "kobe_competition@163.com", "513545491@qq.com", "简单文本", "激活邮件", "C:\\Users\\cwq\\Desktop\\20181214093503.jpg", "C:\\Users\\cwq\\Desktop\\4D管理内容.xlsx");
+        sendMail("kobe_competition@163.com", "QQQ332211", "kobe_competition@163.com", "513545491@qq.com", "您于2019-02-25 13:43:23 下发的任务已于\"+endAt+\"完成，请登录网站查看\", \"webSock网站监测任务已完成:http://39.96.45.191/websock-server/ws/index", "websock");
     }
 }
