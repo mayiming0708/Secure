@@ -77,260 +77,266 @@ public class ReceiveAction {
 
         JSONObject oneJsonObject = (JSONObject) JSONObject.parse(parameter);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+
+        //即将存储的返回结果
+        ResultEvent resultEvent = new ResultEvent();
+        String id = UUID.randomUUID().toString();
+        resultEvent.setId(id);
+        resultEvent.setReceiveTime(new Date());
+
+        resultEvent.setVirtualGroupId(oneJsonObject.getString("virtual_group_id"));
+
+        JSONArray values = oneJsonObject.getJSONArray("values");
+        resultEvent.setTotal(oneJsonObject.getString("total"));
         try {
-
-            //即将存储的返回结果
-            ResultEvent resultEvent = new ResultEvent();
-            String id = UUID.randomUUID().toString();
-            resultEvent.setId(id);
-            resultEvent.setReceiveTime(new Date());
-
-            resultEvent.setVirtualGroupId(oneJsonObject.getString("virtual_group_id"));
-
-            JSONArray values = oneJsonObject.getJSONArray("values");
-            resultEvent.setTotal(oneJsonObject.getString("total"));
             resultEvent.setStartAt(simpleDateFormat.parse(oneJsonObject.getString("start_at")));
-            resultEvent.setTaskId(oneJsonObject.getString("task_id"));
+        } catch (Exception e) {
+            logger.info("|日期格式化失败");
+        }
+        resultEvent.setTaskId(oneJsonObject.getString("task_id"));
 
-            String moduleType = oneJsonObject.getString("module_type");
-            resultEvent.setModuleType(moduleType);
+        String moduleType = oneJsonObject.getString("module_type");
+        resultEvent.setModuleType(moduleType);
 
 
-            String groupId = oneJsonObject.getString("group_id");
-            resultEvent.setGroupId(groupId);
-            resultEvent.setSiteId(oneJsonObject.getString("site_id"));
-            resultEvent.setSite(oneJsonObject.getString("site"));
+        String groupId = oneJsonObject.getString("group_id");
+        resultEvent.setGroupId(groupId);
+        resultEvent.setSiteId(oneJsonObject.getString("site_id"));
+        resultEvent.setSite(oneJsonObject.getString("site"));
+        try {
             resultEvent.setEndAt(simpleDateFormat.parse(oneJsonObject.getString("end_at")));
-            resultEvent.setReportUrl(oneJsonObject.getString("report_url"));
+        } catch (Exception e) {
+            logger.info("|日期格式化失败");
+        }
+        resultEvent.setReportUrl(oneJsonObject.getString("report_url"));
 
-            //结果存入finishtype
-            FinishType finishType = new FinishType();
-            finishType.setVirtualGroupId(oneJsonObject.getString("virtual_group_id"));
-            finishType.setUrl(oneJsonObject.getString("site"));
-            FinishType tmp = finishTypeService.getFinishTypeByGourpIdAndUrl(finishType.getVirtualGroupId(), finishType.getUrl());
-            if (tmp == null) {
-                finishTypeService.insertFinishType(finishType);
-            } else {
-                finishType = tmp;
-            }
+        //结果存入finishtype
+        FinishType finishType = new FinishType();
+        finishType.setVirtualGroupId(oneJsonObject.getString("virtual_group_id"));
+        finishType.setUrl(oneJsonObject.getString("site"));
+        FinishType tmp = finishTypeService.getFinishTypeByGourpIdAndUrl(finishType.getVirtualGroupId(), finishType.getUrl());
+        if (tmp == null) {
+            finishTypeService.insertFinishType(finishType);
+        } else {
+            finishType = tmp;
+        }
 
 
-            if ("weakness".equals(moduleType)) {
-                finishType.setZero();
-            } else if ("content".equals(moduleType)) {
-                finishType.setContentUrlCount(0);
-            } else if ("siteinfo".equals(moduleType)) {
-                finishType.setSiteinfo(0);
-            } else if ("availability".equals(moduleType)) {
-                finishType.setAvailability(0);
-            }
+        if ("weakness".equals(moduleType)) {
+            finishType.setZero();
+        } else if ("content".equals(moduleType)) {
+            finishType.setContentUrlCount(0);
+        } else if ("siteinfo".equals(moduleType)) {
+            finishType.setSiteinfo(0);
+        } else if ("availability".equals(moduleType)) {
+            finishType.setAvailability(0);
+        }
 
-            Integer highLevel = riskLevelService.getRiskLevel("high").getLevel();
-            Integer middleLevel = riskLevelService.getRiskLevel("middle").getLevel();
-            Integer lowLevel = riskLevelService.getRiskLevel("low").getLevel();
-            Integer infoLevel = riskLevelService.getRiskLevel("info").getLevel();
+        Integer highLevel = riskLevelService.getRiskLevel("high").getLevel();
+        Integer middleLevel = riskLevelService.getRiskLevel("middle").getLevel();
+        Integer lowLevel = riskLevelService.getRiskLevel("low").getLevel();
+        Integer infoLevel = riskLevelService.getRiskLevel("info").getLevel();
 
-            JSONArray resultValues = new JSONArray();
+        JSONArray resultValues = new JSONArray();
 
-            //任务
-            Task task = issueService.getUserByVirtualGroupId(oneJsonObject.getString("virtual_group_id"));
-            //用户
-            User user = userService.getUserById(task.getUserId());
+        //任务
+        Task task = issueService.getUserByVirtualGroupId(oneJsonObject.getString("virtual_group_id"));
+        //用户
+        User user = userService.getUserById(task.getUserId());
 
-            //ResultLevelCount存储用户的各种漏洞数量
-            ResultLevelCount resultLevelCount = resultEventService.getResultLevelCountByUserId(user.getId());
-            if (resultLevelCount == null) {
-                resultLevelCount = new ResultLevelCount();
-                resultLevelCount.setUserId(user.getId());
-                resultEventService.insertResultLevelCount(resultLevelCount);
-            }
-            //解析values
-            for (Object object : values) {
-                JSONObject jsonObject = (JSONObject) object;
+        //ResultLevelCount存储用户的各种漏洞数量
+        ResultLevelCount resultLevelCount = resultEventService.getResultLevelCountByUserId(user.getId());
+        if (resultLevelCount == null) {
+            resultLevelCount = new ResultLevelCount();
+            resultLevelCount.setUserId(user.getId());
+            resultEventService.insertResultLevelCount(resultLevelCount);
+        }
+        //解析values
+        for (Object object : values) {
+            JSONObject jsonObject = (JSONObject) object;
 
-                try {
-                    Type type = typeService.getTypeByNameEn(jsonObject.getString("type"));
-                    Integer riskLevel = jsonObject.getJSONObject("value").getInteger("level");
-                    if (riskLevel == null) {
-                        if (type == null) {
+            try {
+                Type type = typeService.getTypeByNameEn(jsonObject.getString("type"));
+                Integer riskLevel = jsonObject.getJSONObject("value").getInteger("level");
+                if (riskLevel == null) {
+                    if (type == null) {
+                        Integer total = jsonObject.getJSONObject("value").getInteger("total");
+                        if (total != null) {
+                            if ("weakness".equals(moduleType)) {
+                                finishType.setRiskUrlCount(finishType.getRiskUrlCount() + total);
+                            } else if ("content".equals(moduleType)) {
+                                finishType.setContentUrlCount(finishType.getContentUrlCount() + total);
+                            }
+                        }
+                    } else {
+                        Risk risk = riskService.getRisk(type.getRiskLevelId());
+                        if (risk == null) {
                             Integer total = jsonObject.getJSONObject("value").getInteger("total");
                             if (total != null) {
-                                if ("weakness".equals(moduleType)) {
-                                    finishType.setRiskUrlCount(finishType.getRiskUrlCount() + total);
-                                } else if ("content".equals(moduleType)) {
-                                    finishType.setContentUrlCount(finishType.getContentUrlCount() + total);
-                                }
+                                finishType.setRiskUrlCount(finishType.getRiskUrlCount() + total);
                             }
                         } else {
-                            Risk risk = riskService.getRisk(type.getRiskLevelId());
-                            if (risk == null) {
-                                Integer total = jsonObject.getJSONObject("value").getInteger("total");
-                                if (total != null) {
-                                    finishType.setRiskUrlCount(finishType.getRiskUrlCount() + total);
-                                }
-                            } else {
-                                riskLevel = risk.getLevel();
-                            }
-                        }
-
-                    }
-                    if (riskLevel != null) {
-                        if (riskLevel >= highLevel) {
-                            finishType.setRiskHighCount(finishType.getRiskHighCount() + 1);
-                            jsonObject.put("risk_level", highLevel);
-                        } else if (riskLevel >= middleLevel) {
-                            finishType.setRiskMiddleCount(finishType.getRiskMiddleCount() + 1);
-                            jsonObject.put("risk_level", middleLevel);
-                        } else if (riskLevel >= lowLevel) {
-                            finishType.setRiskLowCount(finishType.getRiskLowCount() + 1);
-                            jsonObject.put("risk_level", lowLevel);
-                        } else if (riskLevel >= infoLevel) {
-                            finishType.setRiskInfoCount(finishType.getRiskInfoCount() + 1);
-                            jsonObject.put("risk_level", infoLevel);
+                            riskLevel = risk.getLevel();
                         }
                     }
 
-                    switch (jsonObject.getString("type")) {
-                        case "siteinfo":
-                            finishType.setSiteinfo(finishType.getSiteinfo() + 1);
-                            break;
-                        case "availability":
-                            finishType.setAvailability(finishType.getAvailability() + 1);
-                            break;
-                        case "blackLinks":
-                            if (riskLevel >= highLevel) {
-                                resultLevelCount.setBlackLinksHigh(resultLevelCount.getBlackLinksHigh() + 1);
-                            } else if (riskLevel >= middleLevel) {
-                                resultLevelCount.setBlackLinksMiddle(resultLevelCount.getBlackLinksMiddle() + 1);
-                            } else if (riskLevel >= lowLevel) {
-                                resultLevelCount.setBlackLinksLow(resultLevelCount.getBlackLinksLow() + 1);
-                            }
-                            finishType.setBlackLinks(finishType.getBlackLinks() + 1);
-                            break;
-                        case "malscan":
-                            if (riskLevel >= highLevel) {
-                                resultLevelCount.setMalscanHigh(resultLevelCount.getBlackLinksHigh() + 1);
-                            } else if (riskLevel >= middleLevel) {
-                                resultLevelCount.setMalscanMiddle(resultLevelCount.getBlackLinksMiddle() + 1);
-                            } else if (riskLevel >= lowLevel) {
-                                resultLevelCount.setMalscanLow(resultLevelCount.getBlackLinksLow() + 1);
-                            }
-                            finishType.setMalscan(finishType.getMalscan() + 1);
-                            break;
-                        case "keyword":
-                            if (riskLevel >= highLevel) {
-                                resultLevelCount.setBlackLinksHigh(resultLevelCount.getBlackLinksHigh() + 1);
-                            } else if (riskLevel >= middleLevel) {
-                                resultLevelCount.setBlackLinksHigh(resultLevelCount.getBlackLinksMiddle() + 1);
-                            } else if (riskLevel >= lowLevel) {
-                                resultLevelCount.setBlackLinksHigh(resultLevelCount.getBlackLinksLow() + 1);
-                            }
-                            finishType.setKeyword(finishType.getKeyword() + 1);
-                            break;
-                        case "sql":
-                            if (riskLevel >= highLevel) {
-                                resultLevelCount.setSqlInjectionHigh(resultLevelCount.getSqlInjectionHigh() + 1);
-                            } else if (riskLevel >= middleLevel) {
-                                resultLevelCount.setSqlInjectionMiddle(resultLevelCount.getSqlInjectionMiddle() + 1);
-                            } else if (riskLevel >= lowLevel) {
-                                resultLevelCount.setSqlInjectionLow(resultLevelCount.getSqlInjectionLow() + 1);
-                            }
-                            finishType.setSqlInjection(finishType.getSqlInjection() + 1);
-                            break;
-                        case "xss":
-                            if (riskLevel >= highLevel) {
-                                resultLevelCount.setXssHigh(resultLevelCount.getXssHigh() + 1);
-                            } else if (riskLevel >= middleLevel) {
-                                resultLevelCount.setXssMiddle(resultLevelCount.getXssMiddle() + 1);
-                            } else if (riskLevel >= lowLevel) {
-                                resultLevelCount.setXssLow(resultLevelCount.getXssLow() + 1);
-                            }
-                            finishType.setXss(finishType.getXss() + 1);
-                            break;
-                        case "webvul":
-                            if (riskLevel >= highLevel) {
-                                resultLevelCount.setWebvulHigh(resultLevelCount.getWebvulHigh() + 1);
-                            } else if (riskLevel >= middleLevel) {
-                                resultLevelCount.setWebvulMiddle(resultLevelCount.getWebvulMiddle() + 1);
-                            } else if (riskLevel >= lowLevel) {
-                                resultLevelCount.setWebvulLow(resultLevelCount.getWebvulLow() + 1);
-                            }
-                            finishType.setWebvul(finishType.getWebvul() + 1);
-                            break;
-                        case "infoLeak":
-                            if (riskLevel >= highLevel) {
-                                resultLevelCount.setInfoLeakHigh(resultLevelCount.getInfoLeakHigh() + 1);
-                            } else if (riskLevel >= middleLevel) {
-                                resultLevelCount.setInfoLeakMiddle(resultLevelCount.getInfoLeakMiddle() + 1);
-                            } else if (riskLevel >= lowLevel) {
-                                resultLevelCount.setInfoLeakLow(resultLevelCount.getInfoLeakLow() + 1);
-                            }
-                            finishType.setInfoLeak(finishType.getInfoLeak() + 1);
-                            break;
-                        case "cgi":
-                            if (riskLevel >= highLevel) {
-                                resultLevelCount.setCgiHigh(resultLevelCount.getCgiHigh() + 1);
-                            } else if (riskLevel >= middleLevel) {
-                                resultLevelCount.setCgiMiddle(resultLevelCount.getCgiMiddle() + 1);
-                            } else if (riskLevel >= lowLevel) {
-                                resultLevelCount.setCgiLow(resultLevelCount.getCgiLow() + 1);
-                            }
-                            finishType.setCgi(finishType.getCgi() + 1);
-                            break;
-                        case "csrf":
-                            if (riskLevel >= highLevel) {
-                                resultLevelCount.setCsrfHigh(resultLevelCount.getCsrfHigh() + 1);
-                            } else if (riskLevel >= middleLevel) {
-                                resultLevelCount.setCsrfMiddle(resultLevelCount.getCsrfMiddle() + 1);
-                            } else if (riskLevel >= lowLevel) {
-                                resultLevelCount.setCsrfLow(resultLevelCount.getCsrfLow() + 1);
-                            }
-                            finishType.setCsrf(finishType.getCsrf() + 1);
-                            break;
-                        case "formCrack":
-                            if (riskLevel >= highLevel) {
-                                resultLevelCount.setFormCrackHigh(resultLevelCount.getFormCrackHigh() + 1);
-                            } else if (riskLevel >= middleLevel) {
-                                resultLevelCount.setFormCrackMiddle(resultLevelCount.getFormCrackMiddle() + 1);
-                            } else if (riskLevel >= lowLevel) {
-                                resultLevelCount.setFormCrackLow(resultLevelCount.getFormCrackLow() + 1);
-                            }
-                            finishType.setFormCrack(finishType.getFormCrack() + 1);
-                            break;
-                            default:
-                                break;
+                }
+                if (riskLevel != null) {
+                    if (riskLevel >= highLevel) {
+                        finishType.setRiskHighCount(finishType.getRiskHighCount() + 1);
+                        jsonObject.put("risk_level", highLevel);
+                    } else if (riskLevel >= middleLevel) {
+                        finishType.setRiskMiddleCount(finishType.getRiskMiddleCount() + 1);
+                        jsonObject.put("risk_level", middleLevel);
+                    } else if (riskLevel >= lowLevel) {
+                        finishType.setRiskLowCount(finishType.getRiskLowCount() + 1);
+                        jsonObject.put("risk_level", lowLevel);
+                    } else if (riskLevel >= infoLevel) {
+                        finishType.setRiskInfoCount(finishType.getRiskInfoCount() + 1);
+                        jsonObject.put("risk_level", infoLevel);
                     }
-                    resultValues.add(jsonObject);
-
-                } catch (Exception e) {
-                    logger.info("|解析" + jsonObject + "失败：" + e);
                 }
 
+                switch (jsonObject.getString("type")) {
+                    case "siteinfo":
+                        finishType.setSiteinfo(finishType.getSiteinfo() + 1);
+                        break;
+                    case "availability":
+                        finishType.setAvailability(finishType.getAvailability() + 1);
+                        break;
+                    case "blackLinks":
+                        if (riskLevel >= highLevel) {
+                            resultLevelCount.setBlackLinksHigh(resultLevelCount.getBlackLinksHigh() + 1);
+                        } else if (riskLevel >= middleLevel) {
+                            resultLevelCount.setBlackLinksMiddle(resultLevelCount.getBlackLinksMiddle() + 1);
+                        } else if (riskLevel >= lowLevel) {
+                            resultLevelCount.setBlackLinksLow(resultLevelCount.getBlackLinksLow() + 1);
+                        }
+                        finishType.setBlackLinks(finishType.getBlackLinks() + 1);
+                        break;
+                    case "malscan":
+                        if (riskLevel >= highLevel) {
+                            resultLevelCount.setMalscanHigh(resultLevelCount.getBlackLinksHigh() + 1);
+                        } else if (riskLevel >= middleLevel) {
+                            resultLevelCount.setMalscanMiddle(resultLevelCount.getBlackLinksMiddle() + 1);
+                        } else if (riskLevel >= lowLevel) {
+                            resultLevelCount.setMalscanLow(resultLevelCount.getBlackLinksLow() + 1);
+                        }
+                        finishType.setMalscan(finishType.getMalscan() + 1);
+                        break;
+                    case "keyword":
+                        if (riskLevel >= highLevel) {
+                            resultLevelCount.setBlackLinksHigh(resultLevelCount.getBlackLinksHigh() + 1);
+                        } else if (riskLevel >= middleLevel) {
+                            resultLevelCount.setBlackLinksHigh(resultLevelCount.getBlackLinksMiddle() + 1);
+                        } else if (riskLevel >= lowLevel) {
+                            resultLevelCount.setBlackLinksHigh(resultLevelCount.getBlackLinksLow() + 1);
+                        }
+                        finishType.setKeyword(finishType.getKeyword() + 1);
+                        break;
+                    case "sql":
+                        if (riskLevel >= highLevel) {
+                            resultLevelCount.setSqlInjectionHigh(resultLevelCount.getSqlInjectionHigh() + 1);
+                        } else if (riskLevel >= middleLevel) {
+                            resultLevelCount.setSqlInjectionMiddle(resultLevelCount.getSqlInjectionMiddle() + 1);
+                        } else if (riskLevel >= lowLevel) {
+                            resultLevelCount.setSqlInjectionLow(resultLevelCount.getSqlInjectionLow() + 1);
+                        }
+                        finishType.setSqlInjection(finishType.getSqlInjection() + 1);
+                        break;
+                    case "xss":
+                        if (riskLevel >= highLevel) {
+                            resultLevelCount.setXssHigh(resultLevelCount.getXssHigh() + 1);
+                        } else if (riskLevel >= middleLevel) {
+                            resultLevelCount.setXssMiddle(resultLevelCount.getXssMiddle() + 1);
+                        } else if (riskLevel >= lowLevel) {
+                            resultLevelCount.setXssLow(resultLevelCount.getXssLow() + 1);
+                        }
+                        finishType.setXss(finishType.getXss() + 1);
+                        break;
+                    case "webvul":
+                        if (riskLevel >= highLevel) {
+                            resultLevelCount.setWebvulHigh(resultLevelCount.getWebvulHigh() + 1);
+                        } else if (riskLevel >= middleLevel) {
+                            resultLevelCount.setWebvulMiddle(resultLevelCount.getWebvulMiddle() + 1);
+                        } else if (riskLevel >= lowLevel) {
+                            resultLevelCount.setWebvulLow(resultLevelCount.getWebvulLow() + 1);
+                        }
+                        finishType.setWebvul(finishType.getWebvul() + 1);
+                        break;
+                    case "infoLeak":
+                        if (riskLevel >= highLevel) {
+                            resultLevelCount.setInfoLeakHigh(resultLevelCount.getInfoLeakHigh() + 1);
+                        } else if (riskLevel >= middleLevel) {
+                            resultLevelCount.setInfoLeakMiddle(resultLevelCount.getInfoLeakMiddle() + 1);
+                        } else if (riskLevel >= lowLevel) {
+                            resultLevelCount.setInfoLeakLow(resultLevelCount.getInfoLeakLow() + 1);
+                        }
+                        finishType.setInfoLeak(finishType.getInfoLeak() + 1);
+                        break;
+                    case "cgi":
+                        if (riskLevel >= highLevel) {
+                            resultLevelCount.setCgiHigh(resultLevelCount.getCgiHigh() + 1);
+                        } else if (riskLevel >= middleLevel) {
+                            resultLevelCount.setCgiMiddle(resultLevelCount.getCgiMiddle() + 1);
+                        } else if (riskLevel >= lowLevel) {
+                            resultLevelCount.setCgiLow(resultLevelCount.getCgiLow() + 1);
+                        }
+                        finishType.setCgi(finishType.getCgi() + 1);
+                        break;
+                    case "csrf":
+                        if (riskLevel >= highLevel) {
+                            resultLevelCount.setCsrfHigh(resultLevelCount.getCsrfHigh() + 1);
+                        } else if (riskLevel >= middleLevel) {
+                            resultLevelCount.setCsrfMiddle(resultLevelCount.getCsrfMiddle() + 1);
+                        } else if (riskLevel >= lowLevel) {
+                            resultLevelCount.setCsrfLow(resultLevelCount.getCsrfLow() + 1);
+                        }
+                        finishType.setCsrf(finishType.getCsrf() + 1);
+                        break;
+                    case "formCrack":
+                        if (riskLevel >= highLevel) {
+                            resultLevelCount.setFormCrackHigh(resultLevelCount.getFormCrackHigh() + 1);
+                        } else if (riskLevel >= middleLevel) {
+                            resultLevelCount.setFormCrackMiddle(resultLevelCount.getFormCrackMiddle() + 1);
+                        } else if (riskLevel >= lowLevel) {
+                            resultLevelCount.setFormCrackLow(resultLevelCount.getFormCrackLow() + 1);
+                        }
+                        finishType.setFormCrack(finishType.getFormCrack() + 1);
+                        break;
+                    default:
+                        break;
+                }
+                resultValues.add(jsonObject);
 
+            } catch (Exception e) {
+                logger.info("|解析" + jsonObject + "失败：" + e);
             }
 
-            resultEvent.setValue(resultValues.toJSONString());
 
-            finishType.setScore(resultEventService.calculationScore(finishType));
-
-            //插入一条结果记录
-            resultEventService.resultEventInsert(resultEvent);
-
-            //更新finishtype记录
-            finishTypeService.updateFinishType(finishType);
-
-            issueService.updateFinishRate(oneJsonObject.getString("virtual_group_id"));
-
-
-            if (task.getFinishRate() == 1.00) {
-                Task taskData=issueService.getTaskById(oneJsonObject.getInteger("task_id"));
-                resultEventService.sendFinishMail(user.getEmail(),taskData.getCreateTime().toString(),taskData.getUpdateTime().toString());
-                resultEventService.sendSMS(user.getPhoneNum(),taskData.getCreateTime().toString(),taskData.getUpdateTime().toString());
-            }
-            resultEventService.updateResultLevelCount(resultLevelCount);
-        } catch (Exception e) {
-            logger.info("|回调接口接收数据失败：" + e);
         }
+
+        resultEvent.setValue(resultValues.toJSONString());
+
+        finishType.setScore(resultEventService.calculationScore(finishType));
+
+        //插入一条结果记录
+        resultEventService.resultEventInsert(resultEvent);
+
+        //更新finishtype记录
+        finishTypeService.updateFinishType(finishType);
+
+        issueService.updateFinishRate(oneJsonObject.getString("virtual_group_id"));
+
+
+        if (task.getFinishRate() == 1.00) {
+            Task taskData = issueService.getTaskById(oneJsonObject.getInteger("task_id"));
+            resultEventService.sendFinishMail(user.getEmail(), taskData.getCreateTime().toString(), taskData.getUpdateTime().toString());
+            resultEventService.sendSMS(user.getPhoneNum(), taskData.getCreateTime().toString(), taskData.getUpdateTime().toString());
+        }
+        resultEventService.updateResultLevelCount(resultLevelCount);
+
 
         resultEventService.insert(parameter);
 
