@@ -9,7 +9,7 @@ $(function(){
     $("#signOut").click(function(){
         $.ajax({
             type:"get",
-            url:"/login/quit",
+            url:"login/quit",
             xhrFields: {withCredentials: true},
             data:{},
             contentType: "application/json;charset=UTF-8",
@@ -200,7 +200,7 @@ $(function(){
 changePassword=function(oldPassword, newPassword,userId){
     $.ajax({
         type:"post",
-        url:"/login/revisePassword",
+        url:"login/revisePassword",
         data:{ "userId":userId,"password":oldPassword,"newPassword":newPassword,"email":''},
         xhrFields: {withCredentials: true},
         dataType: "json",
@@ -219,7 +219,7 @@ changePassword=function(oldPassword, newPassword,userId){
 changeEmail=function(newEmail,userId){
     $.ajax({
         type:"post",
-        url:"/login/reviseEmail",
+        url:"login/reviseEmail",
         data:{ "userId":userId,"email":newEmail},
         xhrFields: {withCredentials: true},
         dataType: "json",
