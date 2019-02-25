@@ -834,7 +834,7 @@
         if(taskType==0){
             $.ajax({
                 type:"post",
-                url:"http://localhost/issue/temp",
+                url:"issue/temp",
                 xhrFields: {withCredentials: true},
                 data:JSON.stringify(
                     {"urls":siteVal,
@@ -875,7 +875,7 @@
             //周期任务调取接口
             $.ajax({
                 type:"post",
-                url:"http://localhost/issue/period",
+                url:"issue/period",
                 xhrFields: {withCredentials: true},
                 data:JSON.stringify(
                     {"urls":siteVal,
