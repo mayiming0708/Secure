@@ -729,7 +729,7 @@ button.close{
 }
 #site-faq .site-faq-left .rank-list li .score{
 	margin-top: 0;
-	margin-left: 5px;
+	margin-left: 3px;
 }
 #bug-faq ul.rank-list{
 	width: 97%;
@@ -739,13 +739,13 @@ button.close{
 	width: 73%;
 }
 #site-faq .site-faq-left .info{
-	width: auto;
+	width: 100%;
 }
 #site-faq .site-faq-left .rank-list{
 	width: 100%;
 }
 #site-faq .rank-list{
-	padding: 0 20px;
+	padding: 0 7px;
 }
 .bug-rank-list{
 	padding-left: 0;

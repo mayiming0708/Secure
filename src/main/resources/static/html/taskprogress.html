@@ -436,6 +436,7 @@
 	<div class="modal-change-email" id="modalChangeEmail"></div>
 	<!--发送邮件弹窗-->
 	<div class="modal-send-email" id="modalSendEmail">
+		<input type="hidden" id="emailTask" />
 		<div class="box box-info">
 			<div class="box-header ui-sortable-handle" style="cursor: move;">
 				<i class="fa fa-envelope"></i>
@@ -528,24 +529,26 @@
 		})
 		//点击发送邮件 发送按钮
 		$("#sendEmail").click(function(){
+			var res='';
+			var taskId=$("#emailTask").val();
 			var email=$("#emitEmail").val();
-			$.ajax({
-				type:"post",
-				url:"/perform/sendMail",
-				xhrFields: {withCredentials: true},
-				data:{"address":email,content:''},
-				dataType: "json",
-				async:true,
-				success:function(data){
-					var type=$(".task-type-progress select").val();
-					var time=$("#datepicker").val();
-					// table.bootstrapTable('destroy');
-					tableInit(type,time);
-				}
-			});
-			alert('发送邮件成功');
-			$("#modalSendEmail").hide();
-			$(".progress-bg").hide();
+			console.log(taskId);
+			// $.ajax({
+			// 	type:"post",
+			// 	url:"/perform/sendMail",
+			// 	xhrFields: {withCredentials: true},
+			// 	data:{"address":email,content:res},
+			// 	dataType: "json",
+			// 	async:true,
+			// 	success:function(data){
+			// 		if(data.code==0){
+			// 			alert('发送邮件成功');
+			// 			$("#modalSendEmail").hide();
+			// 			$(".progress-bg").hide();
+			// 		}
+			// 	}
+			// });
+
 		})
         //table表格初始化
         tableInit(2,'');
@@ -914,7 +917,7 @@
     //创建按钮并给按钮添加事件
     function AddFunctionAlty(value, row, index) {
         return ['<button id="deleteBtn" type="button" class="btn btn-danger">删除</button>&nbsp;&nbsp',
-            '<button id="detailBtn" type="button" class="btn  btn-warning">查看详情</button>','<i class="iconfont icon-youxiang" id="emailBtn" style="margin-left:20px;cursor: pointer"></i>'
+            '<button id="detailBtn" type="button" class="btn  btn-warning">查看详情</button>'
         ].join("");
     }
 
@@ -936,15 +939,18 @@
         },
 
 		"click #detailBtn": function(e, value, row, index) {
-			// var taskId=row.virtualGroupId;
+			 var taskId=row.virtualGroupId;
+			 var time=row.createTime;
 			window.location.href = "taskdetail?id="+row.virtualGroupId+"&isPeriod="+row.isPeriod;
-			// setCookie(taskId,taskId);
+			delCookie("createTime");
+			setCookie("createTime",time);
 		},
 		"click #emailBtn": function(e, value, row, index) {
 			$("#modalSendEmail").show();
 			var email=getCookie('email');
 			$("#emitEmail").val(email);
 			$(".progress-bg").show();
+			$("#emailTask").val(row.virtualGroupId);
 		}
     }
 
@@ -980,6 +986,21 @@
                     tableInit(type,time);
                 }
             });
+	}
+	//获取该任务id的详细信息
+	function getTaskDetail(){
+		$.ajax({
+			type:"get",
+			url:"/service/resultEvents?virtualGroupId="+taskId,
+			xhrFields: {withCredentials: true},
+			dataType: "json",
+			async:true,
+			success:function(data){
+				console.log(data);
+				//从data中获取可用性 安全事件 漏洞的值
+				taskItemDetail(data);
+			}
+		});
 	}
 </script>
 </body>

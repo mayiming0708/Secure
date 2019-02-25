@@ -103,14 +103,24 @@
 					text-align: center;
 				}
 				.task-detail-title #btn-html2canvas{
-					position: absolute;
-					right: 0;
 					height: 33px;
 					line-height: 33px;
 					border-radius: 5px;
+					margin-right: 0;
 				}
 			}
+			.task-detail-title #email-send{
+				margin-right: 7px;
+				margin-top: 5px;
+				outline: none;
+				background-color: lightskyblue;
+				-webkit-appearance: none;
+				height: 34px;
+				line-height: 34px;
+				border-radius: 5px;
+							 }
 		</style>
+
 	</head>
 
 	<body class="hold-transition skin-blue sidebar-mini" id="content">
@@ -254,6 +264,7 @@
 							<ul class="nav nav-tabs pull-right">
 								<!--<li class="pull-right"><button id="btn-html2canvas">导出为PDF</button></li>-->
 								<li class="col-md-6 task-detail-title">
+									<button id="email-send" class="pull-right">发送邮件</button>
 									<button id="btn-html2canvas">导出为PDF</button>
 									<a href="#ablity" data-toggle="tab" class="active pull-right">任务检测详情列表</a>
 								</li>
@@ -261,10 +272,10 @@
 							</ul>
 							<div class="tab-content no-padding">
 							<div class="tab-pane active" id="ablity">
-									<div class="row">
+									<div class="row" id="ablity-outhtml">
 										<div class="col-lg-12">
 											<div class="panel panel-default">
-												<div class="panel-heading">
+												<div class="panel-heading" id="clickTest">
 													可用性检测列表
 												</div>
 												<div class="panel-body">
@@ -315,6 +326,37 @@
 			<div class="progress-bg"></div>
 			<!--修改邮箱弹窗-->
 			<div class="modal-change-email" id="modalChangeEmail"></div>
+			<!--发送邮件弹窗-->
+			<div class="modal-send-email" id="modalSendEmail">
+				<input type="hidden" id="emailTask" />
+				<div class="box box-info">
+					<div class="box-header ui-sortable-handle" style="cursor: move;">
+						<i class="fa fa-envelope"></i>
+
+						<h3 class="box-title">发送邮件</h3>
+						<!-- tools box -->
+						<div class="pull-right box-tools">
+							<button type="button" class="btn btn-info btn-sm" data-toggle="tooltip" title="">
+								<i class="fa fa-times"></i></button>
+						</div>
+						<!-- /. tools -->
+					</div>
+					<div class="box-body">
+						<form action="#" method="post">
+							<div class="form-group">
+								<input type="email" id="emitEmail" class="form-control" name="emailto" placeholder="收件人:">
+							</div>
+						</form>
+						</form>
+					</div>
+					<div class="box-footer clearfix">
+						<button type="button" class="pull-right btn btn-default" id="sendEmail">发送
+							<i class="fa fa-arrow-circle-right"></i></button>
+					</div>
+				</div>
+			</div>
+			<!--修改密码弹窗背景-->
+			<div class="progress-bg"></div>
 		</div>
 		<!-- ./wrapper -->
 
@@ -363,9 +405,9 @@
             // var id=GetQueryString("id");
             // var taskId=getCookie(id);
             var taskId=GetQueryString("id");
+            var time=getCookie("createTime");
             var isPeriod=GetQueryString("isPeriod");
 			var userId=getCookie("userId");
-            console.log(isPeriod);
 			//概述table
 			var tableSummary = $("#task-summary-table");
 			var tableAbility= $("#task-abilty-table");
@@ -385,8 +427,48 @@
                 getTaskDetail();
                 //任务名称填充
 				$(".task-detail .nav .header span").html(taskId);
+				
+			// 点击发送邮件按钮 出现发送邮件弹窗
+				$("#email-send").click(function(){
+					$("#modalSendEmail").show();
+					var email=getCookie('email');
+					$("#emitEmail").val(email);
+					$(".progress-bg").show();
+				})
+				//取消发送邮箱
+				$("#modalSendEmail .btn-sm").click(function(){
+					$("#modalSendEmail").hide();
+					$(".progress-bg").hide();
+				})
+				//点击发送邮件 发送按钮
+				$("#sendEmail").click(function(){
+					var tableAbilty = $('#task-abilty-table').prop("outerHTML");
+					var tableLeak = $('#task-leak-table').prop("outerHTML");
+					var tableSafe = $('#task-safety-table').prop("outerHTML");
+					var resTitle='<div>尊敬的用户:</div><div>您好！您于<span>'+time+'</span>下发的id为<span>'+taskId+'</span>的任务详情列表如下,<a href="http://39.96.45.191/websock-server/ws/index" style="text-decoration: underline;color: #00c0ef">更多详情请登陆</a></div>'
+					var res1='<div>可用性检测列表</div>'+tableAbilty;
+					var res2='<div>安全事件检测列表</div>'+tableSafe;
+					var res3='<div>漏洞检测列表</div>'+tableLeak;
+					var res=resTitle+res1+res2+res3;
+					var email=$("#emitEmail").val();
+					console.log(tableAbilty);
+					$.ajax({
+						type:"post",
+						url:"/perform/sendMail",
+						xhrFields: {withCredentials: true},
+						data:{"address":email,content:res},
+						dataType: "json",
+						async:true,
+						success:function(data){
+							if(data.code==0){
+								alert('发送邮件成功');
+								$("#modalSendEmail").hide();
+								$(".progress-bg").hide();
+							}
+						}
+					});
 
-
+				})
 			})
 			//获取该任务id的详细信息
 			function getTaskDetail(){
@@ -398,6 +480,16 @@
                     async:true,
                     success:function(data){
                         console.log(data);
+                        /*var table1 = '<table>' +
+								'<tr><td>检测站点</td><td>开始测试时间</td><td>结束测试时间</td><td>dns响应状态</td><td>HTTP响应状态</td></tr>';//可用性
+                        var table2 = '<table>'+
+								'<tr><td>检测站点</td><td>关键词</td><td>挂马</td><td>信息泄露</td><td>an'li'an</td></tr>';//安全事件
+                        var table3 = '<table>';//漏洞检测
+                        for(var i=0;i<data.length;i++){
+                        	if(data[i].moduleType == "weakness"){
+
+							}
+						}*/
                         //从data中获取可用性 安全事件 漏洞的值
 						 taskItemDetail(data);
                     }
