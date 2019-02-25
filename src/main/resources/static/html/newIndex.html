@@ -1697,7 +1697,7 @@
             function getIndexData(){
                 $.ajax({
                     type:"post",
-                    url:"/perform/performData",
+                    url:"perform/performData",
                     xhrFields: {withCredentials: true},
                     data:{"userId":userId},
                     dataType: "json",
@@ -1785,7 +1785,7 @@
 				if(taskTypeVal==0){
                     $.ajax({
                         type:"post",
-                        url:"http://localhost/issue/temp",
+                        url:"issue/temp",
                         xhrFields: {withCredentials: true},
                         data:JSON.stringify(
                             {"urls":siteVal,
@@ -1832,7 +1832,7 @@
                     //周期任务调取接口
                     $.ajax({
                         type:"post",
-                        url:"http://localhost/issue/period",
+                        url:"issue/period",
                         xhrFields: {withCredentials: true},
                         data:JSON.stringify(
                             {"urls":siteVal,

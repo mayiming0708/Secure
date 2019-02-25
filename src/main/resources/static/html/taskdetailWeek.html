@@ -648,7 +648,7 @@
     function getTaskDetail(){
         $.ajax({
             type:"get",
-            url:"/service/resultEvents?virtualGroupId="+taskId,
+            url:"service/resultEvents?virtualGroupId="+taskId,
             xhrFields: {withCredentials: true},
             dataType: "json",
             async:true,
