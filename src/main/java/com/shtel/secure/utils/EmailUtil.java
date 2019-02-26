@@ -62,9 +62,26 @@ public class EmailUtil {
      */
     private static Session initMailConfig() {
         Properties properties = new Properties();
-        properties.setProperty("mail.smtp.auth", "true");
-        properties.setProperty("mail.transport.protocol", "smtp");
-        properties.setProperty("mail.smtp.host", "smtp.163.com");
+//        properties.setProperty("mail.smtp.auth", "true");
+//        properties.setProperty("mail.transport.protocol", "smtp");
+//        properties.setProperty("mail.smtp.host", "smtp.163.com");
+//        properties.setProperty("mail.smtp.port", "465");
+//        properties.setProperty("mail.smtp.ssl.enable", "true");
+
+        properties.put("mail.smtp.host", "smtp.163.com");
+
+        properties.put("mail.smtp.auth", "true");
+
+        properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory"); // 使用JSSE的SSL
+        // socketfactory来取代默认的socketfactory
+
+        properties.put("mail.smtp.socketFactory.fallback", "false"); // 只处理SSL的连接,对于非SSL的连接不做处理
+
+        properties.put("mail.smtp.port", 465);
+
+        properties.put("mail.smtp.socketFactory.port", 465);
+        properties.put("mail.smtp.ssl.enable", true);
+
         Session session = Session.getInstance(properties);
         return session;
     }
