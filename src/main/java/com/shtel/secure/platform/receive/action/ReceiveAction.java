@@ -330,7 +330,7 @@ public class ReceiveAction {
         issueService.updateFinishRate(oneJsonObject.getString("virtual_group_id"));
 
 
-        if (task.getFinishRate() == 1.00) {
+        if (task.getFinishRate() == 1.00 && task.getIsPeriod() == 0) {
             resultEventService.sendFinishMail(user.getEmail(), task.getCreateTime().toString(), task.getUpdateTime().toString());
             resultEventService.sendSMS(user.getPhoneNum(), task.getCreateTime().toString(), task.getUpdateTime().toString());
         }
