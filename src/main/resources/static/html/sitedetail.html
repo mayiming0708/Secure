@@ -924,8 +924,9 @@
                     clickToSelect: true,
                     columns:
                         [
-                            {field:"virtualGroupId",title:"id",align:"center",valign:"middle",sortable:"true"},
-                            {field:"startAt",title:"开始检测时间",align:"center",valign:"middle",sortable:"true"},
+                            {field:"id",title:"id",align:"center",valign:"middle",sortable:"true",visible:false},
+							{field:"virtualGroupId",title:"id",align:"center",valign:"middle",sortable:"true"},
+                            {field:"startAt",title:"结果返回时间",align:"center",valign:"middle",sortable:"true"},
                             {field:"malscan",title:"挂马",align:"center",valign:"middle",sortable:"true"},
                             {field:"cgi",title:"CGI漏洞",align:"center",valign:"middle",sortable:"true"},
                             {field:"formCrack",title:"表单破解漏洞",align:"center",valign:"middle",sortable:"true"},
@@ -946,7 +947,6 @@
                     data:data,
                     onLoadSuccess: function(res) { //可不写
                         //加载成功时
-                        console.log(res);
                     },
                     onLoadError: function(statusCode) {
                         return "加载失败了"
@@ -995,7 +995,6 @@
                     data:data,
                     onLoadSuccess: function(res) { //可不写
                         //加载成功时
-                        console.log(res);
                     },
                     onLoadError: function(statusCode) {
                         return "加载失败了"
@@ -1012,7 +1011,6 @@
 			}
 			//应用漏洞table
 			function getwebTable(data){
-                console.log(data);
                 webTable.bootstrapTable('destroy');
                 webTable.bootstrapTable({
                     //gau请求地址,此处数据为本地加载
@@ -1049,7 +1047,6 @@
                     data:data,
                     onLoadSuccess: function(res) { //可不写
                         //加载成功时
-                        console.log(res);
                     },
                     onLoadError: function(statusCode) {
                         return "加载失败了"
@@ -1097,7 +1094,6 @@
                     data:data,
                     onLoadSuccess: function(res) { //可不写
                         //加载成功时
-                        console.log(res);
                     },
                     onLoadError: function(statusCode) {
                         return "加载失败了"
@@ -1149,7 +1145,6 @@
                     data:data,
                     onLoadSuccess: function(res) { //可不写
                         //加载成功时
-                        console.log(res);
                     },
                     onLoadError: function(statusCode) {
                         return "加载失败了"
@@ -1199,7 +1194,6 @@
                     data:data,
                     onLoadSuccess: function(res) { //可不写
                         //加载成功时
-                        console.log(res);
                     },
                     onLoadError: function(statusCode) {
                         return "加载失败了"
@@ -1216,7 +1210,6 @@
             }
             //xsstable
             function getxssTable(data){
-                console.log(data);
                 xssTable.bootstrapTable('destroy');
                 xssTable.bootstrapTable({
                     //gau请求地址,此处数据为本地加载
@@ -1252,7 +1245,6 @@
                     data:data,
                     onLoadSuccess: function(res) { //可不写
                         //加载成功时
-                        console.log(res);
                     },
                     onLoadError: function(statusCode) {
                         return "加载失败了"
@@ -1305,7 +1297,6 @@
                     data:data,
                     onLoadSuccess: function(res) { //可不写
                         //加载成功时
-                        console.log(res);
                     },
                     onLoadError: function(statusCode) {
                         return "加载失败了"
@@ -1358,7 +1349,6 @@
                     data:data,
                     onLoadSuccess: function(res) { //可不写
                         //加载成功时
-                        console.log(res);
                     },
                     onLoadError: function(statusCode) {
                         return "加载失败了"
@@ -1411,7 +1401,6 @@
                     data:data,
                     onLoadSuccess: function(res) { //可不写
                         //加载成功时
-                        console.log(res);
                     },
                     onLoadError: function(statusCode) {
                         return "加载失败了"
@@ -1464,7 +1453,6 @@
                     data:data,
                     onLoadSuccess: function(res) { //可不写
                         //加载成功时
-                        console.log(res);
                     },
                     onLoadError: function(statusCode) {
                         return "加载失败了"
@@ -1505,7 +1493,7 @@
                     columns:
                         [
                             {field:"url",title:"url",align:"center",valign:"middle",sortable:"true"},
-                            {field:"startAt",title:"开始监测时间",align:"center",valign:"middle",sortable:"true"},
+                            {field:"startAt",title:"结果返回时间",align:"center",valign:"middle",sortable:"true"},
                             {field:"dnsTime",title:"dns解析速度",align:"center",valign:"middle",sortable:"true",formatter:function(value,row,index){
 									return value+'ms';
 								}},
@@ -1523,7 +1511,6 @@
                     data:data,
                     onLoadSuccess: function(res) { //可不写
                         //加载成功时
-                        console.log(res);
                     },
                     onLoadError: function(statusCode) {
                         return "加载失败了"
@@ -1585,10 +1572,8 @@
                             //填充可用性信息
 
                         }
-                        console.log(abilityData);
                         //展示漏洞信息
 						leakinfo(leakData);
-                        console.log(leakData);
                         //可用性表填入数据
 
 						//填充综述表格
@@ -1609,7 +1594,6 @@
                 var sqlCount=0;
 				var leakDataOne=leakData[0];
 				var leakDataVal=JSON.parse(leakData[0].value);
-				console.log(leakDataVal);
 				for(var i=0;i<leakDataVal.length;i++){
                     if(leakDataVal[i].type=='webvul'){
                         webCount=webCount+1;
@@ -1624,7 +1608,6 @@
 				var webname=jsonName['webvul'];
                 var xssname=jsonName['xss'];
                 var sqlname=jsonName['sql'];
-				console.log(webCount);
 				$(".p1 .title").html(webname+webCount+'个');
                 $(".p2 .title").html(xssname+xssCount+'个');
                 $(".p3 .title").html(sqlname+sqlCount+'个');
@@ -1904,8 +1887,9 @@
                         }
                     }
                     var weaknessObj = {
+                    	'id':weaknessArr[i].id,
                         'virtualGroupId' : weaknessArr[i].virtualGroupId,
-                        'startAt' : weaknessArr[i].startAt,
+                        'startAt' : weaknessArr[i].receiveTime,
                         'malscan' : malscanCount,
                         'cgi' : cgiCount,
                         'formCrack' : formCrackCount,
@@ -1921,7 +1905,7 @@
                 }
                 console.log(weaknessItemArr)
                 getweakList(weaknessItemArr);
-                setDetailJsonInfo(weaknessArr,weaknessArr[0].virtualGroupId);
+                setDetailJsonInfo(weaknessArr,weaknessArr[0].id);
             }
             //创建按钮并给按钮添加事件
             function AddFunctionAlty(value,row,index){
@@ -1931,7 +1915,7 @@
             }
             window.operateEvents={
                 "click #detailBtn":function(e,value,row,index){
-                    var id=row.virtualGroupId;
+                    var id=row.id;
                     // window.location.href = "tasksitedetail?id="+taskId+"&url="+site;
 					//
 					// weaknessDetail(id);
@@ -1943,7 +1927,7 @@
             function setDetailJsonInfo(weaknessArrVal,id) {
                 var data;
                 for(var key=0;key<weaknessArrVal.length;key++){
-                    if(weaknessArrVal[key].virtualGroupId == id){
+                    if(weaknessArrVal[key].id == id){
                         data = weaknessArrVal[key];
                         break;
                     }
@@ -2091,7 +2075,6 @@
                 dataTotalObj.csrfTable = csrfArr;
                 dataTotalObj.keywordTable = keywordArr;
                 dataTotalObj.sqlTable = sqlArr;
-                console.log(dataTotalObj)
                 for (var key in dataTotalObj) {
                     if (key == 'webvulTable') {
                         if (dataTotalObj[key].length > 0) {
@@ -2191,7 +2174,7 @@
                     var appVal = JSON.parse(appArr[i].value);
                     var appObj = {
                         "url":appVal[0].url,
-                        "startAt":appArr[i].startAt,
+                        "startAt":appArr[i].receiveTime,
                         "dnsTime":appVal[0].value.dns.time,
                         "isHijacked":appVal[0].value.dns_hijack.hijacked,
                         "ping":appVal[0].value.ping
@@ -2199,7 +2182,6 @@
                     appItemArr.push(appObj)
                 }
                 getappTable(appItemArr);
-                console.log(appItemArr)
             }
 		//判断风险等级函数
 			function riskLevel(data){
