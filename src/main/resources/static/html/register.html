@@ -285,7 +285,7 @@
     function registerquest(account,password,email,tel){
         $.ajax({
             type:"post",
-            url:"ws/registerAccount",
+            url:"registerAccount",
             data:{ "account":account,"password":password,"email":email,"phoneNum":tel},
             xhrFields: {withCredentials: true},
             dataType: "json",
@@ -293,10 +293,10 @@
             success:function(data){
                 if(data.code==0){
                  alert('注册成功');
-                 // window.location.href='index'
+                 window.location.href='index'
                 }
                 if(data.code==100){
-                    prompt.html('该账号已被注册');
+                    prompt.html(data.message);
                 }
             }
         });
