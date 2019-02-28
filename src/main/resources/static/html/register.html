@@ -45,6 +45,13 @@
         .service .form-groups .prompt{
             display: block;
         }
+        .passwordAlert{
+            color: yellow;
+            margin-top: 5px;
+        }
+        .service .divright{
+            padding-top: 8vh;
+        }
         @media screen and (max-device-width: 768px)  {
             .service .divleft{
                 width: 100%;
@@ -92,6 +99,11 @@
             .service .copyRight{
                 font-size: 30px;
             }
+            .passwordAlert{
+                margin-top: 20px;
+                margin-bottom: 20px;
+                font-size: 32px;
+            }
         }
 
         @media screen and (max-width: 768px)  {
@@ -135,12 +147,18 @@
                 width: 100%;
             }
             .service .form-groups .btns .btn-login{
-                height: 50px;
-                line-height: 50px;
-                font-size: 30px;
+                height: 40px;
+                margin-top: -10px;
+                line-height: 40px;
+                font-size: 20px;
             }
             .service .divright{
                 padding-top: 4vh;
+            }
+            .passwordAlert{
+                margin-top: 10px;
+                margin-bottom: 10px;
+                font-size: 15px;
             }
         }
         .clearfix:after{
@@ -184,7 +202,7 @@
                     <label for="password"><i class="iconfont icon-mima"></i></label>
                     <i class="password"></i>
                     <input class="form-control" id="password" name="password" maxlength="20" type="password" onkeydown="" autocomplete="off" placeholder="请输入密码">
-                    <span class="clear"><i class="iconfont icon-guanbi"></i></span>
+                    <p style="" class="passwordAlert">*密码需由数字,字母,特殊符号组成</p>
                 </div>
                 <div class="form-group">
                     <label for="repassword"><i class="iconfont icon-mima"></i></label>
@@ -257,7 +275,16 @@
         if(password==''||password==null||password==undefined){
             prompt.html('请输入密码');
             return false;
+        }else{
+            //密码强弱校验
+           var lvl=checkPassword(password);
+           console.log(lvl);
+           if(lvl<3){
+               prompt.html('密码不规范,请重新输入');
+               return false;
+           }
         }
+
         if(!(repassword===password)){
             prompt.html('两次密码不一致，请重新输入');
             return false;
@@ -300,6 +327,24 @@
                 }
             }
         });
+    }
+
+    //密码强度校验
+    function checkPassword(pwd){
+        var lvl = 0;
+        //判断这个字符串中有没有数字
+        if (/[0-9]/.test(pwd)) {
+            lvl++;
+        }
+        //判断字符串中有没有字母
+        if (/[a-zA-Z]/.test(pwd)) {
+            lvl++;
+        }
+        //判断字符串中有没有特殊符号
+        if (/[^0-9a-zA-Z_]/.test(pwd)) {
+            lvl++;
+        }
+     return lvl;
     }
 </script>
 
