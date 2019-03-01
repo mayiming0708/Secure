@@ -2,6 +2,8 @@ package com.shtel.secure.platform.receive.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.shtel.secure.config.metadata.EmailConfig;
+import com.shtel.secure.config.metadata.PhoneConfig;
 import com.shtel.secure.platform.enumType.model.EnumType;
 import com.shtel.secure.platform.finishType.model.FinishType;
 import com.shtel.secure.platform.issue.model.Task;
@@ -30,23 +32,32 @@ import java.util.List;
 public class ResultEventService {
     private static final Logger logger = LoggerFactory.getLogger(ResultEventService.class);
 
-    @Autowired
     private TempMapper tempMapper;
-
-    @Autowired
     private ResultEventMapper resultEventMapper;
+    private ResultLevelCountMapper resultLevelCountMapper;
+    private EmailConfig emailConfig;
+    private PhoneConfig phoneConfig;
 
     @Autowired
-    private ResultLevelCountMapper resultLevelCountMapper;
-
-    @Value("${email.account}")
-    private String accout;
-    @Value("${email.password}")
-    private String password;
-    @Value("${phone.uid}")
-    private String uid;
-    @Value("${phone.key}")
-    private String key;
+    public void setTempMapper(TempMapper tempMapper) {
+        this.tempMapper = tempMapper;
+    }
+    @Autowired
+    public void setResultEventMapper(ResultEventMapper resultEventMapper) {
+        this.resultEventMapper = resultEventMapper;
+    }
+    @Autowired
+    public void setResultLevelCountMapper(ResultLevelCountMapper resultLevelCountMapper) {
+        this.resultLevelCountMapper = resultLevelCountMapper;
+    }
+    @Autowired
+    public void setEmailConfig(EmailConfig emailConfig) {
+        this.emailConfig = emailConfig;
+    }
+    @Autowired
+    public void setPhoneConfig(PhoneConfig phoneConfig) {
+        this.phoneConfig = phoneConfig;
+    }
 
     public int insert(String value) {
         Temp temp = new Temp();
@@ -111,7 +122,7 @@ public class ResultEventService {
 
     public String sendFinishMail(String receiveAddress,String startAt,String endAt) {
         try {
-            EmailUtil.sendMail(accout, password, accout, receiveAddress, "您于"+startAt+"下发的任务已于"+endAt+"完成，请登录网站查看：http://39.96.45.191/websock-server/index", "webSock网站监测任务已完成");
+            EmailUtil.sendMail(emailConfig.getAccount(), emailConfig.getPassword(), emailConfig.getAccount(), receiveAddress, "您于"+startAt+"下发的任务已于"+endAt+"完成，请登录网站查看：http://39.96.45.191/websock-server/index", "webSock网站监测任务已完成");
             return ResultUtil.Result(EnumType.SUCCESS);
         } catch (Exception e) {
             return ResultUtil.Result(EnumType.EMAIL_ERROR);
@@ -120,7 +131,7 @@ public class ResultEventService {
 
     public String sendSMS(String smsMob, String startAt,String endAt){
        try{
-        SMSUtil.sendMessage(uid,key,smsMob,"您于"+startAt+"下发的任务已于"+endAt+"完成，请登录网站查看:http://39.96.45.191/websock-server/index");
+        SMSUtil.sendMessage(phoneConfig.getUid(),phoneConfig.getKey(),smsMob,"您于"+startAt+"下发的任务已于"+endAt+"完成，请登录网站查看:http://39.96.45.191/websock-server/index");
            return ResultUtil.Result(EnumType.SUCCESS);
        }catch (Exception e){
            return ResultUtil.Result(EnumType.EMAIL_ERROR);

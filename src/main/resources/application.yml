@@ -1,9 +1,33 @@
 spring:
-  profiles:
-    active: dev
+  datasource:
+    name: test
+    url: jdbc:mysql://39.96.45.191:3306/secure?useTimezone=true&serverTimezone=GMT%2B8&characterEncoding=UTF-8
+    username: root
+    password: mysql2019!
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # springMVC
+  mvc:
+    view:
+      prefix: /jsp/
+      suffix: .jsp
+    static-path-pattern: /**
+    favicon:
+      enabled: false
+
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+
+server:
+  port: 80
+
+#sql语句输出
+#mybatis:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
@@ -17,7 +41,7 @@ basic:
   username: cwqapi
   password: Cwqapi@123
 # 下发任务url
-myProps:
+props:
   tempURL: http://61.151.249.44/api/v2/vgroup/create_temp/
   periodURL: http://61.151.249.44/api/v2/vgroup/create_cycle/
   loginAuthURL: http://61.151.249.44/api/v2/login_auth/

@@ -2,9 +2,10 @@ package com.shtel.secure.platform.issue.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.shtel.secure.config.metadata.BasicConfig;
+import com.shtel.secure.config.metadata.PropsConfig;
 import com.shtel.secure.platform.issue.model.Task;
 import com.shtel.secure.platform.issue.model.mapper.TaskMapper;
-import com.shtel.secure.platform.login.model.User;
 import com.shtel.secure.utils.HttpUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,20 +28,25 @@ import java.util.Map;
 @Service
 public class IssueService {
     private static Logger logger = LogManager.getLogger(IssueService.class.getName());
-    @Autowired
+
     private TaskMapper taskMapper;
-    @Value("${myProps.tempURL}")
-    private String tempUrl;
-    @Value("${myProps.periodURL}")
-    private String periodURL;
-    @Value("${myProps.loginAuthURL}")
-    private String loginAuthURL;
-    @Value("${myProps.progressTempURL}")
-    private String progressTempURL;
-    @Value("${basic.username}")
-    private String username;
-    @Value("${basic.password}")
-    private String password;
+    private PropsConfig propsConfig;
+    private BasicConfig basicConfig;
+
+    @Autowired
+    public void setPropsConfig(PropsConfig propsConfig) {
+        this.propsConfig = propsConfig;
+    }
+
+    @Autowired
+    public void setBasicConfig(BasicConfig basicConfig) {
+        this.basicConfig = basicConfig;
+    }
+
+    @Autowired
+    public void setTaskMapper(TaskMapper taskMapper) {
+        this.taskMapper = taskMapper;
+    }
 
     /**
      * <p>下发临时任务</p>
@@ -49,7 +55,7 @@ public class IssueService {
      * @return
      */
     public JSONObject issueTemporaryTask(Task task) {
-        return issueTask(tempUrl, task);
+        return issueTask(propsConfig.getTempURL(), task);
     }
 
     /**
@@ -59,7 +65,7 @@ public class IssueService {
      * @return
      */
     public JSONObject issuePeriodTask(Task task) {
-        return issueTask(periodURL, task);
+        return issueTask(propsConfig.getPeriodURL(), task);
     }
 
     /**
@@ -74,12 +80,12 @@ public class IssueService {
         taskMap.put("parameter", getParameters(task).toJSONString());
         Map<String, String> logMap = new HashMap<>();
         JSONObject logJson = new JSONObject();
-        logJson.put("username", username);
-        logJson.put("password", password);
+        logJson.put("username", basicConfig.getUsername());
+        logJson.put("password", basicConfig.getPassword());
         logMap.put("parameter", logJson.toJSONString());
         JSONObject taskResponse;
         try {
-            taskResponse = HttpUtils.doPostWithCookies(url, loginAuthURL, taskMap, logMap);
+            taskResponse = HttpUtils.doPostWithCookies(url, propsConfig.getLoginAuthURL(), taskMap, logMap);
         } catch (Exception e) {
             JSONObject content = new JSONObject();
             taskResponse = Response("secure下发任务失败", 100, content);
@@ -102,11 +108,11 @@ public class IssueService {
         groupMap.put("parameter", virtualGroupId.toJSONString());
         Map<String, String> logMap = new HashMap<>();
         JSONObject logJson = new JSONObject();
-        logJson.put("username", username);
-        logJson.put("password", password);
+        logJson.put("username", basicConfig.getUsername());
+        logJson.put("password", basicConfig.getPassword());
         logMap.put("parameter", logJson.toJSONString());
         try {
-            response = HttpUtils.doPostWithCookies(progressTempURL, loginAuthURL, groupMap, logMap);
+            response = HttpUtils.doPostWithCookies(propsConfig.getProgressTempURL(), propsConfig.getLoginAuthURL(), groupMap, logMap);
         } catch (Exception e) {
             JSONObject content = new JSONObject();
             response = Response("secure获取临时组检测进度", 100, content);

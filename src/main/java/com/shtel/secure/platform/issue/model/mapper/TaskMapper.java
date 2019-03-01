@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.stereotype.Component;
 import tk.mybatis.mapper.common.Mapper;
 
 /**
@@ -12,6 +13,7 @@ import tk.mybatis.mapper.common.Mapper;
  * @Date: 2019/1/7 15:50
  * @Description: TaskMapper接口
  */
+@Component
 public interface TaskMapper extends Mapper<Task> {
     @Insert("insert into " +
             "ws_task " +
